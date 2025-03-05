@@ -2,6 +2,7 @@
 require_once "Router.php";
 require_once "Controllers/BaseController.php";
 require_once "Database/Database.php";
+require_once "Models/UserModel.php";
 require_once "Controllers/WelcomeController.php";
 require_once "Controllers/UserController.php";
 
@@ -11,5 +12,7 @@ $route->get("/", [WelcomeController::class, 'welcome']);
 
 //users
 $route->get("/users", [UserController::class, 'index']);
+$route->get("/users/create", [UserController::class, 'create']);
+$route->get("/users/store", [UserController::class, 'store']);
 
 $route->route();
