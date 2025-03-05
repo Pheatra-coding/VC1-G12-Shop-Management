@@ -19,6 +19,9 @@
         }
         
 
+        a {
+            text-decoration: none;
+        }
         /* Make the Image column wider */
         th, td {
             vertical-align: middle; /* Ensure content is aligned properly */
@@ -45,20 +48,63 @@
             </div>
 
             <div class="table-responsive">
-                <table class="table table-bordered" id="employeeTable">
-                    <thead class="table-light">
+                <table id="employeeTable" class="table">
+                    <thead>
                         <tr>
-                            <th class="image-column">Image</th> <!-- Adjusted column width -->
+                            <th>Image</th>
                             <th>Username</th>
                             <th>Email</th>
                             <th>Role</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
-                       
+                    <tbody id="tableBody">
+                        <?php if (!empty($users) && is_array($users)) : ?>
+                            <?php foreach ($users as $user) : ?>
+                                <tr>
+                                    <!-- Display User Image -->
+                                    <td>
+                                        <img src="<?= !empty($user['image']) ? 'uploads/' . htmlspecialchars($user['image']) : 'https://pheaktra-student.site/assets/img/PF.jpg'; ?>" 
+                                        alt="User Image" class="img-fluid user-img" 
+                                        style="width: 50px; height: 50px; border-radius: 50%;">
+                                    </td>
+
+                                    <!-- Display Username -->
+                                    <td><?= htmlspecialchars($user['name']) ?></td>
+
+                                    <!-- Display Email -->
+                                    <td><?= htmlspecialchars($user['email']) ?></td>
+
+                                    <!-- Display Role -->
+                                    <td><?= htmlspecialchars($user['role']) ?></td>
+
+                                    <!-- Actions Column -->
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="/users/edit/<?= $user['id'] ?>">Edit</a></li>
+                                                <li><a class="dropdown-item text-danger" href="/users/delete/<?= $user['id'] ?>">Delete</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else : ?>
+                            <tr>
+                                <td colspan="5">No users found.</td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
+
+                <!-- No Results Message (Initially Hidden) -->
+                <div id="noResultsMessage" style="display:none; text-align: center;">
+                    <p>No results found.</p>
+                </div>
+
             </div>
         </div>
     </main>
@@ -72,6 +118,11 @@
             let input = document.getElementById("searchInput").value.toLowerCase();
             let table = document.getElementById("employeeTable");
             let rows = table.getElementsByTagName("tr");
+            let noResultsMessage = document.getElementById("noResultsMessage");
+            let found = false;
+
+            // Hide the no results message initially
+            noResultsMessage.style.display = "none";
 
             for (let i = 1; i < rows.length; i++) { 
                 let columns = rows[i].getElementsByTagName("td");
@@ -84,6 +135,15 @@
                     }
                 }
                 rows[i].style.display = match ? "" : "none";
+
+                if (match) {
+                    found = true;
+                }
+            }
+
+            // If no results match, show the "No results found" message
+            if (!found) {
+                noResultsMessage.style.display = "block";
             }
         }
     </script>
