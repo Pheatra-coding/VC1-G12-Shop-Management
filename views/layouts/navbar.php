@@ -261,7 +261,7 @@
   </li><!-- End Charts Nav -->
 
   <li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+    <a class="nav-link collapsed" href="/products">
     <i class="bi bi-table"></i><span>Table Products</span></i>
     </a>
   </li><!-- End Icons Nav -->
