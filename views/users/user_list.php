@@ -17,6 +17,7 @@
             object-fit: cover; /* Make sure the image is not stretched */
             border-radius: 50%; /* Make the image circular */
         }
+        
 
         /* Make the Image column wider */
         th, td {
