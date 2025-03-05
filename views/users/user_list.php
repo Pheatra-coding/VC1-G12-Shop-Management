@@ -37,7 +37,10 @@
             <!-- Add Employee & Search Bar -->
             <div class="d-flex justify-content-between mb-3">
                 <a href="/users/create" class="btn btn-primary">Add Employee</a>
-               
+                <div class="input-group w-50">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search employee..." onkeyup="searchTable()">
+                    <button class="btn btn-outline-secondary"><i class="fas fa-search"></i></button>
+                </div>
             </div>
 
             <div class="table-responsive">
@@ -63,7 +66,26 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- JavaScript for Search Filter -->
+    <script>
+        function searchTable() {
+            let input = document.getElementById("searchInput").value.toLowerCase();
+            let table = document.getElementById("employeeTable");
+            let rows = table.getElementsByTagName("tr");
 
+            for (let i = 1; i < rows.length; i++) { 
+                let columns = rows[i].getElementsByTagName("td");
+                let match = false;
+
+                for (let j = 1; j < columns.length - 1; j++) { 
+                    if (columns[j].innerText.toLowerCase().includes(input)) {
+                        match = true;
+                        break;
+                    }
+                }
+                rows[i].style.display = match ? "" : "none";
+            }
+        }
+    </script>
 
 </body>
 </html>
