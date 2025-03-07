@@ -35,5 +35,29 @@ class ProductModel {
         }
     }
 
+    // Function to update a product
+    public function updateProduct($id, $image, $name, $end_date, $barcode, $price, $quantity) {
+        $result = $this->db->query("SELECT * FROM prodcuts WHERE id = :id", ['id' => $id]);
+        try {
+            $this->db->query(
+                "UPDATE products SET image = :image, name = :name, end_date = :end_date, barcode = :barcode, price = :price, quantity = :quantity WHERE id = :id",
+                [
+                    ':id' => $id,
+                    ':image' => $image,
+                    ':name' => $name,
+                    ':end_date' => $end_date,
+                    ':barcode' => $barcode,
+                    ':price' => $price,
+                    ':quantity' => $quantity
+                ]
+            );
+        } catch (PDOException $e) {
+            echo "Error updating product: " . $e->getMessage();
+        }
+    }
+
+
+   
+
 }
 

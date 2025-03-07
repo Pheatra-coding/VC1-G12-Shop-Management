@@ -54,4 +54,24 @@ class ProductController extends BaseController {
         // Redirect to the products list page
         $this->redirect('/products');
     }
+
+
+    public function edit($id) {
+        $product = $this->products->getProductById($id);
+        $this->view('products/edit', ['product' => $product]);
+    }
+
+    public function update() {
+        // Sanitize inputs
+        $id = htmlspecialchars($_POST['id']);
+        $name = htmlspecialchars($_POST['name']);
+        $end_date = htmlspecialchars($_POST['end_date']);
+        $barcode = htmlspecialchars($_POST['barcode']);
+        $price = htmlspecialchars($_POST['price']);
+        $quantity = htmlspecialchars($_POST['quantity']);
+        $this->products->updateProduct($id, $name, $end_date, $barcode, $price, $quantity);
+        $this->redirect('/products');
+    }
+
+   
 }
