@@ -17,11 +17,14 @@ $route->get("/products/create", [ProductController::class, 'create']);
 $route->post("/products/store", [ProductController::class, 'store']);
 $route->get("/products/edit/{id}", [ProductController::class, 'edit']);
 $route->put("/products/update/{id}", [ProductController::class, 'update']);
+$route->delete("/products/delete/{id}", [ProductController::class, 'delete']);
+
 
 $route->route();
 //users
 $route->get("/users", [UserController::class, 'index']);
 $route->get("/users/create", [UserController::class, 'create']);
 $route->get("/users/store", [UserController::class, 'store']);
+
 
 $route->route();
