@@ -35,7 +35,8 @@ class ProductModel {
         }
     }
     
-    // Function to delete a product
+    // Function to delete a product by its ID
+    
     public function deleteProduct($id) {
         $result = $this->db->query("DELETE FROM products WHERE id = :id", ['id' => $id]);
         return $result;
