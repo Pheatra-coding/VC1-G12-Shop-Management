@@ -72,7 +72,11 @@ class ProductController extends BaseController {
         $this->products->updateProduct($id, $name, $end_date, $barcode, $price, $quantity);
         $this->redirect('/products');
     }
+    
+    
     // function delete a product
+
+
     public function delete($id) {
         $this->products->deleteProduct($id);
         header("Location: /products");

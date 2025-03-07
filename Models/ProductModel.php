@@ -55,6 +55,9 @@ class ProductModel {
             echo "Error updating product: " . $e->getMessage();
         }
     }
+
+
+    
     // Function to delete a product
     public function deleteProduct($id) {
         $result = $this->db->query("DELETE FROM products WHERE id = :id", ['id' => $id]);
