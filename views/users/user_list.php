@@ -1,14 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop Management</title>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         /* Ensure images are circular and fit well */
         .user-img {
@@ -33,8 +22,8 @@
 <body>
 
     <main id="main" class="main">
-        <div class="container mt-4">
-            <h1 class="mb-3">Employees Management</h1>
+        <div class="">
+            <h1 class="mb-3" style="font-size:28px;">Employees Management</h1>
 
             <!-- Add Employee & Search Bar -->
             <div class="d-flex justify-content-between mb-3">
@@ -66,7 +55,6 @@
                                         alt="User Image" class="img-fluid user-img" 
                                         style="width: 50px; height: 50px; border-radius: 50%;">
                                     </td>
-
                                     <!-- Display Username -->
                                     <td><?= htmlspecialchars($user['name']) ?></td>
 

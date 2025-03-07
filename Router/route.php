@@ -19,5 +19,6 @@ $route->route();
 $route->get("/users", [UserController::class, 'index']);
 $route->get("/users/create", [UserController::class, 'create']);
 $route->get("/users/store", [UserController::class, 'store']);
-
+$route->get("/users/edit/{id}", [UserController::class, 'edit']);
+$route->post("/users/update/{id}", [UserController::class, 'update']);
 $route->route();
