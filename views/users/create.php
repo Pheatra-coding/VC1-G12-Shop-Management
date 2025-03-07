@@ -1,7 +1,7 @@
 <main id="main" class="main">
 <div class="container">
     <!-- User Creation Form -->
-    <form action="/products/store" method="post" enctype="multipart/form-data">
+    <form action="/users/store" method="post" enctype="multipart/form-data">
         <!-- CSRF Protection -->
         <input type="hidden" name="csrf_token" value="">
 
@@ -10,27 +10,27 @@
             <input type="text" class="form-control" id="name" placeholder="Enter name" name="name" required>
         </div>
 
-        <div class="mb-3">
-            <label for="endDate" class="form-label">End Date</label>
-            <input type="date" class="form-control" id="endDate" name="end_date" required>
+        <div class="mb-3 mt-3">
+            <label for="email" class="form-label">Email:</label>
+            <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" required>
         </div>
     
-        <div class="mb-3">
-            <label for="barcode" class="form-label">Barcode</label>
-            <input type="text" class="form-control" id="barcode" name="barcode" required>
-        </div>
-        <div class="mb-3">
-            <label for="price" class="form-label">Price</label>
-            <input type="number" step="0.00" class="form-control" id="price" name="price" required>
-        </div>
-
-        <div class="mb-3">
-            <label for="quantity" class="form-label">quantity</label>
-            <input type="number" class="form-control" id="quantity" name="quantity" required>
+        <div class="mb-3 mt-3">
+            <label for="role" class="form-label">Role:</label>
+            <select name="role" id="role" class="form-control" required>
+                <option value="" disabled selected>Select Role</option>
+                <option value="admin">Admin</option>
+                <option value="user">User</option>
+            </select>
         </div>
 
         <div class="mb-3">
-            <label for="profile_image" class="form-label">Product Image:</label>
+            <label for="pwd" class="form-label">Password:</label>
+            <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="password" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="profile_image" class="form-label">Profile Image:</label>
             <input type="file" class="form-control" id="profile_image" name="image" accept="image/*" onchange="previewImage(event)">
             <div class="mt-3">
                 <img id="image_preview" src="#" alt="Image Preview" class="img-fluid d-none" style="width: 160px; height: 160px; border-radius: 10px; display: block; margin-top: 10px;">
@@ -38,7 +38,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Submit</button>
-        <a href="/products" class="btn btn-secondary">Cancel</a>
+        <a href="/users" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
 
