@@ -18,7 +18,7 @@ class UserController extends BaseController {
     public function create() {
         session_start();
         
-        if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
+        if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'Admin') {
             header("Location: /users"); 
             exit();
         }
@@ -28,7 +28,7 @@ class UserController extends BaseController {
     public function store() {
         session_start();
     
-        if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
+        if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'Admin') {
             header("Location: /users");
             exit();
         }
@@ -65,7 +65,7 @@ class UserController extends BaseController {
     public function edit($id) {
         session_start();
         
-        if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
+        if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'Admin') {
             header("Location: /users"); 
             exit();
         }
@@ -83,7 +83,7 @@ class UserController extends BaseController {
         session_start();
         
         // Ensure user is an admin before allowing update
-        if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
+        if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'Admin') {
             header("Location: /users"); 
             exit();
         }

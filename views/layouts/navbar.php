@@ -290,7 +290,7 @@ if ($isLoggedIn):
     </a>
   </li><!-- End Profile Page Nav -->
 
-  <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
+  <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'Admin'): ?>
   <li class="nav-item">
     <a class="nav-link collapsed" href="/users">
     <i class="bi bi-people-fill"></i>
