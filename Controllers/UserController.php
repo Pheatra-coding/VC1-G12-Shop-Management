@@ -90,4 +90,9 @@ class UserController extends BaseController {
         // Redirect to the users list page
         $this->redirect('/users');
     }
+
+    //show login
+    public function login() {
+        $this->view("users/login");
+    }
 }
