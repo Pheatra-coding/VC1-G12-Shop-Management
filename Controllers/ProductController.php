@@ -61,4 +61,20 @@ class ProductController extends BaseController {
         header("Location: /products");
     }
 
+    // view edit product form
+    public function edit($id) {
+        $product = $this->products->getProductById($id);
+        $this->view("products/edit", ['product' => $product]);
+    }
+    
+    // function to update a product
+    public function update($id) {
+        $name = htmlspecialchars($_POST['name']);
+        $end_date = htmlspecialchars($_POST['end_date']);
+        $barcode = htmlspecialchars($_POST['barcode']);
+        $price = htmlspecialchars($_POST['price']);
+        $quantity = htmlspecialchars($_POST['quantity']);
+        $this->products->updateProduct($id, $name, $end_date, $barcode, $price, $quantity);
+        header("Location: /products");
+    }
 }

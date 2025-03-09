@@ -13,7 +13,7 @@ class ProductModel {
     // Function to get a single product by its ID
 
     public function getProductById($id) {
-        $result = $this->db->query("SELECT * FROM prodcuts WHERE id = :id", ['id' => $id]);
+        $result = $this->db->query("SELECT * FROM products WHERE id = :id", ['id' => $id]);
         return $result->fetch(PDO::FETCH_ASSOC);
     }
     // Functions add a new product
@@ -41,8 +41,21 @@ class ProductModel {
         return $result;
     }
 
+    // Function to update a product
+    public function updateProduct($id, $name, $end_date, $barcode, $price, $quantity){
+        $result = $this->db->query("UPDATE products SET name = :name, end_date = :end_date, barcode = :barcode, price = :price, quantity = :quantity WHERE id = :id",
+            [
+                ':id' => $id,
+                ':name' => $name,
+                ':end_date' => $end_date,
+                ':barcode' => $barcode,
+                ':price' => $price,
+                ':quantity' => $quantity
+            ]);
+        return $result;
+    }
 
-   
+
 
 }
 
