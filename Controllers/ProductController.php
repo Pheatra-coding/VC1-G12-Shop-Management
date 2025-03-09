@@ -54,4 +54,11 @@ class ProductController extends BaseController {
         // Redirect to the products list page
         $this->redirect('/products');
     }
+    
+    // function to delete a product 
+    public function delete($id) {
+        $this->products->deleteProduct($id);
+        header("Location: /products");
+    }
+
 }

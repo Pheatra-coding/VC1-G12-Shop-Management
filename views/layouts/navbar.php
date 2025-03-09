@@ -255,7 +255,7 @@
   </li><!-- End Tables Nav -->
 
   <li class="nav-item">
-    <a class="nav-link collapsed" href="/users/login">
+    <a class="nav-link collapsed" href="">
     <i class="bi bi-grid"></i></i></i><span>Categories</span></i>
     </a>
   </li><!-- End Charts Nav -->
