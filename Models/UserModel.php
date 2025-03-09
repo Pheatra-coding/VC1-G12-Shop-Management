@@ -57,4 +57,11 @@ class UserModel {
             echo "Error updating user: " . $e->getMessage();
         }
     }
+
+
+    public function deleteUser($id) {
+        $result = $this->db->query("DELETE FROM users WHERE id = :id", ['id' => $id]);
+        return $result;
+    }
+
 }
