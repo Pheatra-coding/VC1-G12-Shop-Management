@@ -1,7 +1,7 @@
 <?php
 class UserModel {
     private $db;
-    
+
     public function __construct() {
         $this->db = new Database("localhost", "shop_management", "root", "");
     }
@@ -23,13 +23,38 @@ class UserModel {
                 [
                     ':name' => $name,
                     ':email' => $email,
-                    ':password' => $password,
+                    ':password' => password_hash($password, PASSWORD_DEFAULT), // Hash the password
                     ':role' => $role,
                     ':image' => $image
                 ]
             );
         } catch (PDOException $e) {
             echo "Error adding user: " . $e->getMessage();
+        }
+    }
+
+    public function updateUser($id, $name, $email, $password, $role, $image) {
+        try {
+            // Prepare the SQL update statement
+            $query = "UPDATE users SET name = :name, email = :email, role = :role, image = :image WHERE id = :id";
+            $params = [
+                ':id' => $id,
+                ':name' => $name,
+                ':email' => $email,
+                ':role' => $role,
+                ':image' => $image
+            ];
+
+            // Only update the password if provided
+            if (!empty($password)) {
+                $query = "UPDATE users SET name = :name, email = :email, password = :password, role = :role, image = :image WHERE id = :id";
+                $params[':password'] = password_hash($password, PASSWORD_DEFAULT); // Hash the password
+            }
+
+            // Execute the query
+            $this->db->query($query, $params);
+        } catch (PDOException $e) {
+            echo "Error updating user: " . $e->getMessage();
         }
     }
 }
