@@ -22,7 +22,7 @@ class UserController extends BaseController {
         $name = $_POST['name'];
         $email = $_POST['email'];
         $password = $_POST['password'];
-        $passwordEncrypt = password_hash($password, PASSWORD_BCRYPT);
+        $passwordEncrypt = password_hash($password, PASSWORD_DEFAULT);
         $role = $_POST['role'];
 
         // Handle Image Upload

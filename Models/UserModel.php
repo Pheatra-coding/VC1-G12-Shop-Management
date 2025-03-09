@@ -23,7 +23,7 @@ class UserModel {
                 [
                     ':name' => $name,
                     ':email' => $email,
-                    ':password' => password_hash($password, PASSWORD_DEFAULT), // Hash the password
+                    ':password' =>$password,
                     ':role' => $role,
                     ':image' => $image
                 ]
