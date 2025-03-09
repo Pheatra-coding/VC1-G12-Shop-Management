@@ -25,7 +25,9 @@ $route->post("/users/store", [UserController::class, 'store']);
 $route->get("/users/edit/{id}", [UserController::class, 'edit']);
 $route->put("/users/update/{id}", [UserController::class, 'update']);
 
-// Login routes 
+// Login routes
 $route->get("/users/login", [UserController::class, 'login']);
+$route->post("/users/authenticate", [UserController::class, 'authenticate']);
+$route->get("/users/logout", [UserController::class, 'logout']);
 
 $route->route();

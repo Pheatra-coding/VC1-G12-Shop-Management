@@ -23,7 +23,7 @@ class UserModel {
                 [
                     ':name' => $name,
                     ':email' => $email,
-                    ':password' => password_hash($password, PASSWORD_DEFAULT), // Hash the password
+                    ':password' => $password,// Hash the password
                     ':role' => $role,
                     ':image' => $image
                 ]
@@ -56,5 +56,10 @@ class UserModel {
         } catch (PDOException $e) {
             echo "Error updating user: " . $e->getMessage();
         }
+    }
+
+    public function getUserByEmail($email) {
+        $result = $this->db->query("SELECT * FROM users WHERE email = :email", ['email' => $email]);
+        return $result->fetch(PDO::FETCH_ASSOC);
     }
 }

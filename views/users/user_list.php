@@ -1,3 +1,11 @@
+<?php 
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -147,3 +155,8 @@
 
 </body>
 </html>
+
+<?php else:
+    $this->redirect('/users/login');
+endif; 
+?>

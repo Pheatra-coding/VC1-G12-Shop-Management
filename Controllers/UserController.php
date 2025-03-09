@@ -10,19 +10,33 @@ class UserController extends BaseController {
     }
 
     public function index() {
+        session_start();
         $users = $this->users->getUsers(); // Fetch users from the database
         $this->view('users/user_list', ['users' => $users]); // Pass data to the view
     }
 
     public function create() {
+        session_start();
+        
+        if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
+            header("Location: /users"); 
+            exit();
+        }
         $this->view("users/create");
     }
 
     public function store() {
+        session_start();
+    
+        if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
+            header("Location: /users");
+            exit();
+        }
+
         $name = $_POST['name'];
         $email = $_POST['email'];
         $password = $_POST['password'];
-        $passwordEncrypt = password_hash($password, PASSWORD_BCRYPT);
+        $passwordEncrypt = password_hash($password, PASSWORD_DEFAULT);
         $role = $_POST['role'];
 
         // Handle Image Upload
@@ -49,6 +63,13 @@ class UserController extends BaseController {
     }
 
     public function edit($id) {
+        session_start();
+        
+        if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
+            header("Location: /users"); 
+            exit();
+        }
+
         $user = $this->users->getUserById($id);
         if ($user) {
             $this->view("users/edit", ['user' => $user]); // Pass the user data to the edit view
@@ -59,6 +80,14 @@ class UserController extends BaseController {
     }
 
     public function update($id) {
+        session_start();
+        
+        // Ensure user is an admin before allowing update
+        if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
+            header("Location: /users"); 
+            exit();
+        }
+
         $name = $_POST['name'];
         $email = $_POST['email'];
         $password = $_POST['password']; // Might be empty if not changing
@@ -93,6 +122,63 @@ class UserController extends BaseController {
 
     //show login
     public function login() {
+        session_start();
+        if (isset($_SESSION['user_role'])) {
+            $this->redirect('/');
+        }
         $this->view("users/login");
     }
+
+    public function authenticate() {
+        session_start();
+        
+        $email = htmlspecialchars($_POST['email']);
+        $password = htmlspecialchars($_POST['password']);
+        
+        // Store the entered email for user experience
+        $_SESSION['old_email'] = $email;
+    
+        // Initialize errors
+        $_SESSION['errors'] = [];
+        
+        // Check if the email exists
+        $user = $this->users->getUserByEmail($email);
+        
+        if (!$user) {
+            $_SESSION['errors']['email'] = "This email is not registered.";
+        } else {
+            // Debugging the password
+            var_dump($password); // The raw password entered by the user
+            var_dump($user['password']); // The hashed password from the database
+            var_dump(password_verify($password, $user['password'])); // Verify result (true/false)
+    
+            if (!password_verify($password, $user['password'])) {
+                $_SESSION['errors']['password'] = "Incorrect password.";
+            }
+        }
+    
+        // If there are errors, redirect to login page
+        if (!empty($_SESSION['errors'])) {
+            header("Location: /users/login");
+            exit();
+        }
+        
+        // Successful login
+        $_SESSION['user_name'] = $user['name'];
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['user_role'] = $user['role'];
+        $_SESSION['users'] = true;
+        
+        $this->redirect("/");
+    }
+    
+    
+
+    public function logout() {
+        session_start();
+        session_unset();
+        // Destroy the session
+        session_destroy();
+        header("Location: /");
+    } 
 }
