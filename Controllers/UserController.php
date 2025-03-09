@@ -90,6 +90,12 @@ class UserController extends BaseController {
         // Redirect to the users list page
         $this->redirect('/users');
     }
+    // delete users
+    public function delete($id) {
+        $this->users->deleteUser($id);
+        header("Location: /users");
+    }
+
 
     //show login
     public function login() {
