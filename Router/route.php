@@ -21,7 +21,11 @@ $route->delete("/products/delete/{id}", [ProductController::class, 'delete']);
 //users
 $route->get("/users", [UserController::class, 'index']);
 $route->get("/users/create", [UserController::class, 'create']);
-$route->get("/users/store", [UserController::class, 'store']);
+$route->post("/users/store", [UserController::class, 'store']);
+$route->get("/users/edit/{id}", [UserController::class, 'edit']);
+$route->put("/users/update/{id}", [UserController::class, 'update']);
 
+// Login routes 
+$route->get("/users/login", [UserController::class, 'login']);
 
 $route->route();
