@@ -23,7 +23,7 @@ class UserModel {
                 [
                     ':name' => $name,
                     ':email' => $email,
-                    ':password' => $password,// Hash the password
+                    ':password' =>$password,
                     ':role' => $role,
                     ':image' => $image
                 ]
@@ -58,15 +58,10 @@ class UserModel {
         }
     }
 
-    // get user's email
-    public function getUserByEmail($email) {
-        $result = $this->db->query("SELECT * FROM users WHERE email = :email", ['email' => $email]);
-        return $result->fetch(PDO::FETCH_ASSOC);
-    }
 
-    // delete user
     public function deleteUser($id) {
         $result = $this->db->query("DELETE FROM users WHERE id = :id", ['id' => $id]);
         return $result;
     }
+
 }
