@@ -23,7 +23,7 @@ $imageUrl = !empty($user['image']) ? htmlspecialchars($user['image']) : 'path/to
                 <label for="email" class="form-label">Email:</label>
                 <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
             </div>
-        
+
             <div class="mb-3 mt-3">
                 <label for="role" class="form-label">Role:</label>
                 <select name="role" id="role" class="form-control" required>
@@ -54,7 +54,7 @@ $imageUrl = !empty($user['image']) ? htmlspecialchars($user['image']) : 'path/to
     <script>
         function previewImage(event) {
             const reader = new FileReader();
-            reader.onload = function () {
+            reader.onload = function() {
                 const preview = document.getElementById('image_preview');
                 preview.src = reader.result;
             }

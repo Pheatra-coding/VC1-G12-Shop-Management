@@ -1,4 +1,4 @@
-<?php 
+<?php
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -7,6 +7,7 @@ $errors = $_SESSION['errors'] ?? [];
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,7 +33,7 @@ $errors = $_SESSION['errors'] ?? [];
         .container {
             display: flex;
             width: 100%;
-            height:66%;
+            height: 66%;
             max-width: 900px;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
@@ -96,8 +97,8 @@ $errors = $_SESSION['errors'] ?? [];
 
         /* Override browser autofill styles */
         input:-webkit-autofill,
-        input:-webkit-autofill:hover, 
-        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus,
         input:-webkit-autofill:active {
             -webkit-background-clip: text;
             -webkit-text-fill-color: #fff;
@@ -154,7 +155,8 @@ $errors = $_SESSION['errors'] ?? [];
                 width: 90%;
             }
 
-            .form-container, .image-container {
+            .form-container,
+            .image-container {
                 width: 100%;
             }
 
@@ -164,12 +166,13 @@ $errors = $_SESSION['errors'] ?? [];
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="image-container"></div>
         <div class="form-container">
             <h2>Login</h2>
-            
+
             <form action="/users/authenticate" method="post">
                 <div class="form-group">
                     <label for="email">Email</label>
@@ -196,9 +199,10 @@ $errors = $_SESSION['errors'] ?? [];
         </div>
     </div>
 </body>
+
 </html>
 
-<?php 
-unset($_SESSION['errors']); 
-unset($_SESSION['old_email']); 
+<?php
+unset($_SESSION['errors']);
+unset($_SESSION['old_email']);
 ?>

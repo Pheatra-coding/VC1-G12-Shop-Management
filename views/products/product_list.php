@@ -5,14 +5,13 @@
             <div class="d-flex justify-content-between mb-3">
                 <a href="/products/create" class="btn btn-primary">Add Product</a>
                 <div class="input-group w-50">
-                    <input 
-                        type="text" 
-                        id="searchInput" 
-                        class="form-control" 
-                        placeholder="Search product..." 
-                        onkeyup="searchTable()"
-                    >
-                    <button class="btn btn-outline-secondary">
+                    <input
+                        type="text"
+                        id="searchInput"
+                        class="form-control"
+                        placeholder="Search product..."
+                        onkeyup="searchTable()">
+                    <button class="btn btn-secondary">
                         <i class="fas fa-search"></i>
                     </button>
                 </div>
@@ -37,12 +36,11 @@
                                 <tr>
                                     <td>
                                         <?php if ($product['image']) : ?>
-                                            <img 
-                                                src="/uploads/<?php echo htmlspecialchars($product['image']); ?>" 
-                                                alt="Product Image" 
-                                                class="align-middle" 
-                                                style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;"
-                                            >
+                                            <img
+                                                src="/uploads/<?php echo htmlspecialchars($product['image']); ?>"
+                                                alt="Product Image"
+                                                class="align-middle"
+                                                style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;">
                                         <?php else : ?>
                                             No Image
                                         <?php endif; ?>
@@ -53,38 +51,32 @@
                                     <td>$<?php echo htmlspecialchars($product['price']); ?></td>
                                     <td><?php echo htmlspecialchars($product['quantity']); ?></td>
                                     <td>
-                                        <div class="dropdown">
-                                            <button 
-                                                class="btn btn-action dropdown-toggle" 
-                                                type="button" 
-                                                id="actionsDropdown-<?php echo $product['id']; ?>" 
-                                                data-bs-toggle="dropdown" 
-                                                aria-expanded="false"
-                                            >
-                                                <i class="bi bi-three-dots-vertical"></i>
-                                            </button>
-                                            <ul 
-                                                class="dropdown-menu dropdown-menu-action" 
-                                                aria-labelledby="actionsDropdown-<?php echo $product['id']; ?>"
-                                            >
-                                                <li>
-                                                    <a 
-                                                        class="dropdown-item action-item" 
-                                                        href="/products/edit/<?php echo $product['id']; ?>"
-                                                    >
-                                                        Edit
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a 
-                                                        class="dropdown-item action-item" 
-                                                        href="/products/delete/<?php echo $product['id']; ?>"
-                                                    >
-                                                        Delete
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
+                                        <button
+                                            class="btn btn-action dropdown-toggle"
+                                            type="button"
+                                            id="actionsDropdown-<?php echo $product['id']; ?>"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                            <i class="bi bi-three-dots-vertical"></i>
+                                        </button>
+                                        <ul
+                                            class="dropdown-menu dropdown-menu-action"
+                                            aria-labelledby="actionsDropdown-<?php echo $product['id']; ?>">
+                                            <li>
+                                                <a
+                                                    class="dropdown-item action-item text-warning"
+                                                    href="/products/edit/<?php echo $product['id']; ?>">
+                                                    Edit
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a
+                                                    class="dropdown-item action-item text-danger"
+                                                    href="/products/delete/<?php echo $product['id']; ?>">
+                                                    Delete
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
