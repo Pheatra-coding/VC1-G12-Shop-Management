@@ -13,12 +13,21 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shop Management</title>
       <!-- Bootstrap 5 CSS -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   
 </head>
 <style>
-        /* Ensure images are circular and fit well */
+         body {
+            background-color:#f6f9ff; /* Set background color */
+        }
+
+        .table {
+            background-color: white; /* Table background color */
+            overflow: hidden; /* Ensure corners are rounded */
+        }
+            /* Ensure images are circular and fit well */
         .user-img {
             width: 50px; /* Fixed width */
             height: 50px; /* Fixed height */
@@ -33,8 +42,15 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
         /* Make the Image column wider */
         th, td {
             vertical-align: middle; /* Ensure content is aligned properly */
+            
+        }
+        .table th {
+        font-size: 18px; /* Header text size */
+        font-weight: bold; /* Medium weight for header */
+        padding: 12px; /* Padding for header cells */
         }
 
+        
         .image-column {
             width: 80px; /* Increase the width of the Image column */
         }
@@ -43,7 +59,7 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
 <body>
 
     <main id="main" class="main">
-        <div class="">
+        <div class="container mt-4">
             <h1 class="mb-3" style="font-size:28px;">Employees Management</h1>
 
             <!-- Add Employee & Search Bar -->
