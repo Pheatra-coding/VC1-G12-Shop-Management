@@ -27,7 +27,15 @@ if ($isLoggedIn):
     <style>
       th {
         font-family: "Nunito", sans-serif;
+        font-size:18px;
+        height: 9vh;
       }
+
+      th,
+      td {
+          vertical-align: middle;
+          /* Ensure content is aligned properly */
+        }
 
       td {
         font-family: "Nunito", sans-serif;
@@ -213,7 +221,7 @@ if ($isLoggedIn):
         </span>
     </a><!-- End Profile Image Icon -->
 
-    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+    <ul class="dropdown-menu dropdown-menu-end  profile">
         <li class="dropdown-header">
             <h6><?php echo isset($_SESSION['user_name']) ? htmlspecialchars($_SESSION['user_name']) : 'Guest'; ?></h6>
             <span><?php echo isset($_SESSION['user_role']) ? htmlspecialchars($_SESSION['user_role']) : 'Visitor'; ?></span>
@@ -222,12 +230,6 @@ if ($isLoggedIn):
             <hr class="dropdown-divider">
         </li>
 
-        <li>
-            <a class="dropdown-item d-flex align-items-center" href="#">
-                <i class="bi bi-person"></i>
-                <span>My Profile</span>
-            </a>
-        </li>
         <li>
             <hr class="dropdown-divider">
         </li>

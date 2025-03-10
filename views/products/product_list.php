@@ -41,7 +41,7 @@
                                             <img 
                                                 src="/uploads/<?php echo htmlspecialchars($product['image']); ?>" 
                                                 alt="Product Image" 
-                                                style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover;"
+                                                style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;"
                                             >
                                         <?php else : ?>
                                             No Image

@@ -32,33 +32,16 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
         }
 
         /* Ensure images are circular and fit well */
-        .user-img {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 50%;
-        }
+       
 
         a {
             text-decoration: none;
         }
 
         /* Make the Image column wider */
-        th,
-        td {
-            vertical-align: middle;
-            /* Ensure content is aligned properly */
+        x
 
-        }
-
-        .table th {
-            font-size: 18px;
-            /* Header text size */
-            font-weight: bold;
-            /* Medium weight for header */
-            padding: 12px;
-            /* Padding for header cells */
-        }
+        
 
         .image-column {
             width: 80px;
@@ -106,7 +89,7 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
                                 <td>
                                     <img src="<?= !empty($user['image']) ? 'uploads/' . htmlspecialchars($user['image']) : 'https://pheaktra-student.site/assets/img/PF.jpg'; ?>"
                                         alt="User Image" class="img-fluid user-img"
-                                        style="width: 50px; height: 50px; border-radius: 50%;">
+                                        style="width: 40px; height: 40px; border-radius: 50%;">
                                 </td>
                                 <td><?= htmlspecialchars($user['name']) ?></td>
                                 <td><?= htmlspecialchars($user['email']) ?></td>
