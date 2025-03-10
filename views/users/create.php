@@ -3,48 +3,30 @@
     <!-- User Creation Form -->
     <form action="/users/store" method="post" enctype="multipart/form-data">
         <!-- CSRF Protection -->
-           <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+        <input type="hidden" name="csrf_token" value="">
 
         <div class="mb-3 mt-3">
             <label for="name" class="form-label">Name:</label>
-            <input type="text" class="form-control" id="name" placeholder="Enter name" name="name"   value="<?= $_SESSION['old_name'] ?? '' ?>" required>
+            <input type="text" class="form-control" id="name" placeholder="Enter name" name="name" required>
         </div>
 
         <div class="mb-3 mt-3">
             <label for="email" class="form-label">Email:</label>
-            <input type="email" class="form-control" id="email" placeholder="Enter email" name="email"  value="<?= $_SESSION['old_email'] ?? '' ?>"  required>
-            <?php if (isset($_SESSION['email_error'])): ?>
-                <div class="invalid-feedback">
-                    <?= $_SESSION['email_error']; ?>
-                </div>
-                <?php unset($_SESSION['email_error']); ?>
-            <?php endif; ?>
+            <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" required>
         </div>
     
         <div class="mb-3 mt-3">
             <label for="role" class="form-label">Role:</label>
             <select name="role" id="role" class="form-control" required>
                 <option value="" disabled selected>Select Role</option>
-                <option value="admin" <?= ($_SESSION['old_role'] ?? '') === 'admin' ? 'selected' : '' ?>>Admin</option>
-                <option value="user" <?= ($_SESSION['old_role'] ?? '') === 'user' ? 'selected' : '' ?>>User</option>
+                <option value="admin">Admin</option>
+                <option value="user">User</option>
             </select>
-            <?php if (isset($_SESSION['role_error'])): ?>
-                <div class="invalid-feedback d-block">
-                    <?= $_SESSION['role_error']; ?>
-                </div>
-                <?php unset($_SESSION['role_error']); ?>
-            <?php endif; ?>
         </div>
 
         <div class="mb-3">
-            <label for="password" class="form-label">Password:</label>
-            <input type="password" class="form-control" <?= isset($_SESSION['password_error']) ? 'is-invalid' : '' ?> id="pwd" placeholder="Enter password" name="password" required>
-            <?php if (isset($_SESSION['password_error'])): ?>
-                <div class="invalid-feedback">
-                    <?= $_SESSION['password_error']; ?>
-                </div>
-                <?php unset($_SESSION['password_error']); ?>
-            <?php endif; ?>
+            <label for="pwd" class="form-label">Password:</label>
+            <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="password" required>
         </div>
 
         <div class="mb-3">
