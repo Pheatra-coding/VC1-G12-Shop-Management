@@ -285,7 +285,7 @@ if ($isLoggedIn):
 
   <li class="nav-item">
     <a class="nav-link collapsed" href="/products">
-    <i class="bi bi-table"></i><span>Table Products</span></i>
+    <i class="bi bi-table"></i><span>Products Management</span></i>
     </a>
   </li><!-- End Icons Nav -->
 
