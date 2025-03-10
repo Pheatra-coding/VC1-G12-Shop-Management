@@ -1,12 +1,12 @@
 <style>
   /* Active link styling */
 .sidebar-nav .nav-link.active {
-  background-color: rgb(224, 235, 250) !important;  /* Lighter background color */
+  background-color:#f6f9ff !important;  /* Lighter background color */
+  color: #4154f1 !important;  /* Icon color adjusted to match text */
 }
 
-.sidebar-nav .nav-link.active i {
-  color: rgb(50, 50, 50) !important;  /* Icon color adjusted to match text */
-}
+
+
 
 
 </style>
