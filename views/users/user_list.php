@@ -72,7 +72,7 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
                                 <tr>
                                     <!-- Display User Image -->
                                     <td>
-                                        <img src="<?= !empty($user['image']) ? 'uploads/' . htmlspecialchars($user['image']) : 'https://pheaktra-student.site/assets/img/PF.jpg'; ?>" 
+                                        <img src="<?= !empty($user['image']) ? 'uploads/' . htmlspecialchars($user['image']) : 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'; ?>" 
                                         alt="User Image" class="img-fluid user-img" 
                                         style="width: 50px; height: 50px; border-radius: 50%;">
                                     </td>
