@@ -15,6 +15,8 @@ $route->get("/", [WelcomeController::class, 'welcome']);
 $route->get("/products", [ProductController::class, 'index']);
 $route->get("/products/create", [ProductController::class, 'create']);
 $route->post("/products/store", [ProductController::class, 'store']);
+$route->get("/products/edit/{id}", [ProductController::class, 'edit']);
+$route->put("/products/update/{id}", [ProductController::class, 'update']);
 $route->delete("/products/delete/{id}", [ProductController::class, 'delete']);
 
 
@@ -24,8 +26,9 @@ $route->get("/users/create", [UserController::class, 'create']);
 $route->post("/users/store", [UserController::class, 'store']);
 $route->get("/users/edit/{id}", [UserController::class, 'edit']);
 $route->put("/users/update/{id}", [UserController::class, 'update']);
+$route->delete("/users/delete/{id}", [UserController::class, 'delete']);
 
-// Login routes
+// Login routes 
 $route->get("/users/login", [UserController::class, 'login']);
 $route->post("/users/authenticate", [UserController::class, 'authenticate']);
 $route->get("/users/logout", [UserController::class, 'logout']);

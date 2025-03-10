@@ -25,6 +25,8 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
             object-fit: cover; /* Make sure the image is not stretched */
             border-radius: 50%; /* Make the image circular */
         }
+        
+
         a {
             text-decoration: none;
         }
