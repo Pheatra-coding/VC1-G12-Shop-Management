@@ -107,17 +107,30 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
                                 <td><?= htmlspecialchars($user['name']) ?></td>
                                 <td><?= htmlspecialchars($user['email']) ?></td>
                                 <td><?= htmlspecialchars($user['role']) ?></td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="btn btn-white btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="bi bi-three-dots-vertical"></i>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item text-warning" href="/users/edit/<?= $user['id'] ?>">Edit</a></li>
-                                            <li><a class="dropdown-item text-danger" href="/users/delete/<?= $user['id'] ?>">Delete</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
+                                <td class="text-center align-middle" style="width: 50px;">
+                                        <div class="dropdown">
+                                            <i class="bi bi-three-dots-vertical" 
+                                            data-bs-toggle="dropdown" 
+                                            aria-expanded="false" 
+                                            style="cursor: pointer; font-size: 1.3rem; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; transition: background 0.3s;"
+                                            onmouseover="this.style.background='#f1f1f1'" 
+                                            onmouseout="this.style.background='transparent'">
+                                            </i>
+                                            <ul class="dropdown-menu shadow-sm rounded-2 border-0 p-1">
+                                                <li>
+                                                    <a class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small" href="/users/edit/<?= $user['id'] ?>">
+                                                        <i class="bi bi-pencil-square text-primary" style="font-size: 0.9rem;"></i> Edit
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small text-danger" href="/users/delete/<?= $user['id'] ?>">
+                                                        <i class="bi bi-trash3" style="font-size: 0.9rem;"></i> Delete
+                                                    </a>
+                                                </li>
+                                            </ul>
+
+                                        </div>
+                                    </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else : ?>
