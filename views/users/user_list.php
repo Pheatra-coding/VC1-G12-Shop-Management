@@ -58,7 +58,6 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
 
     <main id="main" class="main">
         <div class="container mt-4">
-            <h1 class="mb-3" style="font-size:28px;">Employees Management</h1>
 
         <!-- header products -->
         <div class="pagetitle">
