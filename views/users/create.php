@@ -1,9 +1,8 @@
 <main id="main" class="main">
-    <div class="container">
-        <!-- User Creation Form -->
-        <form action="/users/store" method="post" enctype="multipart/form-data">
-            <!-- CSRF Protection -->
-            <input type="hidden" name="csrf_token" value="">
+    <!-- User Creation Form -->
+    <form action="/users/store" method="post" enctype="multipart/form-data">
+        <!-- CSRF Protection -->
+        <input type="hidden" name="csrf_token" value="">
 
             <div class="mb-3 mt-3">
                 <label for="name" class="form-label">Name:</label>
@@ -42,10 +41,9 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <a href="/users" class="btn btn-secondary">Cancel</a>
-        </form>
-    </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <a href="/users" class="btn btn-secondary">Cancel</a>
+    </form>
 
     <script>
         function previewImage(event) {
