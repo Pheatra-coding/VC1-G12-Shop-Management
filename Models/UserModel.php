@@ -16,6 +16,7 @@ class UserModel {
         return $result->fetch(PDO::FETCH_ASSOC);
     }
 
+    // Check if the email already exists
     public function emailExists($email) {
         $query = "SELECT COUNT(*) FROM users WHERE email = :email";
         $result = $this->db->query($query, ['email' => $email]);
@@ -41,6 +42,7 @@ class UserModel {
 
     public function updateUser($id, $name, $email, $password, $role, $image) {
         try {
+            // Prepare the SQL update statement
             $query = "UPDATE users SET name = :name, email = :email, role = :role, image = :image WHERE id = :id";
             $params = [
                 ':id' => $id,
@@ -50,11 +52,13 @@ class UserModel {
                 ':image' => $image
             ];
 
+            // Only update the password if provided
             if (!empty($password)) {
                 $query = "UPDATE users SET name = :name, email = :email, password = :password, role = :role, image = :image WHERE id = :id";
                 $params[':password'] = password_hash($password, PASSWORD_DEFAULT); // Hash the password
             }
 
+            // Execute the query
             $this->db->query($query, $params);
         } catch (PDOException $e) {
             echo "Error updating user: " . $e->getMessage();
