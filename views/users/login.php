@@ -174,16 +174,16 @@ $errors = $_SESSION['errors'] ?? [];
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" placeholder="Enter your email" value="<?= $_SESSION['old_email'] ?? '' ?>" required>
-                    <?php if (isset($errors['email'])): ?>
-                        <div class="error"><?= $errors['email'] ?></div>
+                    <?php if (isset($_SESSION['errors']['email'])): ?>
+                        <div class="error"><?= $_SESSION['errors']['email'] ?></div>
                     <?php endif; ?>
                 </div>
 
                 <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" placeholder="Enter your password" required>
-                    <?php if (isset($errors['password'])): ?>
-                        <div class="error"><?= $errors['password'] ?></div>
+                    <?php if (isset($_SESSION['errors']['password'])): ?>
+                        <div class="error"><?= $_SESSION['errors']['password'] ?></div>
                     <?php endif; ?>
                 </div>
 

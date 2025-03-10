@@ -80,15 +80,26 @@ class UserController extends BaseController {
         $password = htmlspecialchars($_POST['password']);
         $_SESSION['old_email'] = $email;
         $_SESSION['errors'] = [];
-
+    
         $user = $this->users->getUserByEmail($email);
-
-        if (!$user || !password_verify($password, $user['password'])) {
-            $_SESSION['errors']['login'] = "Invalid email or password.";
+    
+        // Check if the email is valid
+        if (!$user) {
+            $_SESSION['errors']['email'] = "Email not found.";
+        }
+    
+        // Check if the password is correct
+        if ($user && !password_verify($password, $user['password'])) {
+            $_SESSION['errors']['password'] = "Incorrect password.";
+        }
+    
+        // If either email or password is incorrect, redirect back to the login page
+        if (isset($_SESSION['errors']['email']) || isset($_SESSION['errors']['password'])) {
             header("Location: /users/login");
             exit();
         }
-        
+    
+        // If login is successful, set session variables
         $_SESSION['user_name'] = $user['name'];
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_role'] = $user['role'];
@@ -96,8 +107,8 @@ class UserController extends BaseController {
         $_SESSION['users'] = true;
         
         $this->redirect("/");
-    }
-
+    }    
+    
     // logout system 
     public function logout() {
         session_start();
