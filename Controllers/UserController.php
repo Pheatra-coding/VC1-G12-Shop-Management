@@ -8,7 +8,6 @@ class UserController extends BaseController {
     public function __construct() {
         $this->users = new UserModel();
     }
-    
     // show user list
     public function index() {
         session_start();
@@ -23,7 +22,7 @@ class UserController extends BaseController {
         $this->view("users/create");
     }
 
-    //store user 
+    // store user 
     public function store() {
         session_start();
         $this->checkAdmin();
@@ -34,6 +33,13 @@ class UserController extends BaseController {
         $role = $_POST['role'];
         $image = $this->handleImageUpload();
         
+        // Check if the email already exists
+        if ($this->users->emailExists($email)) {
+            $_SESSION['errors']['email'] = "The user already exists.";
+            $this->view("users/create", ['errors' => $_SESSION['errors']]);
+            return; // Stop further execution
+        }
+
         $this->users->addUser($name, $email, $password, $role, $image);
         $this->redirect('/users');
     }
@@ -47,7 +53,7 @@ class UserController extends BaseController {
         $user ? $this->view("users/edit", ['user' => $user]) : $this->redirect('/users');
     }
 
-    //update users
+    // update users
     public function update($id) {
         session_start();
         $this->checkAdmin();
@@ -80,15 +86,26 @@ class UserController extends BaseController {
         $password = htmlspecialchars($_POST['password']);
         $_SESSION['old_email'] = $email;
         $_SESSION['errors'] = [];
-
+    
         $user = $this->users->getUserByEmail($email);
-
-        if (!$user || !password_verify($password, $user['password'])) {
-            $_SESSION['errors']['login'] = "Invalid email or password.";
+    
+        // Check if the email is valid
+        if (!$user) {
+            $_SESSION['errors']['email'] = "Email not found.";
+        }
+    
+        // Check if the password is correct
+        if ($user && !password_verify($password, $user['password'])) {
+            $_SESSION['errors']['password'] = "Incorrect password.";
+        }
+    
+        // If either email or password is incorrect, redirect back to the login page
+        if (isset($_SESSION['errors']['email']) || isset($_SESSION['errors']['password'])) {
             header("Location: /users/login");
             exit();
         }
-        
+    
+        // If login is successful, set session variables
         $_SESSION['user_name'] = $user['name'];
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_role'] = $user['role'];
@@ -96,8 +113,8 @@ class UserController extends BaseController {
         $_SESSION['users'] = true;
         
         $this->redirect("/");
-    }
-
+    }    
+    
     // logout system 
     public function logout() {
         session_start();
@@ -123,7 +140,7 @@ class UserController extends BaseController {
         }
         return null;
     }
-
+    
     // delete users
     public function delete($id) {
         $this->users->deleteUser($id);
