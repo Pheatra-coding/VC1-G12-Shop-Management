@@ -57,12 +57,12 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
 <body>
 
     <main id="main" class="main">
-        <div class="container mt-4">
 
         <!-- header products -->
         <div class="pagetitle">
             <h1>Employees Management</h1>
         </div>
+
 
             <!-- Add Employee & Search Bar -->
             <div class="d-flex justify-content-between mb-3">
