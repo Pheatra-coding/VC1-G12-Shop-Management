@@ -8,22 +8,19 @@ class UserController extends BaseController {
     public function __construct() {
         $this->users = new UserModel();
     }
-    
-    // show user list
+
     public function index() {
         session_start();
         $users = $this->users->getUsers();
         $this->view('users/user_list', ['users' => $users]);
     }
 
-    // show create user form
     public function create() {
         session_start();
         $this->checkAdmin();
         $this->view("users/create");
     }
 
-    //store user 
     public function store() {
         session_start();
         $this->checkAdmin();
@@ -33,12 +30,18 @@ class UserController extends BaseController {
         $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
         $role = $_POST['role'];
         $image = $this->handleImageUpload();
-        
+
+        // Check if the email already exists
+        if ($this->users->emailExists($email)) {
+            $_SESSION['errors']['email'] = "The user already exists.";
+            $this->view("users/create", ['errors' => $_SESSION['errors']]);
+            return; // Stop further execution
+        }
+
         $this->users->addUser($name, $email, $password, $role, $image);
         $this->redirect('/users');
     }
 
-    // edit users
     public function edit($id) {
         session_start();
         $this->checkAdmin();
@@ -47,7 +50,6 @@ class UserController extends BaseController {
         $user ? $this->view("users/edit", ['user' => $user]) : $this->redirect('/users');
     }
 
-    //update users
     public function update($id) {
         session_start();
         $this->checkAdmin();
@@ -63,7 +65,6 @@ class UserController extends BaseController {
         $this->redirect('/users');
     }
 
-    // login system
     public function login() {
         session_start();
         if (isset($_SESSION['user_role'])) {
@@ -72,7 +73,6 @@ class UserController extends BaseController {
         $this->view("users/login");
     }
 
-    // after login show dashboard
     public function authenticate() {
         session_start();
         
@@ -98,7 +98,6 @@ class UserController extends BaseController {
         $this->redirect("/");
     }
 
-    // logout system 
     public function logout() {
         session_start();
         session_unset();
@@ -106,7 +105,6 @@ class UserController extends BaseController {
         header("Location: /");
     }
 
-    // check role 
     private function checkAdmin() {
         if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'Admin') {
             header("Location: /users");
@@ -114,7 +112,6 @@ class UserController extends BaseController {
         }
     }
 
-    // handle image upload
     private function handleImageUpload() {
         if (!empty($_FILES['image']['name'])) {
             $targetDir = "uploads/";
@@ -124,7 +121,6 @@ class UserController extends BaseController {
         return null;
     }
 
-    // delete users
     public function delete($id) {
         $this->users->deleteUser($id);
         header("Location: /users");

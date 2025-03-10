@@ -52,6 +52,10 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
         .image-column {
             width: 80px; 
         }
+        .invalid-feedback {
+            display: block; /* Show the feedback message */
+            color: #dc3545; /* Bootstrap's danger color */
+        }
     </style>
 </head>
 <body>
