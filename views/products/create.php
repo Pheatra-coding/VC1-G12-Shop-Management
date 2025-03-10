@@ -18,14 +18,15 @@
             <label for="barcode" class="form-label">Barcode</label>
             <input type="text" class="form-control" id="barcode" name="barcode" required>
         </div>
+        
         <div class="mb-3">
             <label for="price" class="form-label">Price</label>
-            <input type="number" step="0.01" class="form-control" id="price" name="price" required>
+            <input type="number" class="form-control" id="price" name="price" min="0.01" step="0.01" required>
         </div>
 
             <div class="mb-3">
                 <label for="quantity" class="form-label">quantity</label>
-                <input type="number" class="form-control" id="quantity" name="quantity" required>
+                <input type="number" class="form-control" id="quantity" name="quantity" min="1" step="1" required>
             </div>
 
             <div class="mb-3">

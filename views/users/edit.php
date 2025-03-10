@@ -41,22 +41,36 @@ $imageUrl = !empty($user['image']) ? htmlspecialchars($user['image']) : 'path/to
                 <label for="profile_image" class="form-label">Profile Image:</label>
                 <input type="file" class="form-control" id="profile_image" name="image" accept="image/*" onchange="previewImage(event)">
                 <div class="mt-3">
-                    <img id="image_preview" src="<?php echo $imageUrl; ?>" alt="Current Image" class="img-fluid" style="width: 160px; height: 160px; border-radius: 10px; display: block; margin-top: 10px;">
-                </div>
+                <img 
+                id="image_preview"
+                src="<?= $user['image'] ? '/uploads/' . htmlspecialchars($user['image']) : '#' ?>" 
+                alt="Product Image"
+                class="img-fluid"
+                style="
+                    width: 160px; 
+                    height: 160px; 
+                    border-radius: 10px; 
+                    display: <?= $user['image'] ? 'block' : 'none' ?>; 
+                    margin-top: 10px; 
+                    object-fit: cover;"
+            >
             </div>
 
-            <button type="submit" class="btn btn-primary">Update</button>
-            <a href="/users" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary mt-3">Update</button>
+            <a href="/users" class="btn btn-secondary mt-3">Cancel</a>
         </form>
 
     </main>
+
+    <!-- JavaScript for image preview -->
     <script>
-        function previewImage(event) {
-            const reader = new FileReader();
-            reader.onload = function() {
-                const preview = document.getElementById('image_preview');
-                preview.src = reader.result;
-            }
-            reader.readAsDataURL(event.target.files[0]);
+    function previewImage(event) {
+        const reader = new FileReader();
+        reader.onload = function() {
+            const preview = document.getElementById('image_preview');
+            preview.src = reader.result;
+            preview.style.display = 'block';
         }
-    </script>
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>

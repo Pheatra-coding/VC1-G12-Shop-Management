@@ -27,6 +27,8 @@ class ProductController extends BaseController {
         $barcode = htmlspecialchars($_POST['barcode']);
         $price = htmlspecialchars($_POST['price']);
         $quantity = htmlspecialchars($_POST['quantity']);
+
+    
     
         // Handle Image Upload
         $image = $_FILES['image']['name'] ?? null;
@@ -74,11 +76,12 @@ class ProductController extends BaseController {
         $barcode = htmlspecialchars($_POST['barcode']);
         $price = htmlspecialchars($_POST['price']);
         $quantity = htmlspecialchars($_POST['quantity']);
-        
+
+
         // Handle Image Upload
         $image = $_FILES['image']['name'] ?? null;
         $targetDir = "uploads/";
-    
+        
         if (!file_exists($targetDir)) {
             mkdir($targetDir, 0777, true);
         }
@@ -102,5 +105,6 @@ class ProductController extends BaseController {
         $this->products->updateProduct($id, $image, $name, $end_date, $barcode, $price, $quantity);
         header("Location: /products");
     }
-    
+
+
 }
