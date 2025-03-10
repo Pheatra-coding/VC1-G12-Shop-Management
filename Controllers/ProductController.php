@@ -74,7 +74,33 @@ class ProductController extends BaseController {
         $barcode = htmlspecialchars($_POST['barcode']);
         $price = htmlspecialchars($_POST['price']);
         $quantity = htmlspecialchars($_POST['quantity']);
-        $this->products->updateProduct($id, $name, $end_date, $barcode, $price, $quantity);
+        
+        // Handle Image Upload
+        $image = $_FILES['image']['name'] ?? null;
+        $targetDir = "uploads/";
+    
+        if (!file_exists($targetDir)) {
+            mkdir($targetDir, 0777, true);
+        }
+    
+        // Check if a new image is uploaded
+        if ($image) {
+            $targetFile = $targetDir . basename($_FILES["image"]["name"]);
+            if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
+                echo "The file has been uploaded.";
+            } else {
+                echo "Sorry, there was an error uploading your file.";
+                return;
+            }
+        } else {
+            // If no new image uploaded, retain the old one
+            $product = $this->products->getProductById($id);
+            $image = $product['image'];
+        }
+    
+        // Update product with image
+        $this->products->updateProduct($id, $image, $name, $end_date, $barcode, $price, $quantity);
         header("Location: /products");
     }
+    
 }
