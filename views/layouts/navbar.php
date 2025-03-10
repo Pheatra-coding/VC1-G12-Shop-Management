@@ -23,6 +23,21 @@ if ($isLoggedIn):
 
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top d-flex align-items-center">
+    <!-- style font-family and font-size -->
+    <style>
+      th {
+        font-family: "Nunito", sans-serif;
+      }
+
+      td {
+        font-family: "Nunito", sans-serif;
+        font-size: 15px;
+      }
+
+      .btn {
+        font-family: "Nunito", sans-serif;
+      }
+    </style>
 
     <div class="d-flex align-items-center justify-content-between">
       <a href="/" class="logo d-flex align-items-center">

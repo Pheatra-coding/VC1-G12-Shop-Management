@@ -2,7 +2,7 @@
     <main id="main" class="main">
         <!-- header products -->
         <div class="pagetitle">
-            <h1>Product Management</h1>
+            <h1>Products Management</h1>
         </div>
             <div class="d-flex justify-content-between mb-3">
                 <a href="/products/create" class="btn btn-primary">Add Product</a>
