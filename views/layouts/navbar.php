@@ -1,3 +1,15 @@
+<style>
+  /* Active link styling */
+.sidebar-nav .nav-link.active {
+  background-color:#f6f9ff !important;  /* Lighter background color */
+  color: #4154f1 !important;  /* Icon color adjusted to match text */
+}
+
+
+
+
+
+</style>
 <?php
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
@@ -225,7 +237,7 @@ if ($isLoggedIn):
 <ul class="sidebar-nav" id="sidebar-nav">
 
   <li class="nav-item">
-    <a class="nav-link " href="/">
+    <a class="nav-link collapsed"  href="/">
     <i class="bi bi-speedometer2"></i>
       <span>Dashboard</span>
     </a>
@@ -262,14 +274,14 @@ if ($isLoggedIn):
   </li><!-- End Tables Nav -->
 
   <li class="nav-item">
-    <a class="nav-link collapsed" href="">
+    <a class="nav-link collapsed" href="#">
     <i class="bi bi-grid"></i></i></i><span>Categories</span></i>
     </a>
   </li><!-- End Charts Nav -->
 
   <li class="nav-item">
     <a class="nav-link collapsed" href="/products">
-    <i class="bi bi-table"></i><span>Table Products</span></i>
+    <i class="bi bi-table"></i><span>Products Management</span></i>
     </a>
   </li><!-- End Icons Nav -->
 
@@ -280,7 +292,7 @@ if ($isLoggedIn):
   </li><!-- End Forms Nav -->
 
   <li class="nav-item">
-    <a class="nav-link collapsed" href="/users/login">
+    <a class="nav-link collapsed" href="#">
     <i class="bi bi-clock-history"></i>
       <span>Sell History</span>
     </a>
@@ -298,5 +310,13 @@ if ($isLoggedIn):
 </ul>
 
 </aside><!-- End Sidebar-->
+<script>
+  document.querySelectorAll('.sidebar-nav .nav-link').forEach(function(link) {
+  if (link.href === window.location.href) {
+    link.classList.add('active');
+  }
+});
+
+</script>
 
 <?php endif; ?>
