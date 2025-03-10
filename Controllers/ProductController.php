@@ -61,4 +61,46 @@ class ProductController extends BaseController {
         header("Location: /products");
     }
 
+    // view edit product form
+    public function edit($id) {
+        $product = $this->products->getProductById($id);
+        $this->view("products/edit", ['product' => $product]);
+    }
+    
+    // function to update a product
+    public function update($id) {
+        $name = htmlspecialchars($_POST['name']);
+        $end_date = htmlspecialchars($_POST['end_date']);
+        $barcode = htmlspecialchars($_POST['barcode']);
+        $price = htmlspecialchars($_POST['price']);
+        $quantity = htmlspecialchars($_POST['quantity']);
+        
+        // Handle Image Upload
+        $image = $_FILES['image']['name'] ?? null;
+        $targetDir = "uploads/";
+    
+        if (!file_exists($targetDir)) {
+            mkdir($targetDir, 0777, true);
+        }
+    
+        // Check if a new image is uploaded
+        if ($image) {
+            $targetFile = $targetDir . basename($_FILES["image"]["name"]);
+            if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
+                echo "The file has been uploaded.";
+            } else {
+                echo "Sorry, there was an error uploading your file.";
+                return;
+            }
+        } else {
+            // If no new image uploaded, retain the old one
+            $product = $this->products->getProductById($id);
+            $image = $product['image'];
+        }
+    
+        // Update product with image
+        $this->products->updateProduct($id, $image, $name, $end_date, $barcode, $price, $quantity);
+        header("Location: /products");
+    }
+    
 }

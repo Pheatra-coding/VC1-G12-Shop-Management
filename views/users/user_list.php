@@ -1,14 +1,23 @@
+<?php 
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'Admin'): ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shop Management</title>
-    <!-- Bootstrap 5 CSS -->
+      <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <style>
+  
+</head>
+<style>
         /* Ensure images are circular and fit well */
         .user-img {
             width: 50px; /* Fixed width */
@@ -16,6 +25,8 @@
             object-fit: cover; /* Make sure the image is not stretched */
             border-radius: 50%; /* Make the image circular */
         }
+        
+
         a {
             text-decoration: none;
         }
@@ -32,8 +43,8 @@
 <body>
 
     <main id="main" class="main">
-        <div class="container mt-4">
-            <h1 class="mb-3">Employees Management</h1>
+        <div class="">
+            <h1 class="mb-3" style="font-size:28px;">Employees Management</h1>
 
             <!-- Add Employee & Search Bar -->
             <div class="d-flex justify-content-between mb-3">
@@ -65,7 +76,6 @@
                                         alt="User Image" class="img-fluid user-img" 
                                         style="width: 50px; height: 50px; border-radius: 50%;">
                                     </td>
-
                                     <!-- Display Username -->
                                     <td><?= htmlspecialchars($user['name']) ?></td>
 
@@ -78,7 +88,7 @@
                                     <!-- Actions Column -->
                                     <td>
                                         <div class="dropdown">
-                                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <button class="btn btn-white btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="bi bi-three-dots-vertical"></i>
                                             </button>
                                             <ul class="dropdown-menu">
@@ -147,3 +157,8 @@
 
 </body>
 </html>
+
+<?php else:
+    $this->redirect('/users/login');
+endif; 
+?>

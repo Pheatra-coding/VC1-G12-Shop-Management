@@ -1,3 +1,14 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+$isLoggedIn = isset($_SESSION['user_id']); // Check if user is logged in
+
+// If user is logged in, show the full layout
+if ($isLoggedIn): 
+?>
+
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top d-flex align-items-center">
 
@@ -199,7 +210,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
+              <a class="dropdown-item d-flex align-items-center" href="/users/logout">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>
@@ -255,7 +266,7 @@
   </li><!-- End Tables Nav -->
 
   <li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
+    <a class="nav-link collapsed" href="">
     <i class="bi bi-grid"></i></i></i><span>Categories</span></i>
     </a>
   </li><!-- End Charts Nav -->
@@ -273,19 +284,23 @@
   </li><!-- End Forms Nav -->
 
   <li class="nav-item">
-    <a class="nav-link collapsed" href="#">
+    <a class="nav-link collapsed" href="/users/login">
     <i class="bi bi-clock-history"></i>
       <span>Sell History</span>
     </a>
   </li><!-- End Profile Page Nav -->
 
+  <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'Admin'): ?>
   <li class="nav-item">
     <a class="nav-link collapsed" href="/users">
     <i class="bi bi-people-fill"></i>
       <span>Employees Management</span>
     </a>
   </li><!-- End Profile Page Nav -->
-
+  <?php endif; ?>
+  
 </ul>
 
 </aside><!-- End Sidebar-->
+
+<?php endif; ?>
