@@ -52,37 +52,36 @@
                                     <td><?php echo htmlspecialchars($product['barcode']); ?></td>
                                     <td>$<?php echo htmlspecialchars($product['price']); ?></td>
                                     <td><?php echo htmlspecialchars($product['quantity']); ?></td>
-                                    <td>
-                                        <button
-                                            class="btn btn-action dropdown-toggle"
-                                            type="button"
-                                            id="actionsDropdown-<?php echo $product['id']; ?>"
-                                            data-bs-toggle="dropdown"
-                                            aria-expanded="false">
-                                            <i class="bi bi-three-dots-vertical"></i>
-                                        </button>
-                                        <ul
-                                            class="dropdown-menu dropdown-menu-action"
-                                            aria-labelledby="actionsDropdown-<?php echo $product['id']; ?>">
-                                            <li>
-                                                <a
-                                                    class="dropdown-item action-item text-warning"
-                                                    href="/products/edit/<?php echo $product['id']; ?>">
-                                                    Edit
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a
-                                                    class="dropdown-item action-item text-danger"
-                                                    href="/products/delete/<?php echo $product['id']; ?>">
-                                                    Delete
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php else : ?>
+                                    <td class="text-center align-middle" style="width: 50px;">
+                                        <div class="dropdown dropup">
+                                            <i class="bi bi-three-dots-vertical" 
+                                            data-bs-toggle="dropdown" 
+                                            aria-expanded="false" 
+                                            style="cursor: pointer; font-size: 1.2rem; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; transition: background 0.3s;"
+                                            onmouseover="this.style.background='#f1f1f1'" 
+                                            onmouseout="this.style.background='transparent'">
+                                            </i>
+                                            <ul class="dropdown-menu shadow-sm rounded-2 border-0 p-1" style="min-width: 100px;">
+                                                <li>
+                                                    <a class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small" 
+                                                    href="/products/edit/<?= $product['id'] ?>" style="font-size: 0.8rem;">
+                                                        <i class="bi bi-pencil-square text-primary" style="font-size: 0.8rem;"></i> 
+                                                        Edit
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small text-danger" 
+                                                    href="/products/delete/<?= $product['id'] ?>" style="font-size: 0.8rem;">
+                                                        <i class="bi bi-trash3" style="font-size: 0.8rem;"></i> 
+                                                        Delete
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                </td> 
+                             </tr>
+                           <?php endforeach; ?>
+                           <?php else : ?>
                             <tr>
                                 <td colspan="7">No products found.</td>
                             </tr>
