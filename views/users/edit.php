@@ -8,7 +8,6 @@ $imageUrl = !empty($user['image']) ? htmlspecialchars($user['image']) : 'path/to
 ?>
 
 <main id="main" class="main">
-    <div class="container">
         <!-- User Edit Form -->
         <form action="/users/update/<?php echo htmlspecialchars($user['id']); ?>" method="post" enctype="multipart/form-data">
             <!-- CSRF Protection -->
@@ -49,8 +48,8 @@ $imageUrl = !empty($user['image']) ? htmlspecialchars($user['image']) : 'path/to
             <button type="submit" class="btn btn-primary">Update</button>
             <a href="/users" class="btn btn-secondary">Cancel</a>
         </form>
-    </div>
 
+    </main>
     <script>
         function previewImage(event) {
             const reader = new FileReader();
@@ -61,4 +60,3 @@ $imageUrl = !empty($user['image']) ? htmlspecialchars($user['image']) : 'path/to
             reader.readAsDataURL(event.target.files[0]);
         }
     </script>
-</main>

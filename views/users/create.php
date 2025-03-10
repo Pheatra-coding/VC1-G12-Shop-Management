@@ -1,5 +1,4 @@
 <main id="main" class="main">
-<div class="container">
     <!-- User Creation Form -->
     <form action="/users/store" method="post" enctype="multipart/form-data">
         <!-- CSRF Protection -->
@@ -40,7 +39,6 @@
         <button type="submit" class="btn btn-primary">Submit</button>
         <a href="/users" class="btn btn-secondary">Cancel</a>
     </form>
-</div>
 
 <script>
     function previewImage(event) {

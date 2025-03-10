@@ -51,7 +51,7 @@
                                     <td><?php echo htmlspecialchars($product['name']); ?></td>
                                     <td><?php echo htmlspecialchars($product['end_date']); ?></td>
                                     <td><?php echo htmlspecialchars($product['barcode']); ?></td>
-                                    <td>$<?php echo htmlspecialchars($product['price']); ?></td>
+                                    <td>$<?php echo number_format((float)$product['price'], 2, '.', ''); ?></td>
                                     <td><?php echo htmlspecialchars($product['quantity']); ?></td>
                                     <td>
                                         <div class="dropdown">
@@ -107,33 +107,42 @@
     <!-- Function for search name products -->
     <script>
         function searchTable() {
-            let input = document.getElementById("searchInput").value.toLowerCase();
+            let input = document.getElementById("searchInput").value.toLowerCase().trim();
             let table = document.getElementById("productTable");
             let rows = table.getElementsByTagName("tr");
             let noResultsMessage = document.getElementById("noResultsMessage");
             let found = false;
 
-            noResultsMessage.style.display = "none";
+                noResultsMessage.style.display = "none";
 
-            for (let i = 1; i < rows.length; i++) {
-                let columns = rows[i].getElementsByTagName("td");
-                let match = false;
+                for (let i = 1; i < rows.length; i++) {
+                    let columns = rows[i].getElementsByTagName("td");
+                    let match = false;
 
-                for (let j = 1; j < columns.length - 1; j++) {
-                    if (columns[j].innerText.toLowerCase().includes(input)) {
-                        match = true;
-                        break;
+                    for (let j = 1; j < columns.length - 1; j++) {
+                        let cellText = columns[j].innerText.toLowerCase().trim();
+
+                        // Normalize price values (remove '$' and compare as number)
+                        if (columns[j].innerText.includes('$')) {
+                            cellText = parseFloat(columns[j].innerText.replace('$', '')).toFixed(2);
+                        }
+                        console.log("Searching for:", input, "in", cellText);
+
+                        if (cellText.includes(input)) {
+                            match = true;
+                            break;
+                        }
+                    }
+
+                    rows[i].style.display = match ? "" : "none";
+                    if (match) {
+                        found = true;
                     }
                 }
 
-                rows[i].style.display = match ? "" : "none";
-                if (match) {
-                    found = true;
+                if (!found) {
+                    noResultsMessage.style.display = "block";
                 }
             }
 
-            if (!found) {
-                noResultsMessage.style.display = "block";
-            }
-        }
     </script>

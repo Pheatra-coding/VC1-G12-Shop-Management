@@ -1,5 +1,4 @@
 <main id="main" class="main">
-<div class="container">
     <!-- User Creation Form -->
     <form action="/products/store" method="post" enctype="multipart/form-data">
         <!-- CSRF Protection -->
@@ -21,7 +20,7 @@
         </div>
         <div class="mb-3">
             <label for="price" class="form-label">Price</label>
-            <input type="number" step="0.00" class="form-control" id="price" name="price" required>
+            <input type="number" step="0.01" class="form-control" id="price" name="price" required>
         </div>
 
         <div class="mb-3">
@@ -40,9 +39,11 @@
         <button type="submit" class="btn btn-primary">Submit</button>
         <a href="/products" class="btn btn-secondary">Cancel</a>
     </form>
-</div>
+
+
 
 <script>
+
     function previewImage(event) {
         const reader = new FileReader();
         reader.onload = function () {
