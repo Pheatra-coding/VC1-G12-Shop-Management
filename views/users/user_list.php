@@ -50,7 +50,7 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
         padding: 12px; /* Padding for header cells */
         }
         .image-column {
-            width: 80px; /* Increase the width of the Image column */
+            width: 80px; 
         }
     </style>
 </head>
@@ -59,6 +59,11 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
     <main id="main" class="main">
         <div class="container mt-4">
             <h1 class="mb-3" style="font-size:28px;">Employees Management</h1>
+
+        <!-- header products -->
+        <div class="pagetitle">
+            <h1>Employees Management</h1>
+        </div>
 
             <!-- Add Employee & Search Bar -->
             <div class="d-flex justify-content-between mb-3">
@@ -86,9 +91,9 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
                                 <tr>
                                     <!-- Display User Image -->
                                     <td>
-                                        <img src="<?= !empty($user['image']) ? 'uploads/' . htmlspecialchars($user['image']) : 'https://pheaktra-student.site/assets/img/PF.jpg'; ?>" 
+                                        <img src="<?= !empty($user['image']) ? 'uploads/' . htmlspecialchars($user['image']) : 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'; ?>" 
                                         alt="User Image" class="img-fluid user-img" 
-                                        style="width: 50px; height: 50px; border-radius: 50%;">
+                                        style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover;">
                                     </td>
                                     <!-- Display Username -->
                                     <td><?= htmlspecialchars($user['name']) ?></td>
@@ -127,7 +132,6 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
                 </div>
 
             </div>
-        </div>
     </main>
 
     <!-- Bootstrap 5 JS Bundle -->

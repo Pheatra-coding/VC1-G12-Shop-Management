@@ -1,7 +1,9 @@
-    <main id="main" class="main">
-        <div class="container mt-4">
-            <h1 class="mb-3">Product Management</h1>
 
+    <main id="main" class="main">
+        <!-- header products -->
+        <div class="pagetitle">
+            <h1>Product Management</h1>
+        </div>
             <div class="d-flex justify-content-between mb-3">
                 <a href="/products/create" class="btn btn-primary">Add Product</a>
                 <div class="input-group w-50">
@@ -19,7 +21,7 @@
             </div>
 
             <div class="table-responsive">
-                <table id="productTable" class="table">
+                <table id="productTable" class="table" style="vertical-align: middle;">
                     <thead>
                         <tr>
                             <th>Image</th>
@@ -40,8 +42,7 @@
                                             <img 
                                                 src="/uploads/<?php echo htmlspecialchars($product['image']); ?>" 
                                                 alt="Product Image" 
-                                                class="align-middle" 
-                                                style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;"
+                                                style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover;"
                                             >
                                         <?php else : ?>
                                             No Image
@@ -100,7 +101,6 @@
                     <p>No results found.</p>
                 </div>
             </div>
-        </div>
     </main>
 
 

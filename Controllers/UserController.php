@@ -92,6 +92,7 @@ class UserController extends BaseController {
         $_SESSION['user_name'] = $user['name'];
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_role'] = $user['role'];
+        $_SESSION['user_image'] = $user['image'];
         $_SESSION['users'] = true;
         
         $this->redirect("/");
