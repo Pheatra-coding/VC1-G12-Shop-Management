@@ -1,7 +1,6 @@
 <main id="main" class="main">
-<div class="container">
     <!-- User Creation Form -->
-    <form action="/products/update/<?= $product['id'] ?>" method="post" enctype="multipart/form-data">
+<form action="/products/update/<?= $product['id'] ?>" method="post" enctype="multipart/form-data">
     <!-- CSRF Protection -->
     <input type="hidden" name="csrf_token" value="">
 
@@ -21,7 +20,7 @@
         </div>
         <div class="mb-3">
             <label for="price" class="form-label">Price</label>
-            <input type="number" step="0.00" class="form-control" id="price" name="price" value="<?= $product['price'] ?>" required>
+            <input type="number" step="0.01" class="form-control" id="price" name="price" value="<?= $product['price'] ?>" required>
         </div>
 
         <div class="mb-3">
@@ -39,7 +38,6 @@
     <button type="submit" class="btn btn-primary">Update</button>
     <a href="/products" class="btn btn-secondary">Cancel</a>
 </form>
-</div>
 
 <script>
     function previewImage(event) {

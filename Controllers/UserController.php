@@ -8,7 +8,6 @@ class UserController extends BaseController {
     public function __construct() {
         $this->users = new UserModel();
     }
-    
     // show user list
     public function index() {
         session_start();
@@ -23,7 +22,7 @@ class UserController extends BaseController {
         $this->view("users/create");
     }
 
-    //store user 
+    // store user 
     public function store() {
         session_start();
         $this->checkAdmin();
@@ -34,6 +33,13 @@ class UserController extends BaseController {
         $role = $_POST['role'];
         $image = $this->handleImageUpload();
         
+        // Check if the email already exists
+        if ($this->users->emailExists($email)) {
+            $_SESSION['errors']['email'] = "The user already exists.";
+            $this->view("users/create", ['errors' => $_SESSION['errors']]);
+            return; // Stop further execution
+        }
+
         $this->users->addUser($name, $email, $password, $role, $image);
         $this->redirect('/users');
     }
@@ -47,7 +53,7 @@ class UserController extends BaseController {
         $user ? $this->view("users/edit", ['user' => $user]) : $this->redirect('/users');
     }
 
-    //update users
+    // update users
     public function update($id) {
         session_start();
         $this->checkAdmin();
@@ -134,7 +140,7 @@ class UserController extends BaseController {
         }
         return null;
     }
-
+    
     // delete users
     public function delete($id) {
         $this->users->deleteUser($id);
