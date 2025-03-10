@@ -49,8 +49,6 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
         font-weight: bold; /* Medium weight for header */
         padding: 12px; /* Padding for header cells */
         }
-
-        
         .image-column {
             width: 80px; /* Increase the width of the Image column */
         }
