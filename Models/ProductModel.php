@@ -16,6 +16,16 @@ class ProductModel {
         $result = $this->db->query("SELECT * FROM products WHERE id = :id", ['id' => $id]);
         return $result->fetch(PDO::FETCH_ASSOC);
     }
+    
+
+    
+    // Check if the email already exists
+    public function barcodelExists($barcode) {
+        $query = "SELECT COUNT(*) FROM products WHERE barcode = :barcode";
+        $result = $this->db->query($query, ['barcode' => $barcode]);
+        return $result->fetchColumn() > 0; // Return true if count is greater than 0
+    }
+
     // Functions add a new product
     public function addProduct($image, $name, $end_date, $barcode, $price, $quantity) {
         try {
@@ -43,6 +53,7 @@ class ProductModel {
 
     // Function to update a product
     public function updateProduct($id, $image, $name, $end_date, $barcode, $price, $quantity){
+        
         $result = $this->db->query(
             "UPDATE products SET image = :image, name = :name, end_date = :end_date, barcode = :barcode, price = :price, quantity = :quantity WHERE id = :id",
             [
@@ -57,8 +68,15 @@ class ProductModel {
         );
         return $result;
     }
-    
 
+        // Function to check if a barcode already exists
+    public function getProductByBarcode($barcode, $currentProductId) {
+        $stmt = $this->db->query("SELECT * FROM products WHERE barcode = :barcode AND id != :id", [
+            ':barcode' => $barcode,
+            ':id' => $currentProductId
+        ]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 
 }
 
