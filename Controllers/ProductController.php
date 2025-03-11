@@ -27,7 +27,15 @@ class ProductController extends BaseController {
         $barcode = htmlspecialchars($_POST['barcode']);
         $price = htmlspecialchars($_POST['price']);
         $quantity = htmlspecialchars($_POST['quantity']);
-    
+
+
+         // Check if the barcode already exists
+         if ($this->products->barcodelExists($barcode)) {
+            $_SESSION['errors']['barcode'] = "The barcode already exists.";
+            $this->view("products/create", ['errors' => $_SESSION['errors']]);
+            return; // Stop further execution
+        }
+
         // Handle Image Upload
         $image = $_FILES['image']['name'] ?? null;
         $targetDir = "uploads/";
@@ -54,7 +62,6 @@ class ProductController extends BaseController {
         // Redirect to the products list page
         $this->redirect('/products');
     }
-    
     // function to delete a product 
     public function delete($id) {
         $this->products->deleteProduct($id);
@@ -74,7 +81,24 @@ class ProductController extends BaseController {
         $barcode = htmlspecialchars($_POST['barcode']);
         $price = htmlspecialchars($_POST['price']);
         $quantity = htmlspecialchars($_POST['quantity']);
-        
+    
+        // Check if the new barcode is already in use (excluding the current product)
+        $existingProduct = $this->products->getProductByBarcode($barcode, $id);
+    
+        if ($existingProduct) {
+            // If the barcode already exists, set an error message
+            $errors['barcode'] = "The barcode is already used by another product.";
+            $product = $this->products->getProductById($id); // Fetch the product again to re-render the form with the previous data
+            $this->view("products/edit", ['product' => $product, 'errors' => $errors]);
+            return;
+        }
+    
+        // Prevent negative numbers
+        if ($price < 0 || $quantity < 0) {
+            echo "Error: Price and Quantity must be positive numbers.";
+            return;
+        }
+    
         // Handle Image Upload
         $image = $_FILES['image']['name'] ?? null;
         $targetDir = "uploads/";
@@ -102,5 +126,6 @@ class ProductController extends BaseController {
         $this->products->updateProduct($id, $image, $name, $end_date, $barcode, $price, $quantity);
         header("Location: /products");
     }
+    
     
 }
