@@ -87,7 +87,7 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
                         <?php foreach ($users as $user) : ?>
                             <tr>
                                 <td>
-                                    <img src="<?= !empty($user['image']) ? 'uploads/' . htmlspecialchars($user['image']) : 'https://pheaktra-student.site/assets/img/PF.jpg'; ?>"
+                                    <img src="<?= !empty($user['image']) ? 'uploads/' . htmlspecialchars($user['image']) : 'https://cdn-icons-png.flaticon.com/512/8847/8847419.png'; ?>"
                                         alt="User Image" class="img-fluid user-img"
                                         style="width: 40px; height: 40px; border-radius: 50%;">
                                 </td>

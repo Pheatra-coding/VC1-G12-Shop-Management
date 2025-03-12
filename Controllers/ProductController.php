@@ -21,47 +21,55 @@ class ProductController extends BaseController {
     }
 
     public function store() {
-        // Sanitize inputs
-        $name = htmlspecialchars($_POST['name']);
-        $end_date = htmlspecialchars($_POST['end_date']);
-        $barcode = htmlspecialchars($_POST['barcode']);
-        $price = htmlspecialchars($_POST['price']);
-        $quantity = htmlspecialchars($_POST['quantity']);
+    // Sanitize inputs
+    $name = htmlspecialchars($_POST['name']);
+    $end_date = htmlspecialchars($_POST['end_date']);
+    $barcode = htmlspecialchars($_POST['barcode']);
+    $price = htmlspecialchars($_POST['price']);
+    $quantity = htmlspecialchars($_POST['quantity']);
 
-
-         // Check if the barcode already exists
-         if ($this->products->barcodelExists($barcode)) {
-            $_SESSION['errors']['barcode'] = "The barcode already exists.";
-            $this->view("products/create", ['errors' => $_SESSION['errors']]);
-            return; // Stop further execution
-        }
-
-        // Handle Image Upload
-        $image = $_FILES['image']['name'] ?? null;
-        $targetDir = "uploads/";
-    
-        // Create uploads directory if it doesn’t exist
-        if (!file_exists($targetDir)) {
-            mkdir($targetDir, 0777, true); // Create directory with full permissions
-        }
-    
-        // Check if an image was uploaded
-        if ($image) {
-            $targetFile = $targetDir . basename($_FILES["image"]["name"]);
-            if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
-                echo "The file has been uploaded.";
-            } else {
-                echo "Sorry, there was an error uploading your file.";
-                return; // Prevent proceeding if upload fails
-            }
-        }
-    
-        // Save the product data with image path
-        $this->products->addProduct($image, $name, $end_date, $barcode, $price, $quantity);
-    
-        // Redirect to the products list page
-        $this->redirect('/products');
+    // Ensure required fields are not empty
+    if (empty($name) || empty($end_date) || empty($barcode) || empty($price) || empty($quantity)) {
+        $_SESSION['errors']['general'] = "All fields are required.";
+        $this->view("products/create", ['errors' => $_SESSION['errors']]);
+        return;
     }
+
+    // Check if the barcode already exists
+    if ($this->products->barcodelExists($barcode)) {
+        $_SESSION['errors']['barcode'] = "The barcode already exists.";
+        $this->view("products/create", ['errors' => $_SESSION['errors']]);
+        return;
+    }
+
+    // Handle Image Upload
+    $image = "No Image"; // Default value if no image is uploaded
+    $targetDir = "uploads/";
+
+    if (!file_exists($targetDir)) {
+        mkdir($targetDir, 0777, true);
+    }
+
+    if (!empty($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        $image = basename($_FILES["image"]["name"]);
+        $targetFile = $targetDir . $image;
+        
+        if (!move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
+            $_SESSION['errors']['image'] = "Error uploading image.";
+            $this->view("products/create", ['errors' => $_SESSION['errors']]);
+            return;
+        }
+    }
+
+    // Insert product into database
+    $this->products->addProduct($image, $name, $end_date, $barcode, $price, $quantity);
+
+    // Redirect to prevent form resubmission
+    header("Location: /products");
+    exit();
+}
+
+    
     // function to delete a product 
     public function delete($id) {
         $this->products->deleteProduct($id);
