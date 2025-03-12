@@ -1,5 +1,7 @@
 <?php
-
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+require 'vendor/autoload.php'; // Ensure PHPMailer is included
 require_once 'Models/UserModel.php';
 
 class UserController extends BaseController {
@@ -129,4 +131,106 @@ class UserController extends BaseController {
         $this->users->deleteUser($id);
         header("Location: /users");
     }
+    
+
+    public function forgotPassword() {
+        session_start();
+        $this->view("users/forgotPassword", [
+            'success' => $_SESSION['success'] ?? null,
+            'error' => $_SESSION['error'] ?? null
+        ]);
+        unset($_SESSION['success'], $_SESSION['error']);
+    }
+     
+    public function resetPassword() {
+        session_start();
+        
+        if (!isset($_GET['token'])) {
+            $_SESSION['error'] = "Invalid or missing reset token.";
+            header("Location: /forgotPassword");
+            exit();
+        }
+    
+        // Check if the token exists in the database
+        $user = $this->users->getUserByToken($_GET['token']);
+        
+        if (!$user) {
+            $_SESSION['error'] = "Invalid reset token.";
+            header("Location: /forgotPassword");
+            exit();
+        }
+    
+        // Show reset password form
+        $this->view("users/resetPassword", ['token' => $_GET['token']]);
+    }
+    
+    public function sendResetLink() {
+        session_start();
+    
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+            $_SESSION['emailOne'] = $email;
+    
+            $userModel = new UserModel();
+    
+            // Check if user exists
+            if (!$userModel->getUserByEmail($email)) {
+                $_SESSION['error'] = "No user found with this email.";
+                header("Location: /forgotPassword");
+                exit();
+            }
+    
+            // Generate a unique reset token
+            $resetToken = bin2hex(random_bytes(50));
+    
+            // Save reset token to the database
+            $userModel->saveResetToken($email, $resetToken);
+    
+            // Create reset link
+            $resetLink = "http://yourdomain.com/resetPassword?token=" . $resetToken;
+    
+            // Send Email
+            $mail = new PHPMailer(true);
+            try {
+                // SMTP Settings
+                $mail->isSMTP();
+                $mail->Host       = 'smtp.gmail.com';
+                $mail->SMTPAuth   = true;
+                $mail->Username   = 'your_email@gmail.com'; // Use .env for security
+                $mail->Password   = 'your_app_password'; 
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+                $mail->Port       = 465;
+    
+                // Recipients
+                $mail->setFrom('your_email@gmail.com', 'POS SYSTEM');
+                $mail->addAddress($email, 'User');
+    
+                // Email Content
+                $mail->isHTML(true);
+                $mail->Subject = 'Password Reset Request';
+                $mail->Body    = "
+                    <h1>Hello,</h1>
+                    <p>Click the link below to reset your password:</p>
+                    <a href='$resetLink'>$resetLink</a>
+                    <p>If you did not request this, ignore this email.</p>
+                ";
+    
+                $mail->send();
+                $_SESSION['success'] = "Reset link sent to your email!";
+                header("Location: /forgotPassword");
+                exit();
+            } catch (Exception $e) {
+                $_SESSION['error'] = "Failed to send email. Error: {$mail->ErrorInfo}";
+                header("Location: /forgotPassword");
+                exit();
+            }
+        } else {
+            header("Location: /forgotPassword");
+            exit();
+        }
+    }
+    
+    
+
 }
+

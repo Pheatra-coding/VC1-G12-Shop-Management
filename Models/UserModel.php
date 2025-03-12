@@ -69,4 +69,9 @@ class UserModel {
         $result = $this->db->query("DELETE FROM users WHERE id = :id", ['id' => $id]);
         return $result;
     }
+
+    
+    
+      
+    
 }

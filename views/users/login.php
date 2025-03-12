@@ -190,8 +190,9 @@ $errors = $_SESSION['errors'] ?? [];
                 <button type="submit" class="btn">Login</button>
 
                 <div class="forgot-password">
-                    <a href="#">Forgot Password?</a>
+                    <a href="/users/forgotPassword">Forgot Password?</a>
                 </div>
+
             </form>
         </div>
     </div>
