@@ -111,6 +111,7 @@ class UserController extends BaseController {
         $_SESSION['user_role'] = $user['role'];
         $_SESSION['user_image'] = $user['image'];
         $_SESSION['users'] = true;
+        $_SESSION['logged_in_users'][$user['id']] = true;
         
         $this->redirect("/");
     }    
@@ -145,5 +146,11 @@ class UserController extends BaseController {
     public function delete($id) {
         $this->users->deleteUser($id);
         header("Location: /users");
+    }
+
+    public function deletedUsers() {
+        session_start();
+        $users = $this->users->getDeletedUsers();
+        $this->view('users/deleted_users', ['users' => $users]);
     }
 }
