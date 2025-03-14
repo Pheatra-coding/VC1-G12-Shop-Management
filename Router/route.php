@@ -6,6 +6,7 @@ require_once "Models/UserModel.php";
 require_once "Controllers/WelcomeController.php";
 require_once "Controllers/ProductController.php";
 require_once "Controllers/UserController.php";
+require_once "Controllers/InputProductController.php";
 
 
 $route = new Router();
@@ -32,5 +33,9 @@ $route->delete("/users/delete/{id}", [UserController::class, 'delete']);
 $route->get("/users/login", [UserController::class, 'login']);
 $route->post("/users/authenticate", [UserController::class, 'authenticate']);
 $route->get("/users/logout", [UserController::class, 'logout']);
+
+
+// sold products
+$route->get("/input_products", [InputProductController::class, 'index']);
 
 $route->route();
