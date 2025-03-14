@@ -262,7 +262,7 @@ if ($isLoggedIn):
 
   
   <li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+     <a class="nav-link collapsed" href="/input_products">
     <i class="bi bi-box-seam"></i><span>Input Products</span>
     </a>
   </li><!-- End Forms Nav -->
