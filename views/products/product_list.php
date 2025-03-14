@@ -37,14 +37,14 @@
                             <?php foreach ($data['products'] as $product) : ?>
                                 <tr>
                                     <td>
-                                        <?php if ($product['image']) : ?>
+                                         <?php if (!empty($product['image']) && $product['image'] !== "No Image") : ?>
                                             <img 
                                                 src="/uploads/<?php echo htmlspecialchars($product['image']); ?>" 
                                                 alt="Product Image" 
                                                 style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;"
                                             >
                                         <?php else : ?>
-                                            No Image
+                                            <p style="margin-bottom:-3px;">No Image</p>
                                         <?php endif; ?>
                                     </td>
                                     <td><?php echo htmlspecialchars($product['name']); ?></td>
