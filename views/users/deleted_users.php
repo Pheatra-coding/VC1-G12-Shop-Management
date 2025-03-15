@@ -1,7 +1,17 @@
 <?php if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'Admin'): ?>
+if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'Admin'):
+
+    // Pagination logic
+    $items_per_page = 8; // Number of items per page
+    $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Get current page from URL
+    $offset = ($current_page - 1) * $items_per_page; // Calculate offset
+    $total_users = count($users); // Total number of users
+    $total_pages = ceil($total_users / $items_per_page); // Total pages
+    $paginated_users = array_slice($users, $offset, $items_per_page); // Slice users for current page
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,6 +25,7 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
     <style>
         body {
             background-color: #f6f9ff;
+            overflow: hidden;
         }
 
         .table {
@@ -140,8 +151,8 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
                     </tr>
                 </thead>
                 <tbody id="tableBody">
-                    <?php if (!empty($users) && is_array($users)) : ?>
-                        <?php foreach ($users as $user) : ?>
+                    <?php if (!empty($paginated_users) && is_array($paginated_users)) : ?>
+                        <?php foreach ($paginated_users as $user) : ?>
                             <tr>
                                 <td><input type="checkbox" class="user-checkbox" value="<?= $user['id'] ?>"></td>
                                 <td><?= htmlspecialchars($user['name']) ?></td>
@@ -160,17 +171,18 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
                                         <ul class="dropdown-menu shadow-sm rounded-2 border-0 p-1">
                                             <li>
                                                 <a class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small"
-                                                   href="/users/restore/<?= $user['id'] ?>">
-                                                    <i class="bi bi-arrow-counterclockwise text-primary"></i>
-                                                    Restore
+                                                    href="/users/restore/<?= $user['id'] ?>">
+                                                        <i class="bi bi-arrow-counterclockwise text-primary"></i>
+                                                        Restore
                                                 </a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small text-danger"
-                                                   href="/users/permanently_delete/<?= $user['id'] ?>">
+                                            <a class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small text-danger"
+                                                href="/users/permanently_delete/<?= $user['id'] ?>">
                                                     <i class="bi bi-trash3"></i>
                                                     Delete Permanently
                                                 </a>
+
                                             </li>
                                         </ul>
                                     </div>
@@ -186,6 +198,33 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
             </table>
         </div>
 
+        <!-- Pagination Links -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <?php if ($current_page > 1) : ?>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=<?= $current_page - 1 ?>" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+
+                <?php for ($page = 1; $page <= $total_pages; $page++) : ?>
+                    <li class="page-item <?= $page == $current_page ? 'active' : '' ?>">
+                        <a class="page-link" href="?page=<?= $page ?>"><?= $page ?></a>
+                    </li>
+                <?php endfor; ?>
+
+                <?php if ($current_page < $total_pages) : ?>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=<?= $current_page + 1 ?>" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+            </ul>
+        </nav>
+
         <!-- No Results Message (Initially Hidden) -->
         <div id="noResultsMessage" style="display:none; text-align: center;">
             <p>No results found.</p>
@@ -197,7 +236,7 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
 
     <!-- JavaScript for Checkboxes and Bulk Actions -->
     <script>
-        // Toggle Select All Checkboxes
+               // Toggle Select All Checkboxes
         function toggleSelectAll(source) {
             const checkboxes = document.querySelectorAll('.user-checkbox');
             checkboxes.forEach(checkbox => {
