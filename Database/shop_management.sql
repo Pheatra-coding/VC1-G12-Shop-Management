@@ -243,6 +243,7 @@ CREATE TABLE `users` (
   `role` enum('Admin','User') NOT NULL DEFAULT 'User',
   `image` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
+  `status` ENUM('Active', 'Inactive') NOT NULL DEFAULT 'Inactive',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
