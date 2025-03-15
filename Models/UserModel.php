@@ -76,4 +76,32 @@ class UserModel {
         return $result->fetch(PDO::FETCH_ASSOC);
     }
     
+    public function setUserStatusActive($userId) {
+        try {
+            $query = "UPDATE users SET status = :status WHERE id = :id";
+            $params = [
+                ':status' => 'Active',
+                ':id' => $userId
+            ];
+            $this->db->query($query, $params);
+        } catch (PDOException $e) {
+            echo "Error updating status: " . $e->getMessage();
+        }
+    }
+
+
+    public function setUserStatusInactive($userId) {
+        try {
+            $query = "UPDATE users SET status = :status WHERE id = :id";
+            $params = [
+                ':status' => 'Inactive',
+                ':id' => $userId
+            ];
+            $this->db->query($query, $params);
+        } catch (PDOException $e) {
+            echo "Error updating status: " . $e->getMessage();
+        }
+    }
+    
+    
 }

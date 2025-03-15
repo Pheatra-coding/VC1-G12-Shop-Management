@@ -21,34 +21,59 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
     <style>
         body {
             background-color: #f6f9ff;
-            /* Set background color */
         }
 
         .table {
             background-color: white;
-            /* Table background color */
             overflow: hidden;
-            /* Ensure corners are rounded */
         }
-
-        /* Ensure images are circular and fit well */
-       
-
         a {
             text-decoration: none;
         }
 
-        /* Make the Image column wider */
-        x
-
-        
-
-        .image-column {
+        x .image-column {
             width: 80px;
         }
+
         .invalid-feedback {
-            display: block; /* Show the feedback message */
-            color: #dc3545; /* Bootstrap's danger color */
+            display: block;
+            color: rgb(246, 112, 125);
+        }
+
+        .status-active {
+            color: #027A48;
+            background-color: #ECFDF3;
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+        }
+
+        .status-inactive {
+            color: #F15046;
+            background-color: #FFF2EA;
+            padding: 5px 10px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+        }
+
+        .status-icon {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .status-active .status-icon {
+            background-color: #027A48;
+        }
+
+        .status-inactive .status-icon {
+            background-color: #F15046;
         }
     </style>
     </head>
@@ -79,6 +104,7 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
                         <th>Username</th>
                         <th>Email</th>
                         <th>Role</th>
+                        <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -94,33 +120,40 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
                                 <td><?= htmlspecialchars($user['name']) ?></td>
                                 <td><?= htmlspecialchars($user['email']) ?></td>
                                 <td><?= htmlspecialchars($user['role']) ?></td>
+                                <td>
+                                    <span class="<?= htmlspecialchars($user['status']) == 'Active' ? 'status-active' : 'status-inactive'; ?>">
+                                        <span class="status-icon"></span> <!-- Circle icon -->
+                                        <?= htmlspecialchars($user['status']) == 'Active' ? 'Active' : 'Inactive'; ?>
+                                    </span>
+                                </td>
                                 <td class="text-center align-middle" style="width: 50px;">
-    <div class="dropdown dropup">
-        <i class="bi bi-three-dots-vertical" 
-           data-bs-toggle="dropdown" 
-           aria-expanded="false" 
-           style="cursor: pointer; font-size: 1.2rem; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; transition: background 0.3s;"
-           onmouseover="this.style.background='#f1f1f1'" 
-           onmouseout="this.style.background='transparent'">
-        </i>
-        <ul class="dropdown-menu shadow-sm rounded-2 border-0 p-1" style="min-width: 100px;">
-            <li>
-                <a class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small" 
-                   href="/users/edit/<?= $user['id'] ?>" style="font-size: 0.8rem;">
-                    <i class="bi bi-pencil-square text-primary" style="font-size: 0.8rem;"></i> 
-                    Edit
-                </a>
-            </li>
-            <li>
-                <a class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small text-danger" 
-                   href="/users/delete/<?= $user['id'] ?>" style="font-size: 0.8rem;">
-                    <i class="bi bi-trash3" style="font-size: 0.8rem;"></i> 
-                    Delete
-                </a>
-            </li>
-        </ul>
-    </div>
-</td>                    </tr>
+                                    <div class="dropdown dropup">
+                                        <i class="bi bi-three-dots-vertical"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                            style="cursor: pointer; font-size: 1.2rem; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; transition: background 0.3s;"
+                                            onmouseover="this.style.background='#f1f1f1'"
+                                            onmouseout="this.style.background='transparent'">
+                                        </i>
+                                        <ul class="dropdown-menu shadow-sm rounded-2 border-0 p-1" style="min-width: 100px;">
+                                            <li>
+                                                <a class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small"
+                                                    href="/users/edit/<?= $user['id'] ?>" style="font-size: 0.8rem;">
+                                                    <i class="bi bi-pencil-square text-primary" style="font-size: 0.8rem;"></i>
+                                                    Edit
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small text-danger"
+                                                    href="/users/delete/<?= $user['id'] ?>" style="font-size: 0.8rem;">
+                                                    <i class="bi bi-trash3" style="font-size: 0.8rem;"></i>
+                                                    Delete
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
                         <?php endforeach; ?>
                     <?php else : ?>
                         <tr>
