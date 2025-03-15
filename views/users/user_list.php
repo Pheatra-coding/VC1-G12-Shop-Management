@@ -2,7 +2,15 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'Admin'): ?>
+if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'Admin'):
+    // Pagination logic
+    $items_per_page = 7; // Number of items per page
+    $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Get current page from URL
+    $offset = ($current_page - 1) * $items_per_page; // Calculate offset
+    $total_users = count($users); // Total number of users
+    $total_pages = ceil($total_users / $items_per_page); // Total pages
+    $paginated_users = array_slice($users, $offset, $items_per_page); // Slice users for current page
+?>
 
 
     <!DOCTYPE html>
@@ -21,12 +29,14 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
     <style>
         body {
             background-color: #f6f9ff;
+            overflow: hidden;
         }
 
         .table {
             background-color: white;
             overflow: hidden;
         }
+
         a {
             text-decoration: none;
         }
@@ -109,8 +119,8 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
                     </tr>
                 </thead>
                 <tbody id="tableBody">
-                    <?php if (!empty($users) && is_array($users)) : ?>
-                        <?php foreach ($users as $user) : ?>
+                    <?php if (!empty($paginated_users) && is_array($paginated_users)) : ?>
+                        <?php foreach ($paginated_users as $user) : ?>
                             <tr>
                                 <td>
                                     <img src="<?= !empty($user['image']) ? 'uploads/' . htmlspecialchars($user['image']) : 'https://cdn-icons-png.flaticon.com/512/8847/8847419.png'; ?>"
@@ -127,31 +137,29 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
                                     </span>
                                 </td>
                                 <td class="text-center align-middle" style="width: 50px;">
-                                    <div class="dropdown dropup">
-                                        <i class="bi bi-three-dots-vertical"
-                                            data-bs-toggle="dropdown"
-                                            aria-expanded="false"
-                                            style="cursor: pointer; font-size: 1.2rem; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; transition: background 0.3s;"
-                                            onmouseover="this.style.background='#f1f1f1'"
-                                            onmouseout="this.style.background='transparent'">
-                                        </i>
-                                        <ul class="dropdown-menu shadow-sm rounded-2 border-0 p-1" style="min-width: 100px;">
-                                            <li>
-                                                <a class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small"
-                                                    href="/users/edit/<?= $user['id'] ?>" style="font-size: 0.8rem;">
-                                                    <i class="bi bi-pencil-square text-primary" style="font-size: 0.8rem;"></i>
-                                                    Edit
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small text-danger"
-                                                    href="/users/delete/<?= $user['id'] ?>" style="font-size: 0.8rem;">
-                                                    <i class="bi bi-trash3" style="font-size: 0.8rem;"></i>
-                                                    Delete
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    <i class="bi bi-three-dots-vertical"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                        style="cursor: pointer; font-size: 1.2rem; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; transition: background 0.3s;"
+                                        onmouseover="this.style.background='#f1f1f1'"
+                                        onmouseout="this.style.background='transparent'">
+                                    </i>
+                                    <ul class="dropdown-menu shadow-sm rounded-2 border-0 p-1" style="min-width: 100px;">
+                                        <li>
+                                            <a class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small"
+                                                href="/users/edit/<?= $user['id'] ?>" style="font-size: 0.8rem;">
+                                                <i class="bi bi-pencil-square text-primary" style="font-size: 0.8rem;"></i>
+                                                Edit
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small text-danger"
+                                                href="/users/delete/<?= $user['id'] ?>" style="font-size: 0.8rem;">
+                                                <i class="bi bi-trash3" style="font-size: 0.8rem;"></i>
+                                                Delete
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -168,6 +176,33 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
                 <p>No results found.</p>
             </div>
             </div>
+            <!-- Pagination Links -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <?php if ($current_page > 1) : ?>
+                        <li class="page-item">
+                            <a class="page-link" href="?page=<?= $current_page - 1 ?>" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+
+                    <?php for ($page = 1; $page <= $total_pages; $page++) : ?>
+                        <li class="page-item <?= $page == $current_page ? 'active' : '' ?>">
+                            <a class="page-link" href="?page=<?= $page ?>"><?= $page ?></a>
+                        </li>
+                    <?php endfor; ?>
+
+                    <?php if ($current_page < $total_pages) : ?>
+                        <li class="page-item">
+                            <a class="page-link" href="?page=<?= $current_page + 1 ?>" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </nav>
+
         </main>
 
         <!-- Bootstrap 5 JS Bundle -->
