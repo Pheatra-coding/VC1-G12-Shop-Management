@@ -144,7 +144,7 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
                                         onmouseover="this.style.background='#f1f1f1'"
                                         onmouseout="this.style.background='transparent'">
                                     </i>
-                                    <ul class="dropdown-menu shadow-sm rounded-2 border-0 p-1" style="min-width: 100px;">
+                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm rounded-2 border-0 p-1" style="min-width: 100px;">
                                         <li>
                                             <a class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small"
                                                 href="/users/edit/<?= $user['id'] ?>" style="font-size: 0.8rem;">
