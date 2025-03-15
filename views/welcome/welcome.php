@@ -1,17 +1,5 @@
-<!-- <?php 
-// if (session_status() == PHP_SESSION_NONE) {
-//     session_start();
-// }
-// if (isset($_SESSION['user_id'])) :
- ?> -->
-
-
-
-<!-- <?php 
-// else: 
-//     $this->redirect("/users/login"); 
-// endif;   
-?> -->
+<?php session_start(); ?> 
+<?php if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
 
 <main id="main" class="main">
     <div class="pagetitle">
@@ -136,3 +124,6 @@
 </main><!-- End #main -->
 
 
+<?php else: ?>
+    <?php $this->redirect('/users/login'); ?>
+<?php endif; ?>

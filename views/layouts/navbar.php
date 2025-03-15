@@ -1,5 +1,51 @@
+<style>
+  /* Active link styling */
+.sidebar-nav .nav-link.active {
+  background-color:#f6f9ff !important;  /* Lighter background color */
+  color: #4154f1 !important;  /* Icon color adjusted to match text */
+}
+
+
+
+
+
+</style>
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+$isLoggedIn = isset($_SESSION['user_id']); // Check if user is logged in
+
+// If user is logged in, show the full layout
+if ($isLoggedIn): 
+?>
+
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top d-flex align-items-center">
+    <!-- style font-family and font-size -->
+    <style>
+      th {
+        font-family: "Nunito", sans-serif;
+        font-size:18px;
+        height: 9vh;
+      }
+
+      th,
+      td {
+          vertical-align: middle;
+          /* Ensure content is aligned properly */
+        }
+
+      td {
+        font-family: "Nunito", sans-serif;
+        font-size: 15px;
+      }
+
+      .btn {
+        font-family: "Nunito", sans-serif;
+      }
+    </style>
 
     <div class="d-flex align-items-center justify-content-between">
       <a href="/" class="logo d-flex align-items-center">
@@ -167,46 +213,36 @@
         </li><!-- End Messages Nav -->
 
         <li class="nav-item dropdown pe-3">
+    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+        <!-- Ensure the image is styled as a rounded circle -->
+        <img src="/uploads/<?php echo isset($_SESSION['user_image']) ? htmlspecialchars($_SESSION['user_image']) : 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'; ?>" alt="Profile" class="rounded-circle" style="width: 38px; height: 40px; object-fit: cover; border-radius: 50%;">
+        <span class="d-none d-md-block dropdown-toggle ps-2">
+            <?php echo isset($_SESSION['user_name']) ? htmlspecialchars($_SESSION['user_name']) : 'Guest'; ?>
+        </span>
+    </a><!-- End Profile Image Icon -->
 
-          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src="https://pheaktra-student.site/assets/img/PF.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">Pheaktra OEM</span>
-          </a><!-- End Profile Iamge Icon -->
+    <ul class="dropdown-menu dropdown-menu-end  profile">
+        <li class="dropdown-header">
+            <h6><?php echo isset($_SESSION['user_name']) ? htmlspecialchars($_SESSION['user_name']) : 'Guest'; ?></h6>
+            <span><?php echo isset($_SESSION['user_role']) ? htmlspecialchars($_SESSION['user_role']) : 'Visitor'; ?></span>
+        </li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
 
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-            <li class="dropdown-header">
-              <h6>Pheaktra OEM</h6>
-              <span>Web Developer</span>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
 
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
-                <i class="bi bi-person"></i>
-                <span>My Profile</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
+        <li>
+            <a class="dropdown-item d-flex align-items-center" href="/users/logout">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
-              </a>
-            </li>
+            </a>
+        </li>
+    </ul><!-- End Profile Dropdown Items -->
+</li><!-- End Profile Nav -->
 
-          </ul><!-- End Profile Dropdown Items -->
-        </li><!-- End Profile Nav -->
 
       </ul>
     </nav><!-- End Icons Navigation -->
@@ -218,7 +254,7 @@
 <ul class="sidebar-nav" id="sidebar-nav">
 
   <li class="nav-item">
-    <a class="nav-link " href="/">
+    <a class="nav-link collapsed"  href="/">
     <i class="bi bi-speedometer2"></i>
       <span>Dashboard</span>
     </a>
@@ -255,14 +291,14 @@
   </li><!-- End Tables Nav -->
 
   <li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
+    <a class="nav-link collapsed" href="#">
     <i class="bi bi-grid"></i></i></i><span>Categories</span></i>
     </a>
   </li><!-- End Charts Nav -->
 
   <li class="nav-item">
     <a class="nav-link collapsed" href="/products">
-    <i class="bi bi-table"></i><span>Table Products</span></i>
+    <i class="bi bi-table"></i><span>Products Management</span></i>
     </a>
   </li><!-- End Icons Nav -->
 
@@ -279,13 +315,25 @@
     </a>
   </li><!-- End Profile Page Nav -->
 
+  <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'Admin'): ?>
   <li class="nav-item">
     <a class="nav-link collapsed" href="/users">
     <i class="bi bi-people-fill"></i>
       <span>Employees Management</span>
     </a>
   </li><!-- End Profile Page Nav -->
-
+  <?php endif; ?>
+  
 </ul>
 
 </aside><!-- End Sidebar-->
+<script>
+  document.querySelectorAll('.sidebar-nav .nav-link').forEach(function(link) {
+  if (link.href === window.location.href) {
+    link.classList.add('active');
+  }
+});
+
+</script>
+
+<?php endif; ?>

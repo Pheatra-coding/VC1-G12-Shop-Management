@@ -1,149 +1,257 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop Management</title>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'Admin'):
+    // Pagination logic
+    $items_per_page = 7; // Number of items per page
+    $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Get current page from URL
+    $offset = ($current_page - 1) * $items_per_page; // Calculate offset
+    $total_users = count($users); // Total number of users
+    $total_pages = ceil($total_users / $items_per_page); // Total pages
+    $paginated_users = array_slice($users, $offset, $items_per_page); // Slice users for current page
+?>
 
+
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Shop Management</title>
+        <!-- Bootstrap 5 CSS -->
+        <link href="https://fonts.gstatic.com" rel="preconnect">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    </head>
     <style>
-        /* Ensure images are circular and fit well */
-        .user-img {
-            width: 50px; /* Fixed width */
-            height: 50px; /* Fixed height */
-            object-fit: cover; /* Make sure the image is not stretched */
-            border-radius: 50%; /* Make the image circular */
+        body {
+            background-color: #f6f9ff;
         }
+
+        .table {
+            background-color: white;
+            overflow: hidden;
+        }
+
         a {
             text-decoration: none;
         }
-        /* Make the Image column wider */
-        th, td {
-            vertical-align: middle; /* Ensure content is aligned properly */
+
+        x .image-column {
+            width: 80px;
         }
 
-        .image-column {
-            width: 80px; /* Increase the width of the Image column */
+        .invalid-feedback {
+            display: block;
+            color: rgb(246, 112, 125);
+        }
+
+        .status-active {
+            color: #027A48;
+            background-color: #ECFDF3;
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+        }
+
+        .status-inactive {
+            color: #F15046;
+            background-color: #FFF2EA;
+            padding: 5px 10px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+        }
+
+        .status-icon {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .status-active .status-icon {
+            background-color: #027A48;
+        }
+
+        .status-inactive .status-icon {
+            background-color: #F15046;
         }
     </style>
-</head>
-<body>
+    </head>
 
-    <main id="main" class="main">
-        <div class="container mt-4">
-            <h1 class="mb-3">Employees Management</h1>
+    <body>
+
+        <main id="main" class="main">
+
+            <!-- header products -->
+            <div class="pagetitle">
+                <h1>Employees Management</h1>
+            </div>
+
 
             <!-- Add Employee & Search Bar -->
             <div class="d-flex justify-content-between mb-3">
                 <a href="/users/create" class="btn btn-primary">Add Employee</a>
                 <div class="input-group w-50">
                     <input type="text" id="searchInput" class="form-control" placeholder="Search employee..." onkeyup="searchTable()">
-                    <button class="btn btn-outline-secondary"><i class="fas fa-search"></i></button>
+                    <button class="btn btn-secondary"><i class="fas fa-search"></i></button>
                 </div>
             </div>
 
-            <div class="table-responsive">
-                <table id="employeeTable" class="table">
-                    <thead>
-                        <tr>
-                            <th>Image</th>
-                            <th>Username</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody">
-                        <?php if (!empty($users) && is_array($users)) : ?>
-                            <?php foreach ($users as $user) : ?>
-                                <tr>
-                                    <!-- Display User Image -->
-                                    <td>
-                                        <img src="<?= !empty($user['image']) ? 'uploads/' . htmlspecialchars($user['image']) : 'https://pheaktra-student.site/assets/img/PF.jpg'; ?>" 
-                                        alt="User Image" class="img-fluid user-img" 
-                                        style="width: 50px; height: 50px; border-radius: 50%;">
-                                    </td>
-
-                                    <!-- Display Username -->
-                                    <td><?= htmlspecialchars($user['name']) ?></td>
-
-                                    <!-- Display Email -->
-                                    <td><?= htmlspecialchars($user['email']) ?></td>
-
-                                    <!-- Display Role -->
-                                    <td><?= htmlspecialchars($user['role']) ?></td>
-
-                                    <!-- Actions Column -->
-                                    <td>
-                                        <div class="dropdown">
-                                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="bi bi-three-dots-vertical"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="/users/edit/<?= $user['id'] ?>">Edit</a></li>
-                                                <li><a class="dropdown-item text-danger" href="/users/delete/<?= $user['id'] ?>">Delete</a></li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php else : ?>
+            <table id="employeeTable" class="table">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <?php if (!empty($paginated_users) && is_array($paginated_users)) : ?>
+                        <?php foreach ($paginated_users as $user) : ?>
                             <tr>
-                                <td colspan="5">No users found.</td>
+                                <td>
+                                    <img src="<?= !empty($user['image']) ? 'uploads/' . htmlspecialchars($user['image']) : 'https://cdn-icons-png.flaticon.com/512/8847/8847419.png'; ?>"
+                                        alt="User Image" class="img-fluid user-img"
+                                        style="width: 40px; height: 40px; border-radius: 50%;">
+                                </td>
+                                <td><?= htmlspecialchars($user['name']) ?></td>
+                                <td><?= htmlspecialchars($user['email']) ?></td>
+                                <td><?= htmlspecialchars($user['role']) ?></td>
+                                <td>
+                                    <span class="<?= htmlspecialchars($user['status']) == 'Active' ? 'status-active' : 'status-inactive'; ?>">
+                                        <span class="status-icon"></span> <!-- Circle icon -->
+                                        <?= htmlspecialchars($user['status']) == 'Active' ? 'Active' : 'Inactive'; ?>
+                                    </span>
+                                </td>
+                                <td class="text-center align-middle" style="width: 50px;">
+                                    <div class="dropdown">
+                                        <i class="bi bi-three-dots-vertical"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                            style="cursor: pointer; font-size: 1.2rem; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; transition: background 0.3s;"
+                                            onmouseover="this.style.background='#f1f1f1'"
+                                            onmouseout="this.style.background='transparent'">
+                                        </i>
+                                        <ul class="dropdown-menu dropdown-menu-end shadow-sm rounded-2 border-0 p-1" style="min-width: 100px; margin-right: 30px;">
+                                            <li>
+                                                <a class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small"
+                                                    href="/users/edit/<?= $user['id'] ?>" style="font-size: 0.8rem;">
+                                                    <i class="bi bi-pencil-square text-primary" style="font-size: 0.8rem;"></i>
+                                                    Edit
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small text-danger"
+                                                    href="/users/delete/<?= $user['id'] ?>" style="font-size: 0.8rem;">
+                                                    <i class="bi bi-trash3" style="font-size: 0.8rem;"></i>
+                                                    Delete
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
                             </tr>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
+                        <?php endforeach; ?>
+                    <?php else : ?>
+                        <tr>
+                            <td colspan="5">No users found.</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
 
-                <!-- No Results Message (Initially Hidden) -->
-                <div id="noResultsMessage" style="display:none; text-align: center;">
-                    <p>No results found.</p>
-                </div>
-
+            <!-- No Results Message (Initially Hidden) -->
+            <div id="noResultsMessage" style="display:none; text-align: center;">
+                <p>No results found.</p>
             </div>
-        </div>
-    </main>
+            </div>
+            <!-- Pagination Links -->
+            <?php if ($total_pages > 1) : ?>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <?php if ($current_page > 1) : ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<?= $current_page - 1 ?>" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
 
-    <!-- Bootstrap 5 JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+                        <?php for ($page = 1; $page <= $total_pages; $page++) : ?>
+                            <li class="page-item <?= $page == $current_page ? 'active' : '' ?>">
+                                <a class="page-link" href="?page=<?= $page ?>"><?= $page ?></a>
+                            </li>
+                        <?php endfor; ?>
 
-    <!-- JavaScript for Search Filter -->
-    <script>
-        function searchTable() {
-            let input = document.getElementById("searchInput").value.toLowerCase();
-            let table = document.getElementById("employeeTable");
-            let rows = table.getElementsByTagName("tr");
-            let noResultsMessage = document.getElementById("noResultsMessage");
-            let found = false;
+                        <?php if ($current_page < $total_pages) : ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<?= $current_page + 1 ?>" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                    </ul>
+                </nav>
+            <?php endif; ?>
 
-            // Hide the no results message initially
-            noResultsMessage.style.display = "none";
+        </main>
 
-            for (let i = 1; i < rows.length; i++) { 
-                let columns = rows[i].getElementsByTagName("td");
-                let match = false;
+        <!-- Bootstrap 5 JS Bundle -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-                for (let j = 1; j < columns.length - 1; j++) { 
-                    if (columns[j].innerText.toLowerCase().includes(input)) {
-                        match = true;
-                        break;
+        <!-- JavaScript for Search Filter -->
+        <script>
+            function searchTable() {
+                let input = document.getElementById("searchInput").value.toLowerCase();
+                let table = document.getElementById("employeeTable");
+                let rows = table.getElementsByTagName("tr");
+                let noResultsMessage = document.getElementById("noResultsMessage");
+                let found = false;
+
+                // Hide the no results message initially
+                noResultsMessage.style.display = "none";
+
+                for (let i = 1; i < rows.length; i++) {
+                    let columns = rows[i].getElementsByTagName("td");
+                    let match = false;
+
+                    for (let j = 1; j < columns.length - 1; j++) {
+                        if (columns[j].innerText.toLowerCase().includes(input)) {
+                            match = true;
+                            break;
+                        }
+                    }
+                    rows[i].style.display = match ? "" : "none";
+
+                    if (match) {
+                        found = true;
                     }
                 }
-                rows[i].style.display = match ? "" : "none";
 
-                if (match) {
-                    found = true;
+                // If no results match, show the "No results found" message
+                if (!found) {
+                    noResultsMessage.style.display = "block";
                 }
             }
+        </script>
 
-            // If no results match, show the "No results found" message
-            if (!found) {
-                noResultsMessage.style.display = "block";
-            }
-        }
-    </script>
+    </body>
 
-</body>
-</html>
+    </html>
+
+<?php else:
+    $this->redirect('/users/login');
+endif;
+?>
