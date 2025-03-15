@@ -81,7 +81,7 @@ class UserController extends BaseController {
     // after login show dashboard
     public function authenticate() {
         session_start();
-        
+    
         $email = htmlspecialchars($_POST['email']);
         $password = htmlspecialchars($_POST['password']);
         $_SESSION['old_email'] = $email;
@@ -111,17 +111,27 @@ class UserController extends BaseController {
         $_SESSION['user_role'] = $user['role'];
         $_SESSION['user_image'] = $user['image'];
         $_SESSION['users'] = true;
-        
+    
+        // Set user status to Active upon login
+        $this->users->setUserStatusActive($user['id']);
+    
         $this->redirect("/");
-    }    
+    }
+     
     
     // logout system 
     public function logout() {
         session_start();
+        $userId = $_SESSION['user_id']; // Get user ID from session
+        
+        // Set the user status to Inactive before logging out
+        $this->users->setUserStatusInactive($userId);
+        
         session_unset();
         session_destroy();
         header("Location: /");
     }
+    
 
     // check role 
     private function checkAdmin() {
