@@ -163,7 +163,7 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
                                     <span class="text-danger">Deleted</span>
                                 </td>
                                 <td class="text-center align-middle" style="width: 50px;">
-                                    <div class="dropdown dropup">
+                                    <div class="dropdown dropdown">
                                         <i class="bi bi-three-dots-vertical"
                                            data-bs-toggle="dropdown"
                                            aria-expanded="false">
