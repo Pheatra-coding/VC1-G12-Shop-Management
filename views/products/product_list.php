@@ -12,20 +12,7 @@
         <div class="pagetitle">
             <h1>Products Management</h1>
         </div>
-            <div class="d-flex justify-content-between mb-3">
-                <a href="/products/create" class="btn btn-primary">Add Product</a>
-                <div class="input-group w-50">
-                    <input
-                        type="text"
-                        id="searchInput"
-                        class="form-control"
-                        placeholder="Search product..."
-                        onkeyup="searchTable()">
-                    <button class="btn btn-secondary">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </div>
+    </div>
 
             <div class="table-responsive">
                 <table id="productTable" class="table" style="vertical-align: middle;">
@@ -107,54 +94,72 @@
                     </tbody>
                 </table>
 
-                <div id="noResultsMessage" style="display: none; text-align: center;">
-                    <p>No results found.</p>
-                </div>
-            </div>
-    </main>
+        <div id="noResultsMessage" style="display: none; text-align: center;">
+            <p>No results found.</p>
+        </div>
+    </div>
+    <!-- Pagination Links -->
+    <?php if ($total_pages > 1) : ?>
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <?php if ($current_page > 1) : ?>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=<?= $current_page - 1 ?>" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+
+                <?php for ($page = 1; $page <= $total_pages; $page++) : ?>
+                    <li class="page-item <?= $page == $current_page ? 'active' : '' ?>">
+                        <a class="page-link" href="?page=<?= $page ?>"><?= $page ?></a>
+                    </li>
+                <?php endfor; ?>
+
+                <?php if ($current_page < $total_pages) : ?>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=<?= $current_page + 1 ?>" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+            </ul>
+        </nav>
+    <?php endif; ?>
+</main>
 
 
-    <!-- Function for search name products -->
-    <script>
-        function searchTable() {
-            let input = document.getElementById("searchInput").value.toLowerCase().trim();
-            let table = document.getElementById("productTable");
-            let rows = table.getElementsByTagName("tr");
-            let noResultsMessage = document.getElementById("noResultsMessage");
-            let found = false;
+<!-- Function for search name products -->
+<script>
+    function searchTable() {
+        let input = document.getElementById("searchInput").value.toLowerCase().trim();
+        let table = document.getElementById("productTable");
+        let rows = table.getElementsByTagName("tr");
+        let noResultsMessage = document.getElementById("noResultsMessage");
+        let found = false;
 
-                noResultsMessage.style.display = "none";
+        noResultsMessage.style.display = "none";
 
-                for (let i = 1; i < rows.length; i++) {
-                    let columns = rows[i].getElementsByTagName("td");
-                    let match = false;
+        for (let i = 1; i < rows.length; i++) {
+            let columns = rows[i].getElementsByTagName("td");
+            let match = false;
 
-                    for (let j = 1; j < columns.length - 1; j++) {
-                        let cellText = columns[j].innerText.toLowerCase().trim();
+            for (let j = 1; j < columns.length - 1; j++) {
+                let cellText = columns[j].innerText.toLowerCase().trim();
 
-                        // Normalize price values (remove '$' and compare as number)
-                        if (columns[j].innerText.includes('$')) {
-                            cellText = parseFloat(columns[j].innerText.replace('$', '')).toFixed(2);
-                        }
-                        console.log("Searching for:", input, "in", cellText);
-
-                        if (cellText.includes(input)) {
-                            match = true;
-                            break;
-                        }
-                    }
-
-                    rows[i].style.display = match ? "" : "none";
-                    if (match) {
-                        found = true;
-                    }
+                // Normalize price values (remove '$' and compare as number)
+                if (columns[j].innerText.includes('$')) {
+                    cellText = parseFloat(columns[j].innerText.replace('$', '')).toFixed(2);
                 }
+                console.log("Searching for:", input, "in", cellText);
 
-                if (!found) {
-                    noResultsMessage.style.display = "block";
+                if (cellText.includes(input)) {
+                    match = true;
+                    break;
                 }
             }
-
+        }
+    }
             let sortDirection = {};
 
             function sortTable(columnIndex) {

@@ -52,7 +52,7 @@ $errors = $_SESSION['errors'] ?? [];
 
         .image-container {
             width: 50%;
-            background: url('https://img.freepik.com/free-psd/marketing-concept-with-device_23-2149835027.jpg?t=st=1740799634~exp=1740803234~hmac=63f9c69618d9dbffeffba1227e932decb43542c0c56650bd2c6edcae3e4dd879&w=1380') center/cover;
+            background: url('https://img.freepik.com/free-vector/banking-online-shop-isometric-composition_1284-25317.jpg?t=st=1742042597~exp=1742046197~hmac=99adc0ba9db00633f39220356d320dcce0f9e37ef256edc35ec9382b82ed1de6&w=900') center/cover;
             background-size: cover;
             background-position: center;
             padding: 0;
