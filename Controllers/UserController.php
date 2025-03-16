@@ -157,9 +157,32 @@ class UserController extends BaseController {
         header("Location: /users");
     }
 
-    public function deletedUsers() {
+    //                  deleted user            //
+
+    public function indexDeletedUsers() {
         session_start();
         $users = $this->users->getDeletedUsers();
         $this->view('users/deleted_users', ['users' => $users]);
     }
+
+    public function permanentlyDelete($id) {
+        $this->users->permanentlyDeleteUser($id);
+        $page = isset($_POST['page']) ? $_POST['page'] : 1;
+        $this->redirect("/users/deleted?page=$page");
+    }
+
+    public function deleteSelectedUsers() {
+        // Get the array of selected user IDs
+        if (isset($_POST['selected_ids'])) {
+            $selectedIds = $_POST['selected_ids'];
+
+            // Call the method in UserModel to delete selected users
+            $this->userModel->deleteSelectedUsers($selectedIds);
+
+            // Redirect or show a success message
+            header("Location: /users/deleted");
+        }
+    }
+    
+    
 }

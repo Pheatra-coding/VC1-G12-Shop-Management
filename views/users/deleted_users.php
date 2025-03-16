@@ -25,7 +25,6 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
     <style>
         body {
             background-color: #f6f9ff;
-            overflow: hidden;
         }
 
         .table {
@@ -176,13 +175,16 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
                                                         Restore
                                                 </a>
                                             </li>
-                                            <li>
-                                            <a class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small text-danger"
-                                                href="/users/permanently_delete/<?= $user['id'] ?>">
-                                                    <i class="bi bi-trash3"></i>
-                                                    Delete Permanently
-                                                </a>
 
+                                            <li>
+                                                <form action="/users/permanently_delete/<?= $user['id'] ?>" method="POST" style="display:inline;">
+                                                    <input type="hidden" name="_method" value="DELETE">
+                                                    <input type="hidden" name="page" value="<?= isset($_GET['page']) ? $_GET['page'] : 1 ?>"> <!-- Capture the current page -->
+                                                    <button type="submit" class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small text-danger" style="border: none; background: none; padding: 0;">
+                                                        <i class="bi bi-trash3"></i>
+                                                        Delete Permanently
+                                                    </button>
+                                                </form>
                                             </li>
                                         </ul>
                                     </div>
@@ -199,31 +201,33 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
         </div>
 
         <!-- Pagination Links -->
-        <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center">
-                <?php if ($current_page > 1) : ?>
-                    <li class="page-item">
-                        <a class="page-link" href="?page=<?= $current_page - 1 ?>" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                <?php endif; ?>
+        <?php if ($total_pages > 1) : ?>
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <?php if ($current_page > 1) : ?>
+                        <li class="page-item">
+                            <a class="page-link" href="?page=<?= $current_page - 1 ?>" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
 
-                <?php for ($page = 1; $page <= $total_pages; $page++) : ?>
-                    <li class="page-item <?= $page == $current_page ? 'active' : '' ?>">
-                        <a class="page-link" href="?page=<?= $page ?>"><?= $page ?></a>
-                    </li>
-                <?php endfor; ?>
+                    <?php for ($page = 1; $page <= $total_pages; $page++) : ?>
+                        <li class="page-item <?= $page == $current_page ? 'active' : '' ?>">
+                            <a class="page-link" href="?page=<?= $page ?>"><?= $page ?></a>
+                        </li>
+                    <?php endfor; ?>
 
-                <?php if ($current_page < $total_pages) : ?>
-                    <li class="page-item">
-                        <a class="page-link" href="?page=<?= $current_page + 1 ?>" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                <?php endif; ?>
-            </ul>
-        </nav>
+                    <?php if ($current_page < $total_pages) : ?>
+                        <li class="page-item">
+                            <a class="page-link" href="?page=<?= $current_page + 1 ?>" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </nav>
+        <?php endif; ?>
 
         <!-- No Results Message (Initially Hidden) -->
         <div id="noResultsMessage" style="display:none; text-align: center;">
