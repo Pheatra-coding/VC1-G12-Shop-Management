@@ -103,7 +103,7 @@
     <!-- Pagination Links -->
     <?php if ($total_pages > 1) : ?>
         <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-end">
+            <ul class="pagination justify-content-center">
                 <?php if ($current_page > 1) : ?>
                     <li class="page-item">
                         <a class="page-link" href="?page=<?= $current_page - 1 ?>" aria-label="Previous">
