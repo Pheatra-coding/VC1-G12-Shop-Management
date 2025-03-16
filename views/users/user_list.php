@@ -190,7 +190,7 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
             </div>
             </div>
             <!-- Pagination Links -->
-            <?php if ($total_pages > 1) : ?>
+            <?php if (!empty($paginated_users) && $total_pages > 1) : ?>
                 <nav aria-label="Page navigation">
                     <ul class="pagination justify-content-center">
                         <?php if ($current_page > 1) : ?>

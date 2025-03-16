@@ -122,7 +122,7 @@
         </div>
     </div>
     <!-- Pagination Links -->
-    <?php if ($total_pages > 1) : ?>
+    <?php if (!empty($products) && $total_pages > 1) : ?>
         <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">
                 <?php if ($current_page > 1) : ?>
