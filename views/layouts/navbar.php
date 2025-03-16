@@ -322,6 +322,13 @@ if ($isLoggedIn):
       <span>Employees Management</span>
     </a>
   </li><!-- End Profile Page Nav -->
+
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="/users/deleted">
+    <i class="bi bi-person-x"></i>
+      <span>Deleted Employees</span>
+    </a>
+  </li><!-- End Profile Page Nav -->
   <?php endif; ?>
   
 </ul>

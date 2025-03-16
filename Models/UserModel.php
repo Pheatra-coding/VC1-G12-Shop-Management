@@ -75,6 +75,13 @@ class UserModel {
         $result = $this->db->query("SELECT * FROM users WHERE email = :email", ['email' => $email]);
         return $result->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function getDeletedUsers() {
+        $query = "SELECT id, name, email, role, deleted_by, deleted_at FROM deleted_users ORDER BY deleted_at ASC";
+        $result = $this->db->query($query);
+        return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     
     public function setUserStatusActive($userId) {
         try {
@@ -102,6 +109,31 @@ class UserModel {
             echo "Error updating status: " . $e->getMessage();
         }
     }
+
+    public function deletedUser($id) {
+        $result = $this->db->query("DELETE FROM deleted_users WHERE id = :id", ['id' => $id]);
+        return $result;
+    }
     
+    public function permanentlyDeleteUser($id) {
+        try {
+            // Delete the user from the deleted_users table
+            $query = "DELETE FROM deleted_users WHERE id = :id";
+            $params = [':id' => $id];
+            $this->db->query($query, $params);
+        } catch (PDOException $e) {
+            echo "Error deleting user permanently: " . $e->getMessage();
+        }
+    }
+
+    public function deleteSelectedUsers($ids) {
+        try {
+            // Prepare the SQL query for deleting multiple users
+            $query = "DELETE FROM deleted_users WHERE id IN (" . implode(",", array_map('intval', $ids)) . ")";
+            $this->db->query($query);
+        } catch (PDOException $e) {
+            echo "Error deleting users: " . $e->getMessage();
+        }
+    }
     
 }

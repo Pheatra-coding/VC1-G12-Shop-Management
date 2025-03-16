@@ -33,4 +33,8 @@ $route->get("/users/login", [UserController::class, 'login']);
 $route->post("/users/authenticate", [UserController::class, 'authenticate']);
 $route->get("/users/logout", [UserController::class, 'logout']);
 
+//display deleted users
+$route->get("/users/deleted", [UserController::class, 'indexDeletedUsers']);
+$route->delete("/users/permanently_delete/{id}", [UserController::class, 'permanentlyDelete']);
+
 $route->route();
