@@ -75,6 +75,13 @@ class UserModel {
         $result = $this->db->query("SELECT * FROM users WHERE email = :email", ['email' => $email]);
         return $result->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function getDeletedUsers() {
+        $query = "SELECT id, name, email, role, deleted_by, deleted_at FROM deleted_users ORDER BY deleted_at ASC";
+        $result = $this->db->query($query);
+        return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     
     public function setUserStatusActive($userId) {
         try {

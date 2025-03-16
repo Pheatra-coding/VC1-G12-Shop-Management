@@ -156,4 +156,10 @@ class UserController extends BaseController {
         $this->users->deleteUser($id);
         header("Location: /users");
     }
+
+    public function deletedUsers() {
+        session_start();
+        $users = $this->users->getDeletedUsers();
+        $this->view('users/deleted_users', ['users' => $users]);
+    }
 }
