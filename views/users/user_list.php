@@ -29,7 +29,6 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
     <style>
         body {
             background-color: #f6f9ff;
-            overflow: hidden;
         }
 
         .table {
@@ -85,19 +84,22 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
         .status-inactive .status-icon {
             background-color: #F15046;
         }
+
+        .small-icon {
+            font-size: 14px;
+            color: #aaa;
+            transition: color 0.2s ease;
+        }
     </style>
+
     </head>
 
     <body>
 
         <main id="main" class="main">
-
-            <!-- header products -->
             <div class="pagetitle">
                 <h1>Employees Management</h1>
             </div>
-
-
             <!-- Add Employee & Search Bar -->
             <div class="d-flex justify-content-between mb-3">
                 <a href="/users/create" class="btn btn-primary">Add Employee</a>
@@ -111,10 +113,18 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
                 <thead>
                     <tr>
                         <th>Image</th>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Status</th>
+                        <th onclick="sortTable(2)">
+                            <div class="header-content">Username <i id="sortIconUsername" class="fas fa-arrow-up small-icon"></i></div>
+                        </th>
+                        <th onclick="sortTable(3)">
+                            <div class="header-content">Email <i id="sortIconEmail" class="fas fa-arrow-up small-icon"></i></div>
+                        </th>
+                        <th onclick="sortTable(4)">
+                            <div class="header-content">Role <i id="sortIconRole" class="fas fa-arrow-up small-icon"></i></div>
+                        </th>
+                        <th onclick="sortTable(5)">
+                            <div class="header-content">Status <i id="sortIconStatus" class="fas fa-arrow-up small-icon"></i></div>
+                        </th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -137,29 +147,31 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
                                     </span>
                                 </td>
                                 <td class="text-center align-middle" style="width: 50px;">
-                                    <i class="bi bi-three-dots-vertical"
-                                        data-bs-toggle="dropdown"
-                                        aria-expanded="false"
-                                        style="cursor: pointer; font-size: 1.2rem; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; transition: background 0.3s;"
-                                        onmouseover="this.style.background='#f1f1f1'"
-                                        onmouseout="this.style.background='transparent'">
-                                    </i>
-                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm rounded-2 border-0 p-1" style="min-width: 100px;">
-                                        <li>
-                                            <a class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small"
-                                                href="/users/edit/<?= $user['id'] ?>" style="font-size: 0.8rem;">
-                                                <i class="bi bi-pencil-square text-primary" style="font-size: 0.8rem;"></i>
-                                                Edit
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small text-danger"
-                                                href="/users/delete/<?= $user['id'] ?>" style="font-size: 0.8rem;">
-                                                <i class="bi bi-trash3" style="font-size: 0.8rem;"></i>
-                                                Delete
-                                            </a>
-                                        </li>
-                                    </ul>
+                                    <div class="dropdown">
+                                        <i class="bi bi-three-dots-vertical"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                            style="cursor: pointer; font-size: 1.2rem; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; transition: background 0.3s;"
+                                            onmouseover="this.style.background='#f1f1f1'"
+                                            onmouseout="this.style.background='transparent'">
+                                        </i>
+                                        <ul class="dropdown-menu dropdown-menu-end shadow-sm rounded-2 border-0 p-1" style="min-width: 100px; margin-right: 30px;">
+                                            <li>
+                                                <a class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small"
+                                                    href="/users/edit/<?= $user['id'] ?>" style="font-size: 0.8rem;">
+                                                    <i class="bi bi-pencil-square text-primary" style="font-size: 0.8rem;"></i>
+                                                    Edit
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small text-danger"
+                                                    href="/users/delete/<?= $user['id'] ?>" style="font-size: 0.8rem;">
+                                                    <i class="bi bi-trash3" style="font-size: 0.8rem;"></i>
+                                                    Delete
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -177,31 +189,33 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
             </div>
             </div>
             <!-- Pagination Links -->
-            <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center">
-                    <?php if ($current_page > 1) : ?>
-                        <li class="page-item">
-                            <a class="page-link" href="?page=<?= $current_page - 1 ?>" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                    <?php endif; ?>
+            <?php if ($total_pages > 1) : ?>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <?php if ($current_page > 1) : ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<?= $current_page - 1 ?>" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
 
-                    <?php for ($page = 1; $page <= $total_pages; $page++) : ?>
-                        <li class="page-item <?= $page == $current_page ? 'active' : '' ?>">
-                            <a class="page-link" href="?page=<?= $page ?>"><?= $page ?></a>
-                        </li>
-                    <?php endfor; ?>
+                        <?php for ($page = 1; $page <= $total_pages; $page++) : ?>
+                            <li class="page-item <?= $page == $current_page ? 'active' : '' ?>">
+                                <a class="page-link" href="?page=<?= $page ?>"><?= $page ?></a>
+                            </li>
+                        <?php endfor; ?>
 
-                    <?php if ($current_page < $total_pages) : ?>
-                        <li class="page-item">
-                            <a class="page-link" href="?page=<?= $current_page + 1 ?>" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    <?php endif; ?>
-                </ul>
-            </nav>
+                        <?php if ($current_page < $total_pages) : ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<?= $current_page + 1 ?>" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                    </ul>
+                </nav>
+            <?php endif; ?>
 
         </main>
 
@@ -241,6 +255,50 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
                 if (!found) {
                     noResultsMessage.style.display = "block";
                 }
+            }
+
+            let sortDirection = {};
+
+            function sortTable(columnIndex) {
+                const table = document.getElementById("employeeTable");
+                const tbody = table.querySelector("tbody");
+                const rows = Array.from(tbody.querySelectorAll("tr"));
+                const columnName = getColumnName(columnIndex);
+                const sortIcon = document.getElementById(`sortIcon${columnName}`);
+
+                // Toggle sorting direction
+                sortDirection[columnIndex] = sortDirection[columnIndex] === 'asc' ? 'desc' : 'asc';
+                sortIcon.className = `fas fa-arrow-${sortDirection[columnIndex] === 'asc' ? 'up' : 'down'} small-icon`;
+
+                rows.sort((a, b) => {
+                    const cellA = a.querySelector(`td:nth-child(${columnIndex})`)?.innerText.trim();
+                    const cellB = b.querySelector(`td:nth-child(${columnIndex})`)?.innerText.trim();
+
+                    if (!cellA || !cellB) return 0; // Prevent sorting errors
+
+                    // Default: Text sorting (case-insensitive)
+                    return sortDirection[columnIndex] === 'asc' ?
+                        cellA.localeCompare(cellB, undefined, {
+                            sensitivity: 'base'
+                        }) :
+                        cellB.localeCompare(cellA, undefined, {
+                            sensitivity: 'base'
+                        });
+                });
+
+                // Append sorted rows back to table
+                tbody.innerHTML = '';
+                rows.forEach(row => tbody.appendChild(row));
+            }
+
+            // Map correct column names to match header icon IDs
+            function getColumnName(columnIndex) {
+                return {
+                    2: 'Username',
+                    3: 'Email',
+                    4: 'Role',
+                    5: 'Status'
+                } [columnIndex] || '';
             }
         </script>
 
