@@ -85,19 +85,22 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
         .status-inactive .status-icon {
             background-color: #F15046;
         }
+
+        .small-icon {
+            font-size: 14px;
+            color: #aaa;
+            transition: color 0.2s ease;
+        }
     </style>
+
     </head>
 
     <body>
 
         <main id="main" class="main">
-
-            <!-- header products -->
             <div class="pagetitle">
                 <h1>Employees Management</h1>
             </div>
-
-
             <!-- Add Employee & Search Bar -->
             <div class="d-flex justify-content-between mb-3">
                 <a href="/users/create" class="btn btn-primary">Add Employee</a>
@@ -111,10 +114,18 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
                 <thead>
                     <tr>
                         <th>Image</th>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Status</th>
+                        <th onclick="sortTable(2)">
+                            <div class="header-content">Username <i id="sortIconUsername" class="fas fa-arrow-up small-icon"></i></div>
+                        </th>
+                        <th onclick="sortTable(3)">
+                            <div class="header-content">Email <i id="sortIconEmail" class="fas fa-arrow-up small-icon"></i></div>
+                        </th>
+                        <th onclick="sortTable(4)">
+                            <div class="header-content">Role <i id="sortIconRole" class="fas fa-arrow-up small-icon"></i></div>
+                        </th>
+                        <th onclick="sortTable(5)">
+                            <div class="header-content">Status <i id="sortIconStatus" class="fas fa-arrow-up small-icon"></i></div>
+                        </th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -179,7 +190,7 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
             </div>
             </div>
             <!-- Pagination Links -->
-            <?php if ($total_pages > 1) : ?>
+            <?php if (!empty($paginated_users) && $total_pages > 1) : ?>
                 <nav aria-label="Page navigation">
                     <ul class="pagination justify-content-center">
                         <?php if ($current_page > 1) : ?>
@@ -245,6 +256,50 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
                 if (!found) {
                     noResultsMessage.style.display = "block";
                 }
+            }
+
+            let sortDirection = {};
+
+            function sortTable(columnIndex) {
+                const table = document.getElementById("employeeTable");
+                const tbody = table.querySelector("tbody");
+                const rows = Array.from(tbody.querySelectorAll("tr"));
+                const columnName = getColumnName(columnIndex);
+                const sortIcon = document.getElementById(`sortIcon${columnName}`);
+
+                // Toggle sorting direction
+                sortDirection[columnIndex] = sortDirection[columnIndex] === 'asc' ? 'desc' : 'asc';
+                sortIcon.className = `fas fa-arrow-${sortDirection[columnIndex] === 'asc' ? 'up' : 'down'} small-icon`;
+
+                rows.sort((a, b) => {
+                    const cellA = a.querySelector(`td:nth-child(${columnIndex})`)?.innerText.trim();
+                    const cellB = b.querySelector(`td:nth-child(${columnIndex})`)?.innerText.trim();
+
+                    if (!cellA || !cellB) return 0; // Prevent sorting errors
+
+                    // Default: Text sorting (case-insensitive)
+                    return sortDirection[columnIndex] === 'asc' ?
+                        cellA.localeCompare(cellB, undefined, {
+                            sensitivity: 'base'
+                        }) :
+                        cellB.localeCompare(cellA, undefined, {
+                            sensitivity: 'base'
+                        });
+                });
+
+                // Append sorted rows back to table
+                tbody.innerHTML = '';
+                rows.forEach(row => tbody.appendChild(row));
+            }
+
+            // Map correct column names to match header icon IDs
+            function getColumnName(columnIndex) {
+                return {
+                    2: 'Username',
+                    3: 'Email',
+                    4: 'Role',
+                    5: 'Status'
+                } [columnIndex] || '';
             }
         </script>
 

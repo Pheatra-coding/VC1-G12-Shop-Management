@@ -1,3 +1,13 @@
+<style>
+
+    .small-icon {
+    font-size: 14px; /* Small icon size */
+    color: #aaa; /* Light gray color for inactive icons */
+    transition: color 0.2s ease;
+}
+
+</style>
+
 <main id="main" class="main">
     <!-- header products -->
     <div class="pagetitle">
@@ -21,15 +31,26 @@
     <div class="table-responsive">
         <table id="productTable" class="table" style="vertical-align: middle;">
             <thead>
-                <tr>
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>End Date</th>
-                    <th>Barcode</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Actions</th>
-                </tr>
+            <tr>
+                        <th>Image</th>
+                        <th onclick="sortTable(2)">
+                            <div class="header-content">Name <i id="sortIconName" class="fas fa-arrow-up small-icon" ></i> <!-- Single arrow icon --></div>
+                        </th>
+                        <th onclick="sortTable(3)">
+                            <div class="header-content">End Date <i id="sortIconEndDate" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
+                        </th>
+                        <th onclick="sortTable(4)">
+                            <div class="header-content">Barcode <i id="sortIconBarcode" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
+                        </th>
+                        <th onclick="sortTable(5)">
+                            <div class="header-content">Price <i id="sortIconPrice" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
+                        </th>
+                        <th onclick="sortTable(6)">
+                            <div class="header-content">Quantity <i id="sortIconQuantity" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
+                        </th>
+                        <th>Actions</th>
+                    </tr>
+
             </thead>
             <tbody id="tableBody">
                 <?php if (!empty($products) && is_array($products)) : ?>
@@ -101,7 +122,7 @@
         </div>
     </div>
     <!-- Pagination Links -->
-    <?php if ($total_pages > 1) : ?>
+    <?php if (!empty($products) && $total_pages > 1) : ?>
         <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">
                 <?php if ($current_page > 1) : ?>
@@ -171,4 +192,35 @@
             noResultsMessage.style.display = "block";
         }
     }
+    let sortDirection = {};
+
+    function sortTable(columnIndex) {
+    const table = document.getElementById("productTable");
+    const tbody = table.querySelector("tbody");
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+    const sortIcon = document.getElementById(`sortIcon${getColumnName(columnIndex)}`);
+
+    sortDirection[columnIndex] = sortDirection[columnIndex] === 'asc' ? 'desc' : 'asc';
+    sortIcon.className = `fas fa-arrow-${sortDirection[columnIndex] === 'asc' ? 'up' : 'down'} small-icon`;
+
+    rows.sort((a, b) => {
+        const cellA = a.querySelector(`td:nth-child(${columnIndex})`).innerText.trim();
+        const cellB = b.querySelector(`td:nth-child(${columnIndex})`).innerText.trim();
+
+        if (columnIndex === 3) return (sortDirection[columnIndex] === 'asc' ? new Date(cellA) - new Date(cellB) : new Date(cellB) - new Date(cellA));
+        if (columnIndex === 5) return (sortDirection[columnIndex] === 'asc' ? parseFloat(cellA.replace('$', '')) - parseFloat(cellB.replace('$', '')) : parseFloat(cellB.replace('$', '')) - parseFloat(cellA.replace('$', '')));
+        if (columnIndex === 6) return (sortDirection[columnIndex] === 'asc' ? parseQuantity(cellA) - parseQuantity(cellB) : parseQuantity(cellB) - parseQuantity(cellA));
+        return sortDirection[columnIndex] === 'asc' ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
+    });
+
+    tbody.innerHTML = '';
+    rows.forEach(row => tbody.appendChild(row));
+    }
+
+    const parseQuantity = (value) => parseInt(value.trim(), 10) || NaN;
+
+    const getColumnName = (columnIndex) => ({
+    2: 'Name', 3: 'EndDate', 4: 'Barcode', 5: 'Price', 6: 'Quantity'
+    })[columnIndex] || '';
+
 </script>
