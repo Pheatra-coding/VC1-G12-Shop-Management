@@ -81,7 +81,7 @@ class UserController extends BaseController {
     // after login show dashboard
     public function authenticate() {
         session_start();
-        
+    
         $email = htmlspecialchars($_POST['email']);
         $password = htmlspecialchars($_POST['password']);
         $_SESSION['old_email'] = $email;
@@ -111,17 +111,27 @@ class UserController extends BaseController {
         $_SESSION['user_role'] = $user['role'];
         $_SESSION['user_image'] = $user['image'];
         $_SESSION['users'] = true;
-        
+    
+        // Set user status to Active upon login
+        $this->users->setUserStatusActive($user['id']);
+    
         $this->redirect("/");
-    }    
+    }
+     
     
     // logout system 
     public function logout() {
         session_start();
+        $userId = $_SESSION['user_id']; // Get user ID from session
+        
+        // Set the user status to Inactive before logging out
+        $this->users->setUserStatusInactive($userId);
+        
         session_unset();
         session_destroy();
         header("Location: /");
     }
+    
 
     // check role 
     private function checkAdmin() {
@@ -146,4 +156,33 @@ class UserController extends BaseController {
         $this->users->deleteUser($id);
         header("Location: /users");
     }
+
+    //                  deleted user            //
+
+    public function indexDeletedUsers() {
+        session_start();
+        $users = $this->users->getDeletedUsers();
+        $this->view('users/deleted_users', ['users' => $users]);
+    }
+
+    public function permanentlyDelete($id) {
+        $this->users->permanentlyDeleteUser($id);
+        $page = isset($_POST['page']) ? $_POST['page'] : 1;
+        $this->redirect("/users/deleted?page=$page");
+    }
+
+    public function deleteSelectedUsers() {
+        // Get the array of selected user IDs
+        if (isset($_POST['selected_ids'])) {
+            $selectedIds = $_POST['selected_ids'];
+
+            // Call the method in UserModel to delete selected users
+            $this->userModel->deleteSelectedUsers($selectedIds);
+
+            // Redirect or show a success message
+            header("Location: /users/deleted");
+        }
+    }
+    
+    
 }

@@ -37,5 +37,8 @@ $route->get("/users/logout", [UserController::class, 'logout']);
 
 // sold products
 $route->get("/input_products", [InputProductController::class, 'index']);
+//display deleted users
+$route->get("/users/deleted", [UserController::class, 'indexDeletedUsers']);
+$route->delete("/users/permanently_delete/{id}", [UserController::class, 'permanentlyDelete']);
 
 $route->route();
