@@ -303,12 +303,6 @@ if ($isLoggedIn):
   </li><!-- End Icons Nav -->
 
   <li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-    <i class="bi bi-exclamation-triangle-fill"></i><span>Low Stock Alerts</span>
-    </a>
-  </li><!-- End Forms Nav -->
-
-  <li class="nav-item">
     <a class="nav-link collapsed" href="#">
     <i class="bi bi-clock-history"></i>
       <span>Sell History</span>

@@ -6,6 +6,7 @@ require_once "Models/UserModel.php";
 require_once "Controllers/WelcomeController.php";
 require_once "Controllers/ProductController.php";
 require_once "Controllers/UserController.php";
+require_once "Controllers/LowStockAlertController.php";
 
 
 $route = new Router();
@@ -37,5 +38,8 @@ $route->get("/users/logout", [UserController::class, 'logout']);
 //display deleted users
 $route->get("/users/deleted", [UserController::class, 'indexDeletedUsers']);
 $route->delete("/users/permanently_delete/{id}", [UserController::class, 'permanentlyDelete']);
+
+//low stock alert 
+$route->get("/", [LowStockAlertController::class, 'index']);
 
 $route->route();
