@@ -26,9 +26,34 @@
     .form-group {
         width: 50%;
     }
+
     .pagination {
         display: flex;
         justify-content: center;
+    }
+    #quantity{
+        border: 1px solid #007bff !important;
+
+    }
+    /* Ensure Select2 Dropdown Has the Same Border as the Quantity Input */
+    .select2-container--default .select2-selection--single {
+        border: 1px solid #007bff !important;
+        /* Match the quantity input border */
+        border-radius: 10px;
+        /* Optional: Match the border rounding */
+        height: 38px !important;
+        /* Adjust height */
+        padding: 8px;
+        background-color: white;
+    }
+
+    /* Ensure Focused State Matches */
+    .select2-container--default .select2-selection--single:focus,
+    .select2-container--default .select2-selection--single:hover {
+        border-color: #007bff !important;
+        /* Keep border color consistent */
+        outline: none !important;
+        /* Optional: Add glow effect */
     }
 </style>
 
@@ -46,7 +71,7 @@
             <div class="form-group">
                 <label for="productSelect" class="form-label">Select Product:</label>
                 <select class="form-control select2" id="productSelect" name="product_id" required>
-                    <option value="">-- Select Product --</option>
+                    <option></option>
                     <?php if (!empty($products)): ?>
                         <?php
                         $categories = array();
@@ -169,7 +194,7 @@
 <script>
     $(document).ready(function () {
         $('#productSelect').select2({
-            placeholder: "-- Select Product --",
+            placeholder: "",
             allowClear: true,
             tags: false,
             width: '100%',
