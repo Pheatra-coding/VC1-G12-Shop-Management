@@ -1,81 +1,215 @@
+<style>
+    /* Styling the entire form container */
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    /* Button Styling */
+    form .btn {
+        background-color: #007bff;
+        color: white;
+        font-size: 1rem;
+        font-weight: bold;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .form-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 40px;
+    }
+
+    .form-group {
+        width: 50%;
+    }
+    .pagination {
+        display: flex;
+        justify-content: center;
+    }
+</style>
+
 <main id="main" class="main">
     <div class="pagetitle">
         <h1>Input Product Sale</h1>
     </div>
-    <!-- Products Creation Form -->
-    <form action="" method="post" enctype="multipart/form-data">
+
+    <!-- Product Selection and Quantity Update Form -->
+    <form action="/inputproduct/processSale" method="post">
         <!-- CSRF Protection -->
         <input type="hidden" name="csrf_token" value="">
 
-        
-
-        <div class="row">
-            <!-- First Column -->
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label for="endDate" class="form-label">Sale Date:</label>
-                    <input type="date" class="form-control" id="endDate" name="end_date" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="barcode" class="form-label">Barcode:</label>
-                    <input type="text" class="form-control" id="barcode" placeholder="Enter barcode" name="barcode" required>
-                </div>
+        <div class="form-container ">
+            <div class="form-group">
+                <label for="productSelect" class="form-label">Select Product:</label>
+                <select class="form-control select2" id="productSelect" name="product_id" required>
+                    <option value="">-- Select Product --</option>
+                    <?php if (!empty($products)): ?>
+                        <?php
+                        $categories = array();
+                        foreach ($products as $product) {
+                            $categories[$product['category']][] = $product;
+                        }
+                        foreach ($categories as $category => $category_products): ?>
+                            <optgroup label="<?php echo htmlspecialchars($category); ?>">
+                                <?php foreach ($category_products as $product): ?>
+                                    <option value="<?php echo $product['id']; ?>">
+                                        <?php echo htmlspecialchars($product['name']); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </optgroup>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <option disabled>No products available</option>
+                    <?php endif; ?>
+                </select>
             </div>
 
-            <!-- Second Column -->
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label for="price" class="form-label">Price($):</label>
-                    <input type="number" class="form-control" id="price" name="price" min="0.01" step="0.01" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="quantity" class="form-label">Quantity:</label>
-                    <input type="number" class="form-control" id="quantity" name="quantity" min="1" step="1" required>
-                </div>
+            <div class="form-group">
+                <label for="quantity" class="form-label">Quantity:</label>
+                <input type="number" class="form-control" id="quantity" name="quantity" min="1" step="1" required>
             </div>
+
         </div>
-        
-        <!-- Submit Button -->
-        <div class="row">
-            <div class="col-md-12">
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-        </div>
+        <button type="submit" class="btn">Submit</button>
     </form>
 
-
-    <!-- sole products -->
-        <div class="pagetitle mt-4">
-            <h1>Products Sale</h1>
-        </div>
-                 <div class="d-flex justify-content-end mb-3">
-                    <div class="input-group w-50">
-                        <input
-                            type="text"
-                            id="searchInput"
-                            class="form-control"
-                            placeholder="Search product..."
-                            onkeyup="searchTable()">
-                        <button class="btn btn-secondary">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </div>
-            <div class="table-responsive">
-                <table id="productTable" class="table" style="vertical-align: middle;">
-                    <thead>
-                        <tr>
-                            <th>Sale Date</th>
-                            <th>Price</th>
-                            <th>Barcode</th>
-                            <th>Quantity</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody">
-                     
-                    </tbody>
-                </table>
+    <div class="pagetitle mt-4 d-flex justify-content-between">
+        <h1>Products Sale</h1>
+        <div class="d-flex" style="width: 50%;"> <!-- Parent container set to 100% width -->
+            <div class="input-group" style="width: 100%;"> <!-- Input group set to 100% of its container -->
+                <input type="text" id="searchInput" class="form-control" placeholder="Search product..."
+                    onkeyup="searchTable()"> <!-- Increase font size for better visibility -->
+                <button class="btn btn-secondary">
+                    <i class="fas fa-search"></i>
+                </button>
             </div>
+        </div>
+    </div>
+
+    <!-- Sales Table -->
+    <div class="table-responsive mt-4">
+        <table id="productTable" class="table" style="vertical-align: middle;">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                    <th>Sale Date</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <?php if (!empty($sales)): ?>
+                    <?php
+                    // Pagination logic
+                    $items_per_page = 4;
+                    $current_page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+                    $offset = ($current_page - 1) * $items_per_page;
+                    $total_sales = count($sales);
+                    $total_pages = ceil($total_sales / $items_per_page);
+                    $paginated_sales = array_slice($sales, $offset, $items_per_page);
+                    ?>
+
+                    <?php foreach ($paginated_sales as $sale): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($sale['name']); ?></td>
+                            <td><?php echo (int) $sale['quantity']; ?></td>
+                            <td><?php echo htmlspecialchars($sale['total_price']); ?></td>
+                            <td><?php echo htmlspecialchars($sale['sale_date']); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="6">No products sold yet.</td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination Component -->
+    <?php if ($total_pages > 1): ?>
+        <div class="pagination">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <?php if ($current_page > 1): ?>
+                        <li class="page-item">
+                            <a class="page-link" href="?page=<?php echo $current_page - 1; ?>" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+
+                    <?php for ($page = 1; $page <= $total_pages; $page++): ?>
+                        <li class="page-item <?php echo ($page == $current_page) ? 'active' : ''; ?>">
+                            <a class="page-link" href="?page=<?php echo $page; ?>"><?php echo $page; ?></a>
+                        </li>
+                    <?php endfor; ?>
+
+                    <?php if ($current_page < $total_pages): ?>
+                        <li class="page-item">
+                            <a class="page-link" href="?page=<?php echo $current_page + 1; ?>" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </nav>
+        </div>
+    <?php endif; ?>
 </main>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css">
+
+<script>
+    $(document).ready(function () {
+        $('#productSelect').select2({
+            placeholder: "-- Select Product --",
+            allowClear: true,
+            tags: false,
+            width: '100%',
+            minimumResultsForSearch: 3
+        });
+    });
+
+    function searchTable() {
+        let input = document.getElementById("searchInput").value.toLowerCase().trim();
+        let table = document.getElementById("productTable");
+        let rows = table.getElementsByTagName("tr");
+        let found = false;
+
+        for (let i = 1; i < rows.length; i++) {
+            let columns = rows[i].getElementsByTagName("td");
+            let match = false;
+
+            for (let j = 0; j < columns.length; j++) {
+                let cellText = columns[j].innerText.toLowerCase().trim();
+
+                if (cellText.includes(input)) {
+                    match = true;
+                    break;
+                }
+            }
+
+            rows[i].style.display = match ? "" : "none";
+            if (match) found = true;
+        }
+
+        if (!found) {
+            if (!document.getElementById("noResultsMessage")) {
+                let row = document.createElement("tr");
+                row.id = "noResultsMessage";
+                row.innerHTML = `<td colspan="6" class="text-center text-danger">No results found.</td>`;
+                table.appendChild(row);
+            }
+        } else {
+            let messageRow = document.getElementById("noResultsMessage");
+            if (messageRow) messageRow.remove();
+        }
+    }
+</script>
