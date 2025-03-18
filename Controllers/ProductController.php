@@ -9,10 +9,17 @@ class ProductController extends BaseController {
         $this->products = new ProductModel();
     }
 
-    // Get all products
+    // get all products
     public function index() {
-        $products = $this->products->getProduct(); // Fetch products from the model
+        $products = $this->products->getProduct(); 
         $this->view('products/product_list', ['products' => $products]); // Pass data to the view
+    }
+
+
+    // get all top selling products
+    public function topSelling() {
+        $products = $this->products->getProduct(); 
+        $this->view('products/top_selling', ['products' => $products]);
     }
     
     // view create product form

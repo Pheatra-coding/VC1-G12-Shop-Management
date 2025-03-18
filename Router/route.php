@@ -18,6 +18,7 @@ $route->post("/products/store", [ProductController::class, 'store']);
 $route->get("/products/edit/{id}", [ProductController::class, 'edit']);
 $route->put("/products/update/{id}", [ProductController::class, 'update']);
 $route->delete("/products/delete/{id}", [ProductController::class, 'delete']);
+$route->delete("/products/top_selling", [ProductController::class, 'topSelling']);
 
 
 //users
