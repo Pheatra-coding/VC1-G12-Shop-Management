@@ -8,6 +8,7 @@ require_once "Controllers/ProductController.php";
 require_once "Controllers/UserController.php";
 require_once "Controllers/InputProductController.php";
 require_once "Controllers/LowStockAlertController.php";
+require_once "Controllers/DeletedEmployeeController.php";
 
 
 $route = new Router();
@@ -37,14 +38,15 @@ $route->get("/users/logout", [UserController::class, 'logout']);
 
 
 // sold products
-// Assuming $route is your routing object
 $route->get("/input_products/sold_product", [InputProductController::class, 'index']);
 $route->post("/inputproduct/processSale", [InputProductController::class, 'processSale']);
 $route->get("/sold_product/delete{saleId}", action: [InputProductController::class, 'deleteSale']);
  
 //display deleted users
-$route->get("/users/deleted", [UserController::class, 'indexDeletedUsers']);
-$route->delete("/users/permanently_delete/{id}", [UserController::class, 'permanentlyDelete']);
+$route->get("/users/deleted", [DeletedEmployeeController::class, 'index']);
+$route->post("/users/permanently_delete/{id}", [DeletedEmployeeController::class, 'permanentlyDelete']);
+$route->get("/users/restore/{id}", [DeletedEmployeeController::class, 'restore']);
+
 
 //low stock alert 
 $route->get("/", [LowStockAlertController::class, 'index']);
