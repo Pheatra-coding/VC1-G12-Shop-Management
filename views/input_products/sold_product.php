@@ -31,10 +31,12 @@
         display: flex;
         justify-content: center;
     }
-    #quantity{
+
+    #quantity {
         border: 1px solid #007bff !important;
 
     }
+
     /* Ensure Select2 Dropdown Has the Same Border as the Quantity Input */
     .select2-container--default .select2-selection--single {
         border: 1px solid #007bff !important;
@@ -124,6 +126,7 @@
                     <th>Quantity</th>
                     <th>Total Price</th>
                     <th>Sale Date</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody id="tableBody">
@@ -144,6 +147,33 @@
                             <td><?php echo (int) $sale['quantity']; ?></td>
                             <td><?php echo "$" . htmlspecialchars($sale['total_price']); ?></td>
                             <td><?php echo htmlspecialchars($sale['sale_date']); ?></td>
+                            <td class="text-center align-middle" style="width: 50px;">
+                                <div class="dropdown">
+                                    <i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown" aria-expanded="false"
+                                        style="cursor: pointer; font-size: 1.2rem; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; transition: background 0.3s;"
+                                        onmouseover="this.style.background='#f1f1f1'"
+                                        onmouseout="this.style.background='transparent'">
+                                    </i>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm rounded-2 border-0 p-1"
+                                        style="min-width: 100px; margin-right: 30px;">
+                                        <li>
+                                            <a class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small"
+                                                href="/sold_product/edit/<?= $sale['id'] ?>" style="font-size: 0.8rem;">
+                                                <i class="bi bi-pencil-square text-primary" style="font-size: 0.8rem;"></i>
+                                                Edit
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small text-danger"
+                                                href="/sold_product/delete<?= $sale['id'] ?>" style="font-size: 0.8rem;">
+                                                <i class="bi bi-trash3" style="font-size: 0.8rem;"></i>
+                                                Delete
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>

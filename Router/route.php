@@ -40,6 +40,7 @@ $route->get("/users/logout", [UserController::class, 'logout']);
 // Assuming $route is your routing object
 $route->get("/input_products/sold_product", [InputProductController::class, 'index']);
 $route->post("/inputproduct/processSale", [InputProductController::class, 'processSale']);
+$route->get("/sold_product/delete{saleId}", action: [InputProductController::class, 'deleteSale']);
  
 //display deleted users
 $route->get("/users/deleted", [UserController::class, 'indexDeletedUsers']);
