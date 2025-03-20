@@ -3,13 +3,16 @@
 }
 if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'Admin'):
 
+    // Fetch all deleted users into an array
+    $deletedUsers = $deletedUsers->fetchAll(PDO::FETCH_ASSOC); // Convert PDOStatement to an array
+
     // Pagination logic
     $items_per_page = 8; // Number of items per page
     $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Get current page from URL
     $offset = ($current_page - 1) * $items_per_page; // Calculate offset
-    $total_users = count($users); // Total number of users
+    $total_users = count($deletedUsers); // Total number of users (now works because $deletedUsers is an array)
     $total_pages = ceil($total_users / $items_per_page); // Total pages
-    $paginated_users = array_slice($users, $offset, $items_per_page); // Slice users for current page
+    $paginated_users = array_slice($deletedUsers, $offset, $items_per_page); // Slice users for current page
 ?>
 
 <!DOCTYPE html>
@@ -23,7 +26,7 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <style>
-        body {
+ body {
             background-color: #f6f9ff;
         }
 
@@ -157,7 +160,7 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
                                 <td><?= htmlspecialchars($user['name']) ?></td>
                                 <td><?= htmlspecialchars($user['email']) ?></td>
                                 <td><?= htmlspecialchars($user['role']) ?></td>
-                                <td><?= htmlspecialchars($user['deleted_at']) ?></td>
+                                <td><?= htmlspecialchars(date('d-M-Y', strtotime($user['deleted_at']))) ?></td>
                                 <td>
                                     <span class="text-danger">Deleted</span>
                                 </td>
@@ -240,7 +243,7 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
 
     <!-- JavaScript for Checkboxes and Bulk Actions -->
     <script>
-               // Toggle Select All Checkboxes
+        // Toggle Select All Checkboxes
         function toggleSelectAll(source) {
             const checkboxes = document.querySelectorAll('.user-checkbox');
             checkboxes.forEach(checkbox => {
@@ -323,4 +326,3 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
     header("Location: /users/login");
     exit;
 endif;
-?>

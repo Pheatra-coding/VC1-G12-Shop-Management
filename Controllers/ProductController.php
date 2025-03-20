@@ -134,6 +134,4 @@ class ProductController extends BaseController {
         $this->products->updateProduct($id, $image, $name, $end_date, $barcode, $price, $quantity);
         header("Location: /products");
     }
-    
-    
 }
