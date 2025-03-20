@@ -7,6 +7,7 @@ require_once "Controllers/WelcomeController.php";
 require_once "Controllers/ProductController.php";
 require_once "Controllers/UserController.php";
 require_once "Controllers/LowStockAlertController.php";
+require_once "Controllers/TopSellingController.php";
 
 
 $route = new Router();
@@ -19,8 +20,6 @@ $route->post("/products/store", [ProductController::class, 'store']);
 $route->get("/products/edit/{id}", [ProductController::class, 'edit']);
 $route->put("/products/update/{id}", [ProductController::class, 'update']);
 $route->delete("/products/delete/{id}", [ProductController::class, 'delete']);
-$route->delete("/products/top_selling", [ProductController::class, 'topSelling']);
-
 
 //users
 $route->get("/users", [UserController::class, 'index']);
@@ -41,5 +40,8 @@ $route->delete("/users/permanently_delete/{id}", [UserController::class, 'perman
 
 //low stock alert 
 $route->get("/", [LowStockAlertController::class, 'index']);
+
+// sales
+$route->get("/sales/top_selling", [TopSellingController::class, 'index']);
 
 $route->route();
