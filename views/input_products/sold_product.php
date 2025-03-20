@@ -156,7 +156,7 @@
     </div>
 
     <!-- Pagination Component -->
-    <?php if ($total_pages > 1): ?>
+    <?php if (!empty($sales) && $total_pages > 1): ?>
         <div class="pagination">
             <nav aria-label="Page navigation">
                 <ul class="pagination">
