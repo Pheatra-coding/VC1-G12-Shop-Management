@@ -1,3 +1,5 @@
+<?php session_start(); ?> 
+<?php if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
 <style>
 
     .small-icon {
@@ -48,7 +50,11 @@
                         <th onclick="sortTable(6)">
                             <div class="header-content">Quantity <i id="sortIconQuantity" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
                         </th>
-                        <th>Actions</th>
+                        <?php
+                            if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'Admin'): ?>
+                                <th>Actions</th>
+                        <?php endif; ?>
+
                     </tr>
 
             </thead>
@@ -80,6 +86,9 @@
                             <td><?php echo htmlspecialchars($product['barcode']); ?></td>
                             <td>$<?php echo number_format((float)$product['price'], 2, '.', ''); ?></td>
                             <td><?php echo htmlspecialchars($product['quantity']); ?></td>
+                            <?php
+                            if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'Admin'): ?>
+
                             <td class="text-center align-middle" style="width: 50px;">
                                 <div class="dropdown dropdown">
                                     <i class="bi bi-three-dots-vertical"
@@ -107,6 +116,7 @@
                                     </ul>
                                 </div>
                             </td>
+                            <?php endif; ?>
                         </tr>
                     <?php endforeach; ?>
                 <?php else : ?>
@@ -122,7 +132,7 @@
         </div>
     </div>
     <!-- Pagination Links -->
-    <?php if ($total_pages > 1) : ?>
+    <?php if (!empty($products) && $total_pages > 1) : ?>
         <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">
                 <?php if ($current_page > 1) : ?>
@@ -224,3 +234,8 @@
     })[columnIndex] || '';
 
 </script>
+
+<?php else:
+    $this->redirect('/users/login');
+endif;
+?>

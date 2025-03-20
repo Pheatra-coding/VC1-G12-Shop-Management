@@ -109,6 +109,5 @@ class UserModel {
             echo "Error updating status: " . $e->getMessage();
         }
     }
-    
-    
+
 }

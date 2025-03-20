@@ -24,7 +24,6 @@
             <?php endif; ?>
         </div>
 
-    
         <div class="mb-3">
             <label for="price" class="form-label">Price($):</label>
             <input type="number" step="0.01" class="form-control <?= isset($errors['general']) ? 'is-invalid' : '' ?>" id="price" name="price" value="<?php echo isset($_POST['price']) ? htmlspecialchars($_POST['price']) : htmlspecialchars($product['price']); ?>" min="0" required>
@@ -55,7 +54,7 @@
             <?php endif; ?>
         </div>
 
-        <div class="mt-3">
+        <div class="mt-3 position-relative" style="width: 160px;">
             <img 
                 id="image_preview"
                 src="<?= $product['image'] ? '/uploads/' . htmlspecialchars($product['image']) : '#' ?>" 
@@ -69,6 +68,17 @@
                     margin-top: 10px; 
                     object-fit: cover;"
             >
+            <!-- Close Button (No Background, Gray "X") -->
+            <button 
+                type="button" 
+                id="close_preview" 
+                class="position-absolute top-0 end-0 <?= $product['image'] ? '' : 'd-none' ?>" 
+                style="transform: translate(150%, -20%); background: none; border: none; padding: 0; cursor: pointer;" 
+                onclick="closeImagePreview()"
+                aria-label="Remove image"
+            >
+                <i class="fas fa-times" style="color: red; font-size: 1.2rem;"></i>
+            </button>
         </div>
 
         <button type="submit" class="btn btn-primary mt-3">Update</button>
@@ -82,10 +92,30 @@
         const reader = new FileReader();
         reader.onload = function() {
             const preview = document.getElementById('image_preview');
+            const closeButton = document.getElementById('close_preview');
+
+            // Set the image source and make it visible
             preview.src = reader.result;
             preview.style.display = 'block';
+
+            // Make the close button visible
+            closeButton.classList.remove('d-none');
         }
         reader.readAsDataURL(event.target.files[0]);
+    }
+
+    function closeImagePreview() {
+        const preview = document.getElementById('image_preview');
+        const closeButton = document.getElementById('close_preview');
+        const fileInput = document.getElementById('profile_image');
+
+        // Hide the image preview and close button
+        preview.src = '#';
+        preview.style.display = 'none';
+        closeButton.classList.add('d-none');
+
+        // Clear the file input
+        fileInput.value = '';
     }
 </script>
 

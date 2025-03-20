@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 01, 2025 at 07:55 AM
+-- Generation Time: Mar 17, 2025 at 07:20 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -106,6 +106,18 @@ CREATE TABLE `deleted_users` (
   `deleted_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `deleted_users`
+--
+
+INSERT INTO `deleted_users` (`id`, `name`, `email`, `role`, `deleted_by`, `deleted_at`) VALUES
+(12, 'Senghin', 'user@example.com', 'Admin', NULL, '2025-03-10 01:29:45'),
+(13, 'Senghin', 're@gmail.com', 'Admin', NULL, '2025-03-10 01:29:40'),
+(14, 'Dino', 'dino@gmail.com', 'User', NULL, '2025-03-10 01:29:37'),
+(22, 'Phanhapich Rin', 'phanhapich.rin@student.passerellesnumeriques.org', 'Admin', NULL, '2025-03-16 06:14:15'),
+(24, 'NANGKHOEUM CHAMPHAI', 'nangkhoeum.champhai@student.passerellesnumeriques.org', 'Admin', NULL, '2025-03-16 06:11:53'),
+(28, 'Darin HOY', 'darin.hoy@student.passerellesnumeriques.org', 'Admin', NULL, '2025-03-16 06:14:13');
+
 -- --------------------------------------------------------
 
 --
@@ -140,6 +152,15 @@ CREATE TABLE `products` (
   `quantity` int(11) DEFAULT NULL,
   `end_date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`id`, `name`, `category_id`, `price`, `supplier_id`, `barcode`, `created_at`, `updated_at`, `image`, `quantity`, `end_date`) VALUES
+(38, 'Sting', NULL, 1.00, NULL, '26432324', '2025-03-17 04:12:06', '2025-03-17 04:12:06', 'sting.jpg', 24, '2025-03-17'),
+(39, 'coca', NULL, 1.00, NULL, '1234153', '2025-03-17 04:12:25', '2025-03-17 04:12:25', 'coca.jpg', 23, '2025-03-17'),
+(40, 'fanta', NULL, 1.00, NULL, '7654321', '2025-03-17 04:12:48', '2025-03-17 04:12:48', 'fanta.jpg', 23, '2025-03-17');
 
 -- --------------------------------------------------------
 
@@ -243,10 +264,22 @@ CREATE TABLE `users` (
   `role` enum('Admin','User') NOT NULL DEFAULT 'User',
   `image` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
-  `status` ENUM('Active', 'Inactive') NOT NULL DEFAULT 'Inactive',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `reset_token` varchar(255) DEFAULT NULL,
+  `status` enum('Active','Inactive') NOT NULL DEFAULT 'Inactive'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`, `image`, `is_deleted`, `created_at`, `updated_at`, `reset_token`, `status`) VALUES
+(9, 'Pheaktra', 'pheaktra.oem@student.passerellesnumeriques.org', '$2y$10$5H4QMR68UsBQtSlayvVDa.jAUji4NBgOmvMBwSzig9xIsVuyA36Hm', 'Admin', 'photo_2025-01-01_15-41-51.jpg', 0, '2025-03-09 07:07:00', '2025-03-17 06:15:48', NULL, 'Active'),
+(29, 'Sonavy KHEANG', 'sonavy.kheang@student.passerellesnumeriques.org', '$2y$10$KqrxWgraHuZdVHeHoTfI4ONZp4O/yzjtICoOo0TuJFAN5Qc/IsXUq', 'Admin', 'navy.jpg', 0, '2025-03-16 06:30:15', '2025-03-16 06:30:15', NULL, 'Inactive'),
+(30, 'Darin HOY', 'darin.hoy@student.passerellesnumeriques.org', '$2y$10$oXL2lHuxVsP2vIWa/bYPN.4BFxD7z1BA2E6IXjpDpPlw7WhwYMVA2', 'Admin', NULL, 0, '2025-03-16 06:36:10', '2025-03-16 06:36:10', NULL, 'Inactive'),
+(31, 'Phanhapich Rin', 'phanhapich.rin@student.passerellesnumeriques.org', '$2y$10$ZHD.dD471wyeJa1a.wf9Ne0GKhc38t0vGlpAxY92DOIntene7MZEW', 'Admin', 'pich.jpg', 0, '2025-03-16 06:36:26', '2025-03-16 06:36:26', NULL, 'Inactive'),
+(32, 'NANGKHOEUM CHAMPHAI', 'nangkhoeum.champhai@student.passerellesnumeriques.org', '$2y$10$jgXKgu4vUWjUE/4imPS4v.r579JWXTL1qSxVJ/dExnTU5ZIFYsh3i', 'Admin', 'Nangkhouem.jpg', 0, '2025-03-16 06:36:41', '2025-03-16 06:36:41', NULL, 'Inactive');
 
 --
 -- Triggers `users`
@@ -412,7 +445,7 @@ ALTER TABLE `deleted_categories`
 -- AUTO_INCREMENT for table `deleted_users`
 --
 ALTER TABLE `deleted_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `financial_summary`
@@ -424,7 +457,7 @@ ALTER TABLE `financial_summary`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `sales`
@@ -466,7 +499,7 @@ ALTER TABLE `transactions`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `user_activity_log`

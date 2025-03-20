@@ -25,7 +25,7 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     </head>
     <style>
         body {
@@ -190,7 +190,7 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
             </div>
             </div>
             <!-- Pagination Links -->
-            <?php if ($total_pages > 1) : ?>
+            <?php if (!empty($paginated_users) && $total_pages > 1) : ?>
                 <nav aria-label="Page navigation">
                     <ul class="pagination justify-content-center">
                         <?php if ($current_page > 1) : ?>
