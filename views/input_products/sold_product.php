@@ -142,7 +142,7 @@
                         <tr>
                             <td><?php echo htmlspecialchars($sale['name']); ?></td>
                             <td><?php echo (int) $sale['quantity']; ?></td>
-                            <td><?php echo htmlspecialchars($sale['total_price']); ?></td>
+                            <td><?php echo "$" . htmlspecialchars($sale['total_price']); ?></td>
                             <td><?php echo htmlspecialchars($sale['sale_date']); ?></td>
                         </tr>
                     <?php endforeach; ?>
