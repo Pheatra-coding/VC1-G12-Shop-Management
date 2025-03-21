@@ -275,6 +275,12 @@ if ($isLoggedIn):
   </li><!-- End Forms Nav -->
 
   <li class="nav-item">
+  <a class="nav-link collapsed" href="/scan_barcodes/barcode">
+    <i class="bi bi-upc-scan"></i><span>Scan Barcode</span>
+    </a>
+  </li><!-- End Forms Nav -->
+
+  <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
     <i class="bi bi-layout-text-window-reverse"></i><span>All Products</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>

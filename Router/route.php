@@ -9,7 +9,7 @@ require_once "Controllers/UserController.php";
 require_once "Controllers/InputProductController.php";
 require_once "Controllers/LowStockAlertController.php";
 require_once "Controllers/DeletedEmployeeController.php";
-
+require_once "Controllers/ScanBarcodeController.php";
 
 $route = new Router();
 $route->get("/", [WelcomeController::class, 'welcome']);
@@ -47,6 +47,10 @@ $route->get("/sold_product/delete{saleId}", action: [InputProductController::cla
 $route->get("/users/deleted", [DeletedEmployeeController::class, 'index']);
 $route->post("/users/permanently_delete/{id}", [DeletedEmployeeController::class, 'permanentlyDelete']);
 $route->get("/users/restore/{id}", [DeletedEmployeeController::class, 'restore']);
+
+//display scan barcode
+$route->get("/scan_barcodes/barcode", [ScanBarcodeController::class, 'index']);
+$route->post("/scan_barcodes/scan", [ScanBarcodeController::class, 'scan']);
 
 
 //low stock alert 
