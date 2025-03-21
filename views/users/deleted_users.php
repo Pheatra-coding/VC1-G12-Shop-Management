@@ -253,10 +253,32 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
 
         // Restore Selected Users
         function restoreSelected() {
-            const selectedIds = getSelectedUserIds();
+            const selectedIds = getSelectedUserIds(); // Get selected user IDs
             if (selectedIds.length > 0) {
                 if (confirm('Are you sure you want to restore the selected users?')) {
-                    window.location.href = `/users/bulk_restore?ids=${selectedIds.join(',')}`;
+                    // Make a POST request to restore selected users
+                    fetch('/users/bulk_restore', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: new URLSearchParams({
+                            'ids[]': selectedIds // Send IDs as an array
+                        })
+                    })
+                    .then(response => response.json()) // Assuming the response is in JSON format
+                    .then(data => {
+                        if (data.success) {
+                            alert('Users restored successfully!');
+                            window.location.reload(); // Reload the page after restoring
+                        } else {
+                            alert('Failed to restore selected users.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred while restoring users.');
+                    });
                 }
             } else {
                 alert('Please select at least one user to restore.');
@@ -268,7 +290,26 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
             const selectedIds = getSelectedUserIds();
             if (selectedIds.length > 0) {
                 if (confirm('Are you sure you want to permanently delete the selected users?')) {
-                    window.location.href = `/users/bulk_permanently_delete?ids=${selectedIds.join(',')}`;
+                    // Create a URL-encoded string of the selected IDs
+                    const params = new URLSearchParams();
+                    selectedIds.forEach(id => {
+                        params.append('ids[]', id); // Send as an array
+                    });
+
+                    // Send the request with all selected IDs
+                    fetch('/users/bulk_permanently_delete', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: params.toString() // Send IDs as a URL-encoded string
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            window.location.reload(); // Reload page after deletion
+                        } else {
+                            alert('Failed to delete selected users.');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
                 }
             } else {
                 alert('Please select at least one user to delete.');

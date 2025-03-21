@@ -46,6 +46,8 @@ $route->post("/inputproduct/processSale", [InputProductController::class, 'proce
 $route->get("/users/deleted", [DeletedEmployeeController::class, 'index']);
 $route->post("/users/permanently_delete/{id}", [DeletedEmployeeController::class, 'permanentlyDelete']);
 $route->get("/users/restore/{id}", [DeletedEmployeeController::class, 'restore']);
+$route->post("/users/bulk_permanently_delete", [DeletedEmployeeController::class, 'bulkPermanentlyDelete']);
+$route->post("/users/bulk_restore", [DeletedEmployeeController::class, 'bulkRestore']);
 
 
 //low stock alert 
