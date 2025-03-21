@@ -9,7 +9,7 @@ require_once "Controllers/UserController.php";
 require_once "Controllers/InputProductController.php";
 require_once "Controllers/LowStockAlertController.php";
 require_once "Controllers/DeletedEmployeeController.php";
-
+require_once "Controllers/ScanBarcodeController.php";
 
 $route = new Router();
 $route->get("/", [WelcomeController::class, 'welcome']);
@@ -41,6 +41,7 @@ $route->get("/users/profile", [UserController::class, 'viewProfile']);
 // sold products
 $route->get("/input_products/sold_product", [InputProductController::class, 'index']);
 $route->post("/inputproduct/processSale", [InputProductController::class, 'processSale']);
+$route->get("/sold_product/delete{saleId}", action: [InputProductController::class, 'deleteSale']);
  
 //display deleted users
 $route->get("/users/deleted", [DeletedEmployeeController::class, 'index']);
@@ -48,6 +49,10 @@ $route->post("/users/permanently_delete/{id}", [DeletedEmployeeController::class
 $route->get("/users/restore/{id}", [DeletedEmployeeController::class, 'restore']);
 $route->post("/users/bulk_permanently_delete", [DeletedEmployeeController::class, 'bulkPermanentlyDelete']);
 $route->post("/users/bulk_restore", [DeletedEmployeeController::class, 'bulkRestore']);
+
+//display scan barcode
+$route->get("/scan_barcodes/barcode", [ScanBarcodeController::class, 'index']);
+$route->post("/scan_barcodes/scan", [ScanBarcodeController::class, 'scan']);
 
 
 //low stock alert 
