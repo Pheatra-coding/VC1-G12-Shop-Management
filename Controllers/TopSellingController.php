@@ -1,12 +1,15 @@
 <?php
-
+require_once 'Models/TopSellingModel.php';
 
 class TopSellingController extends BaseController {
-
-    // get all products
+    // Get top-selling products
     public function index() {
-        $this->view('sales/top_selling');
+        $model = new TopSellingModel();
+        $topSellingProducts = $model->getTopSellingProducts();
+        
+        // Pass the data to the view
+        $this->view('sales/top_selling', [
+            'products' => $topSellingProducts,
+        ]);
     }
-    
-   
 }
