@@ -34,21 +34,21 @@
         <table id="productTable" class="table" style="vertical-align: middle;">
             <thead>
                     <tr>
-                        <th>Product Image</th>
+                        <th>Image</th>
                         <th onclick="sortTable(2)">
-                            <div class="header-content">Product Name <i id="sortIconName" class="fas fa-arrow-up small-icon" ></i> <!-- Single arrow icon --></div>
+                            <div class="header-content">Name <i id="sortIconName" class="fas fa-arrow-up small-icon" ></i> <!-- Single arrow icon --></div>
                         </th>
                         <th onclick="sortTable(3)">
-                            <div class="header-content">Expiration Date <i id="sortIconEndDate" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
+                            <div class="header-content">Expires  <i id="sortIconEndDate" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
                         </th>
                         <th onclick="sortTable(4)">
-                            <div class="header-content">Barcode Number <i id="sortIconBarcode" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
+                            <div class="header-content">Barcode <i id="sortIconBarcode" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
                         </th>
                         <th onclick="sortTable(5)">
-                            <div class="header-content">Unit Price <i id="sortIconPrice" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
+                            <div class="header-content">Price <i id="sortIconPrice" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
                         </th>
                         <th onclick="sortTable(6)">
-                            <div class="header-content">Stock Quantity <i id="sortIconQuantity" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
+                            <div class="header-content">Quantity <i id="sortIconQuantity" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
                         </th>
                         <th>Actions</th>
                     </tr>

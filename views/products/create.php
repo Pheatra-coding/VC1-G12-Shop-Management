@@ -4,6 +4,40 @@
         <!-- CSRF Protection -->
         <input type="hidden" name="csrf_token" value="">
 
+        <!-- Product Image Upload at the Top -->
+        <div class="mb-4 text-center">
+            <label for="profile_image" class="form-label fw-bold">Product Image</label>
+            <div class="custom-file-upload">
+                <!-- Image Preview -->
+                <div class="image-preview-container">
+                    <img 
+                        id="image_preview" 
+                        src="#" 
+                        alt="Image Preview" 
+                        class="img-fluid d-none rounded-circle" 
+                        style="width: 160px; height: 160px; object-fit: cover; border: 2px solid #ddd;"
+                    >
+                    <!-- Close Button -->
+                    <button 
+                        type="button" 
+                        id="close_preview" 
+                        class="position-absolute top-0 end-0 d-none bg-white rounded-circle border-0 shadow-sm" 
+                        style="transform: translate(50%, -50%); padding: 5px 8px; cursor: pointer;" 
+                        onclick="closeImagePreview()"
+                        aria-label="Remove image"
+                    >
+                        <i class="fas fa-times" style="color: red; font-size: 1rem;"></i>
+                    </button>
+                </div>
+                <!-- File Upload Label -->
+                <label for="profile_image" class="file-upload-label mt-3">
+                    <i class="fas fa-cloud-upload-alt me-2"></i> Choose Image
+                </label>
+                <!-- File Input -->
+                <input type="file" class="form-control d-none" id="profile_image" name="image" accept="image/*" onchange="previewImage(event)">
+            </div>
+        </div>
+
         <!-- Name and Barcode in one line -->
         <div class="row mb-3 mt-3">
             <div class="col-md-6">
@@ -39,36 +73,10 @@
             <input type="date" class="form-control" id="endDate" name="end_date" value="<?= isset($_POST['end_date']) ? htmlspecialchars($_POST['end_date']) : '' ?>" required>
         </div>
 
-        <!-- Profile Image Upload -->
-        <div class="mb-3">
-            <label for="profile_image" class="form-label">Product Image:</label>
-            <input type="file" class="form-control" id="profile_image" name="image" accept="image/*" onchange="previewImage(event)">
-            <div class="mt-3 position-relative" style="width: 160px;">
-                <img 
-                    id="image_preview" 
-                    src="#" 
-                    alt="Image Preview" 
-                    class="img-fluid d-none" 
-                    style="width: 160px; height: 160px; border-radius: 10px; margin-top: 10px; object-fit: cover;"
-                >
-                <!-- Close Button (No Background, Gray "X") -->
-                <button 
-                    type="button" 
-                    id="close_preview" 
-                    class="position-absolute top-0 end-0 d-none" 
-                    style="transform: translate(150%, -20%); background: none; border: none; padding: 0; cursor: pointer;" 
-                    onclick="closeImagePreview()"
-                    aria-label="Remove image"
-                >
-                    <i class="fas fa-times" style="color: red; font-size: 1.2rem;"></i>
-                </button>
-            </div>
-        </div>
-
         <!-- Submit and Cancel Buttons -->
         <div class="mb-3">
-            <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i> Save Product</button>
-            <a href="/products" class="btn btn-secondary" style="margin-left: 12px;"><i class="fas fa-arrow-left me-2"></i> Back to Products</a>
+            <a href="/products" class="btn btn-secondary" style="margin-right: 8px;"><i class="fas fa-arrow-left me-2"></i> Back</a>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i> Save</button>
         </div>
     </form>
 </main>
@@ -105,3 +113,49 @@ function closeImagePreview() {
     fileInput.value = '';
 }
 </script>
+
+<!-- CSS for custom file upload -->
+<style>
+.custom-file-upload {
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.custom-file-upload:hover {
+    background-color: #f9f9f9;
+}
+
+.file-upload-label {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.file-upload-label:hover {
+    background-color: #0056b3;
+}
+
+.file-upload-label i {
+    margin-right: 8px;
+}
+
+.image-preview-container {
+    position: relative;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rounded-circle {
+    border-radius: 50% !important;
+}
+</style>

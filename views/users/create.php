@@ -67,8 +67,8 @@
 
         <!-- Submit and Cancel Buttons -->
         <div class="mb-3">
-            <a href="/users" class="btn btn-secondary" style="margin-left: 12px;"> <i class="fas fa-arrow-left me-2"></i> Back to Users</a>
-            <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i> Save User</button>
+            <a href="/users" class="btn btn-secondary" style="margin-right: 8px;"> <i class="fas fa-arrow-left me-2"></i> Back</a>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i> Save</button>
         </div>
     </form>
 
