@@ -16,7 +16,7 @@
         <h1>Products Management</h1>
     </div>
     <div class="d-flex justify-content-between mb-3">
-        <a href="/products/create" class="btn btn-primary">Add Product</a>
+        <a href="/products/create" class="btn btn-primary"> <i class="fas fa-plus"></i> Add Product</a>
         <div class="input-group w-50">
             <input
                 type="text"
@@ -33,28 +33,24 @@
     <div class="table-responsive">
         <table id="productTable" class="table" style="vertical-align: middle;">
             <thead>
-            <tr>
-                        <th>Image</th>
+                    <tr>
+                        <th>Product Image</th>
                         <th onclick="sortTable(2)">
-                            <div class="header-content">Name <i id="sortIconName" class="fas fa-arrow-up small-icon" ></i> <!-- Single arrow icon --></div>
+                            <div class="header-content">Product Name <i id="sortIconName" class="fas fa-arrow-up small-icon" ></i> <!-- Single arrow icon --></div>
                         </th>
                         <th onclick="sortTable(3)">
-                            <div class="header-content">End Date <i id="sortIconEndDate" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
+                            <div class="header-content">Expiration Date <i id="sortIconEndDate" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
                         </th>
                         <th onclick="sortTable(4)">
-                            <div class="header-content">Barcode <i id="sortIconBarcode" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
+                            <div class="header-content">Barcode Number <i id="sortIconBarcode" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
                         </th>
                         <th onclick="sortTable(5)">
-                            <div class="header-content">Price <i id="sortIconPrice" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
+                            <div class="header-content">Unit Price <i id="sortIconPrice" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
                         </th>
                         <th onclick="sortTable(6)">
-                            <div class="header-content">Quantity <i id="sortIconQuantity" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
+                            <div class="header-content">Stock Quantity <i id="sortIconQuantity" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
                         </th>
-                        <?php
-                            if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'Admin'): ?>
-                                <th>Actions</th>
-                        <?php endif; ?>
-
+                        <th>Actions</th>
                     </tr>
 
             </thead>
@@ -86,9 +82,6 @@
                             <td><?php echo htmlspecialchars($product['barcode']); ?></td>
                             <td>$<?php echo number_format((float)$product['price'], 2, '.', ''); ?></td>
                             <td><?php echo htmlspecialchars($product['quantity']); ?></td>
-                            <?php
-                            if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'Admin'): ?>
-
                             <td class="text-center align-middle" style="width: 50px;">
                                 <div class="dropdown dropdown">
                                     <i class="bi bi-three-dots-vertical"
@@ -106,17 +99,19 @@
                                                 Edit
                                             </a>
                                         </li>
-                                        <li>
-                                            <a class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small text-danger"
-                                                href="/products/delete/<?= $product['id'] ?>" style="font-size: 0.8rem;">
-                                                <i class="bi bi-trash3" style="font-size: 0.8rem;"></i>
-                                                Delete
-                                            </a>
-                                        </li>
+                                        <?php
+                                        if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'Admin'): ?>
+                                            <li>
+                                                <a class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small text-danger"
+                                                    href="/products/delete/<?= $product['id'] ?>" style="font-size: 0.8rem;">
+                                                    <i class="bi bi-trash3" style="font-size: 0.8rem;"></i>
+                                                    Delete
+                                                </a>
+                                            </li>
+                                        <?php endif; ?>
                                     </ul>
                                 </div>
                             </td>
-                            <?php endif; ?>
                         </tr>
                     <?php endforeach; ?>
                 <?php else : ?>
