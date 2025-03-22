@@ -286,7 +286,7 @@ if ($isLoggedIn):
     </a>
     <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
       <li>
-        <a href="#">
+        <a class="nav-link collapsed" href="/sales/top_selling">
           <i class="bi bi-circle"></i><span>Top Selling Products</span>
         </a>
       </li>
