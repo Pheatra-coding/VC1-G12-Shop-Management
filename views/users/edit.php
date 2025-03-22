@@ -13,30 +13,35 @@ $imageUrl = !empty($user['image']) ? htmlspecialchars($user['image']) : 'path/to
         <!-- CSRF Protection -->
         <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
 
-        <div class="mb-3 mt-3">
-            <label for="name" class="form-label">Name:</label>
-            <input type="text" class="form-control" id="name" placeholder="Enter name" name="name" value="<?php echo htmlspecialchars($user['name']); ?>" required>
+        <!-- Name and Email in one line -->
+        <div class="row mb-3 mt-3">
+            <div class="col-md-6">
+                <label for="name" class="form-label">Name:</label>
+                <input type="text" class="form-control" id="name" placeholder="Enter name" name="name" value="<?php echo htmlspecialchars($user['name']); ?>" required>
+            </div>
+            <div class="col-md-6">
+                <label for="email" class="form-label">Email:</label>
+                <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
+            </div>
         </div>
 
-        <div class="mb-3 mt-3">
-            <label for="email" class="form-label">Email:</label>
-            <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
+        <!-- Role and Password in one line -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="role" class="form-label">Role:</label>
+                <select name="role" id="role" class="form-control" required>
+                    <option value="" disabled>Select Role</option>
+                    <option value="admin" <?php echo $user['role'] === 'admin' ? 'selected' : ''; ?>>Admin</option>
+                    <option value="user" <?php echo $user['role'] === 'user' ? 'selected' : ''; ?>>User</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="pwd" class="form-label">Password:</label>
+                <input type="password" class="form-control" id="pwd" placeholder="Enter password (leave blank to keep current)" name="password">
+            </div>
         </div>
 
-        <div class="mb-3 mt-3">
-            <label for="role" class="form-label">Role:</label>
-            <select name="role" id="role" class="form-control" required>
-                <option value="" disabled>Select Role</option>
-                <option value="admin" <?php echo $user['role'] === 'admin' ? 'selected' : ''; ?>>Admin</option>
-                <option value="user" <?php echo $user['role'] === 'user' ? 'selected' : ''; ?>>User</option>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label for="pwd" class="form-label">Password:</label>
-            <input type="password" class="form-control" id="pwd" placeholder="Enter password (leave blank to keep current)" name="password">
-        </div>
-
+        <!-- Profile Image Upload -->
         <div class="mb-3">
             <label for="profile_image" class="form-label">Profile Image:</label>
             <input type="file" class="form-control" id="profile_image" name="image" accept="image/*" onchange="previewImage(event)">
@@ -69,8 +74,12 @@ $imageUrl = !empty($user['image']) ? htmlspecialchars($user['image']) : 'path/to
             <!-- Hidden input to indicate image deletion -->
             <input type="hidden" id="delete_image" name="delete_image" value="0">
         </div>
-        <button type="submit" class="btn btn-primary mt-3">Update</button>
-        <a href="/users" class="btn btn-secondary mt-3">Cancel</a>
+
+        <!-- Submit and Cancel Buttons -->
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i> Update User</button>
+            <a href="/users" class="btn btn-secondary" style="margin-left: 12px;"> <i class="fas fa-arrow-left me-2"></i> Back to Users</a>
+        </div>
     </form>
 </main>
 
@@ -80,9 +89,12 @@ function previewImage(event) {
     const reader = new FileReader();
     reader.onload = function() {
         const preview = document.getElementById('image_preview');
+        const closeButton = document.getElementById('close_preview');
+
+        // Set the image source and make it visible
         preview.src = reader.result;
         preview.style.display = 'block';
-        document.getElementById('close_preview').classList.remove('d-none');
+        closeButton.classList.remove('d-none');
         document.getElementById('delete_image').value = '0'; // Reset delete flag
     }
     reader.readAsDataURL(event.target.files[0]);

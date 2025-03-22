@@ -103,7 +103,9 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
             </div>
             <!-- Add Employee & Search Bar -->
             <div class="d-flex justify-content-between mb-3">
-                <a href="/users/create" class="btn btn-primary">Add Employee</a>
+            <a href="/users/create" class="btn btn-primary">
+                <i class="fas fa-user-plus"></i> Add Employee
+            </a>
                 <div class="input-group w-50">
                     <input type="text" id="searchInput" class="form-control" placeholder="Search employee..." onkeyup="searchTable()">
                     <button class="btn btn-secondary"><i class="fas fa-search"></i></button>
@@ -113,18 +115,18 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
             <table id="employeeTable" class="table">
                 <thead>
                     <tr>
-                        <th>Image</th>
+                        <th>Profile Picture</th>
                         <th onclick="sortTable(2)">
                             <div class="header-content">Username <i id="sortIconUsername" class="fas fa-arrow-up small-icon"></i></div>
                         </th>
                         <th onclick="sortTable(3)">
-                            <div class="header-content">Email <i id="sortIconEmail" class="fas fa-arrow-up small-icon"></i></div>
+                            <div class="header-content">Email Address <i id="sortIconEmail" class="fas fa-arrow-up small-icon"></i></div>
                         </th>
                         <th onclick="sortTable(4)">
-                            <div class="header-content">Role <i id="sortIconRole" class="fas fa-arrow-up small-icon"></i></div>
+                            <div class="header-content">User Role <i id="sortIconRole" class="fas fa-arrow-up small-icon"></i></div>
                         </th>
                         <th onclick="sortTable(5)">
-                            <div class="header-content">Status <i id="sortIconStatus" class="fas fa-arrow-up small-icon"></i></div>
+                            <div class="header-content">Account Status <i id="sortIconStatus" class="fas fa-arrow-up small-icon"></i></div>
                         </th>
                         <th>Actions</th>
                     </tr>
