@@ -300,6 +300,11 @@ if ($isLoggedIn):
           <i class="bi bi-circle"></i><span>Expiring Inventory</span>
         </a>
       </li>
+      <li>
+        <a class="nav-link collapsed" href="/products/low-stock-alert">
+          <i class="bi bi-circle"></i><span>Low Stock Products</span>
+        </a>
+      </li>
     </ul>
   </li><!-- End Tables Nav -->
 

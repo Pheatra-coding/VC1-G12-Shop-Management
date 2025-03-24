@@ -13,7 +13,7 @@ class LowStockAlertController extends BaseController {
     public function index() {
         $lowStockProducts = $this->lowStockModel->getLowStockProducts(10);
         // Make sure you pass the data to the right view
-        $this->view('welcome/welcome', [
+        $this->view('products_alert/low_stock_alert', [
             'products' => $lowStockProducts,
             'lowStockCount' => $this->lowStockCount
         ]);

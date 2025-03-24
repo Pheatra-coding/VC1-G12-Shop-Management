@@ -256,50 +256,63 @@
         <!-- Right side columns -->
         <div class="col-lg-4">
 
-    <!-- Low Stock Alert -->
-<div class="card shadow-sm">
-    <div class="card-header bg-white d-flex justify-content-between align-items-center">
-        <h5 class="card-title mb-0 fw-bold">Low Stock Alert</h5>
-        <span class="badge bg-danger rounded-pill"><?= $lowStockCount ?> Products Low in Stock</span>
-    </div>
+          <!-- Low Stock Alert -->
+          <div class="card shadow-lg border-0"> <!-- Increased shadow and removed border -->
+              <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+                  <h5 class="card-title mb-0 text-gray">Low Stock Alert</h5> <!-- Changed text color to primary -->
+                  <span class="badge bg-danger rounded-pill fs-6"><?= $lowStockCount ?> Items Low</span> <!-- Increased font size -->
+              </div>
 
-    <div class="card-body p-0">
-        <?php if (!empty($products)): ?>
-            <div class="table-responsive" style="max-height: 460px; overflow-y: auto;">
-                <table class="table table-striped table-hover align-middle mb-0">
-                    <thead class="thead-light">
-                        <tr>
-                            <th scope="col" class="text-center">Image</th>
-                            <th scope="col">Product Name</th>
-                            <th scope="col" class="text-center">Quantity Left</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($products as $product): ?>
-                            <tr>
-                                <td class="text-center">
-                                    <img src="/uploads/<?= htmlspecialchars($product['image']) ?>" alt="<?= htmlspecialchars($product['name']) ?>" class="img-thumbnail rounded-circle" style="width: 60px; height: 60px; object-fit: cover;">
-                                </td>
-                                <td class="fw-medium align-middle"><?= htmlspecialchars($product['name']) ?></td>
-                                <td class="text-center align-middle">
-                                    <span class="badge bg-warning text-dark p-2"><?= htmlspecialchars($product['quantity']) ?> pcs</span>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        <?php else: ?>
-            <div class="text-center p-4">
-                <img src="https://img.freepik.com/free-vector/men-with-shopping-car-business-coins_24877-53519.jpg?t=st=1742283614~exp=1742287214~hmac=c5f1ce28f14338a680d380538c600e25e5a13e6aec0bf9e2a2034d1b4e582083&w=996" alt="No Low Stock" class="img-fluid mb-3" style="max-width: 300px;">
-                <div class="alert alert-success m-3">
-                    <i class="fas fa-check-circle me-2"></i>
-                    <strong>Good news!</strong> No products are low in stock.
-                </div>
-            </div>
-        <?php endif; ?>
-    </div>
-</div>
+              <div class="card-body p-0">
+                  <?php if (!empty($lowStockProducts)): ?>
+                      <div class="table-responsive" style="max-height: 460px; overflow-y: auto;">
+                          <table class="table table-hover align-middle mb-0">
+                              <thead class="thead-light bg-light"> <!-- Light background for thead -->
+                                  <tr>
+                                      <th scope="col" class="text-center">Image</th>
+                                      <th scope="col">Product</th>
+                                      <th scope="col" class="text-center">Stock</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <?php 
+                                  $displayLimit = 3; // Limit to 3 products
+                                  $displayedProducts = array_slice($lowStockProducts, 0, $displayLimit); // Get the first 3 products
+                                  foreach ($displayedProducts as $product): ?>
+                                      <tr class="hover-shadow"> <!-- Added hover effect -->
+                                          <td class="text-center">
+                                              <img src="/uploads/<?= htmlspecialchars($product['image']) ?>" alt="<?= htmlspecialchars($product['name']) ?>" class="img-thumbnail rounded-circle " style="width: 60px; height: 60px; object-fit: cover;"> <!-- Added shadow to image -->
+                                          </td>
+                                          <td class="fw-medium align-middle text-dark"><?= htmlspecialchars($product['name']) ?></td> <!-- Darker text for better contrast -->
+                                          <td class="text-center align-middle">
+                                              <span class="badge bg-warning text-dark p-2 fs-6"><?= htmlspecialchars($product['quantity']) ?> pcs</span> <!-- Increased font size -->
+                                          </td>
+                                      </tr>
+                                  <?php endforeach; ?>
+                              </tbody>
+                          </table>
+                      </div>
+
+                      <!-- Add "See More" button if there are more than 3 products -->
+                      <?php if (count($lowStockProducts) > $displayLimit): ?>
+                          <div class="text-center mt-3 mb-3">
+                              <a href="/products/low-stock-alert" class="btn btn-primary btn-sm rounded-pill px-4 py-2"> <!-- Rounded button with padding -->
+                                  See More <i class="fas fa-arrow-right ms-2"></i>
+                              </a>
+                          </div>
+                      <?php endif; ?>
+
+                  <?php else: ?>
+                      <div class="text-center p-4">
+                          <img src="https://img.freepik.com/free-vector/men-with-shopping-car-business-coins_24877-53519.jpg?t=st=1742283614~exp=1742287214~hmac=c5f1ce28f14338a680d380538c600e25e5a13e6aec0bf9e2a2034d1b4e582083&w=996" alt="No Low Stock" class="img-fluid mb-3" style="max-width: 300px;">
+                          <div class="alert alert-success m-3 shadow-sm"> <!-- Added shadow to alert -->
+                              <i class="fas fa-check-circle me-2"></i>
+                              <strong>Good news!</strong> No products are low in stock.
+                          </div>
+                      </div>
+                  <?php endif; ?>
+              </div>
+          </div>
         </div><!-- End Right side columns -->
 
       </div>

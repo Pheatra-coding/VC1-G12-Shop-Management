@@ -54,7 +54,7 @@ $route->post("/scan_barcodes/scan", [ScanBarcodeController::class, 'scan']);
 
 
 //low stock alert 
-$route->get("/", [LowStockAlertController::class, 'index']);
+$route->get("/products/low-stock-alert", [LowStockAlertController::class, 'index']);
 
 // sales
 $route->get("/sales/top_selling", [TopSellingController::class, 'index']);
