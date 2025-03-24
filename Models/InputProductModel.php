@@ -70,6 +70,14 @@ class InputProductModel {
             return [];
         }
     }
+
+   
+    
+    public function deleteSale($id) {
+        $result = $this->db->query("DELETE FROM sales WHERE id = :id", ['id' => $id]);
+        return $result;
+    }
+    
 }
 
 

@@ -21,8 +21,8 @@ $errors = $_SESSION['errors'] ?? [];
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #4e54c8, #8f94fb);
-            color: #fff;
+            background: linear-gradient(135deg,rgb(221, 222, 226) 0%,rgb(230, 227, 233) 100%);
+            color: #333;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -35,10 +35,9 @@ $errors = $_SESSION['errors'] ?? [];
             width: 100%;
             height: 66%;
             max-width: 900px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+            background: #fff;
             border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
 
@@ -52,7 +51,7 @@ $errors = $_SESSION['errors'] ?? [];
 
         .image-container {
             width: 50%;
-            background: url('https://img.freepik.com/free-vector/banking-online-shop-isometric-composition_1284-25317.jpg?t=st=1742042597~exp=1742046197~hmac=99adc0ba9db00633f39220356d320dcce0f9e37ef256edc35ec9382b82ed1de6&w=900') center/cover;
+            background: url('https://img.freepik.com/free-vector/customer-behavior-concept-illustration_114360-7655.jpg?ga=GA1.1.1302695939.1736923948&semt=ais_keywords_boost') center/cover;
             background-size: cover;
             background-position: center;
             padding: 0;
@@ -63,6 +62,7 @@ $errors = $_SESSION['errors'] ?? [];
             text-align: center;
             font-size: 2rem;
             margin-bottom: 20px;
+            color: #4e54c8;
         }
 
         .form-group {
@@ -73,26 +73,27 @@ $errors = $_SESSION['errors'] ?? [];
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
+            color: #333;
         }
 
         input {
             width: 100%;
             padding: 10px 0;
             border: none;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+            border-bottom: 2px solid rgba(51, 51, 51, 0.5);
             background: transparent;
             font-size: 1rem;
-            color: #fff;
+            color: #333;
             transition: border-color 0.3s ease;
         }
 
         input:focus {
-            border-bottom-color: #fff;
+            border-bottom-color: #4e54c8;
             outline: none;
         }
 
         input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(51, 51, 51, 0.7);
         }
 
         /* Override browser autofill styles */
@@ -101,7 +102,7 @@ $errors = $_SESSION['errors'] ?? [];
         input:-webkit-autofill:focus,
         input:-webkit-autofill:active {
             -webkit-background-clip: text;
-            -webkit-text-fill-color: #fff;
+            -webkit-text-fill-color: #333;
             transition: background-color 5000s ease-in-out 0s;
             box-shadow: inset 0 0 20px 20px transparent;
         }
@@ -112,18 +113,18 @@ $errors = $_SESSION['errors'] ?? [];
             border: none;
             border-radius: 25px;
             font-size: 1rem;
-            background: #fff;
-            color: #4e54c8;
+            background: #4e54c8;
+            color: #fff;
             font-weight: bold;
             cursor: pointer;
             transition: 0.3s;
         }
 
         .btn:hover {
-            background: #4e54c8;
-            color: #fff;
+            background: #4348a5;
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            color: white;
         }
 
         /* Error message styling */
@@ -140,13 +141,13 @@ $errors = $_SESSION['errors'] ?? [];
         }
 
         .forgot-password a {
-            color: #fff;
+            color: #4e54c8;
             text-decoration: none;
             transition: color 0.3s ease;
         }
 
         .forgot-password a:hover {
-            color: #4e54c8;
+            color: #4348a5;
         }
 
         @media (max-width: 768px) {
