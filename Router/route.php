@@ -12,6 +12,7 @@ require_once "Controllers/TopSellingController.php";
 require_once "Controllers/LowSellingController.php";
 require_once "Controllers/DeletedEmployeeController.php";
 require_once "Controllers/ScanBarcodeController.php";
+require_once "Controllers/ExpiringProductController.php";
 
 $route = new Router();
 $route->get("/", [WelcomeController::class, 'welcome']);
@@ -23,6 +24,7 @@ $route->post("/products/store", [ProductController::class, 'store']);
 $route->get("/products/edit/{id}", [ProductController::class, 'edit']);
 $route->put("/products/update/{id}", [ProductController::class, 'update']);
 $route->delete("/products/delete/{id}", [ProductController::class, 'delete']);
+$route->get("/products/product_expiring", [ExpiringProductController::class, 'expiring']);
 
 //users
 $route->get("/users", [UserController::class, 'index']);
