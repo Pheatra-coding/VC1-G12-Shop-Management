@@ -3,18 +3,24 @@ require_once 'Models/ScanBarcodeModel.php';
 
 class ScanBarcodeController extends BaseController {
 
+    // Display the barcode scanning page
+    public function index() {
+        // Show the scanning form with no initial product info
+        $this->view('scan_barcodes/barcode');
+    }
+
     // Handle the form submission for scanning the barcode
     public function scan() {
         // Check if barcode was submitted
         if (isset($_POST['barcode'])) {
-            // Retrieve the barcode and normalize it
-            $barcode = trim($_POST['barcode']); // Trim any leading/trailing spaces
-            $barcode = strtolower($barcode);   // Convert barcode to lowercase for consistency
+            // Retrieve and normalize the barcode
+            $barcode = trim($_POST['barcode']); 
+            $barcode = strtolower($barcode);  
 
             // Create an instance of the model
             $model = new ScanBarcodeModel();
 
-            // Get the product information by barcode
+            // Get product information by barcode
             $productInfo = $model->getProductByBarcode($barcode);
 
             // Message to display based on the result
@@ -23,30 +29,35 @@ class ScanBarcodeController extends BaseController {
                 $updateResult = $model->updateProductQuantity($barcode);
 
                 if ($updateResult) {
-                    // Successfully updated the quantity
+                    // Successfully updated quantity
                     $message = "Product quantity updated successfully!";
+
+                    // Insert a sale record into the sales table
+                    $saleRecorded = $model->recordSale(
+                        $productInfo['id'], // Product ID
+                        1, // Quantity sold (assumed as 1 per scan)
+                        $productInfo['price'], // Price per item
+                        'Cash', // Default payment method
+                        'Completed' // Default status
+                    );
+
+                    // Debugging: Log if sale is not recorded
+                    if (!$saleRecorded) {
+                        error_log("Failed to insert sale record for product ID: " . $productInfo['id']);
+                    }
                 } else {
-                    // If no quantity left or another issue
                     $message = "Product not found or insufficient stock!";
                 }
             } else {
-                // Product not found
                 $message = "Product with the given barcode does not exist!";
             }
 
-            // Pass the product info and message to the view
+            // Pass product info and message to the view
             $this->view('scan_barcodes/barcode', ['productInfo' => $productInfo, 'message' => $message]);
         } else {
-            // If barcode wasn't submitted
             $message = "Please scan or enter a barcode.";
             $this->view('scan_barcodes/barcode', ['message' => $message]);
         }
-    }
-
-    // Display the barcode scanning page
-    public function index() {
-        // Show the scanning form with no initial product info
-        $this->view('scan_barcodes/barcode');
     }
 }
 ?>

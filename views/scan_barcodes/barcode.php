@@ -94,6 +94,19 @@
         .cart-table th {
             background-color: #f2f2f2;
         }
+
+        .btn-submit {
+            background-color: #28a745;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .btn-submit:hover {
+            background-color: #218838;
+        }
     </style>
 
     <div class="">
@@ -126,6 +139,7 @@
             <!-- Display product information if available -->
             <?php if (isset($productInfo) && is_array($productInfo)): ?>
                 <?php
+                    session_start(); // Ensure session is started
                     // Initialize cart session if not already done
                     if (!isset($_SESSION['cart'])) {
                         $_SESSION['cart'] = [];
@@ -145,45 +159,83 @@
                         ];
                     }
 
-                    // Calculate the total price
+                    // Update the total price for this product
+                    $_SESSION['cart'][$barcode]['total_price'] = $_SESSION['cart'][$barcode]['price'] * $_SESSION['cart'][$barcode]['quantity'];
+
+                    // Calculate the total price of all products in the cart
                     $totalPrice = 0;
                     foreach ($_SESSION['cart'] as $item) {
-                        $totalPrice += $item['price'] * $item['quantity'];
+                        $totalPrice += $item['total_price'];
                     }
                 ?>
             <?php endif; ?>
 
             <!-- Display the cart in a table -->
             <?php if (!empty($_SESSION['cart'])): ?>
-                <table class="cart-table">
-                    <thead>
-                        <tr>
-                            <th>Product Name</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($_SESSION['cart'] as $barcode => $item): ?>
+                <form method="POST" action="">
+                    <table class="cart-table">
+                        <thead>
                             <tr>
-                                <td><?= htmlspecialchars($item['name']) ?></td>
-                                <td>$<?= htmlspecialchars($item['price']) ?></td>
-                                <td><?= htmlspecialchars($item['quantity']) ?></td>
-                                <td>$<?= number_format($item['price'] * $item['quantity'], 2) ?></td>
+                                <th>Product Name</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
                             </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="3" style="text-align: right;"><strong>Total Price:</strong></td>
-                            <td><strong>$<?= number_format($totalPrice, 2) ?></strong></td>
-                        </tr>
-                    </tfoot>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($_SESSION['cart'] as $barcode => $item): ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($item['name']) ?></td>
+                                    <td>$<?= htmlspecialchars($item['price']) ?></td>
+                                    <td><?= htmlspecialchars($item['quantity']) ?></td>
+                                    <td>$<?= number_format($item['price'] * $item['quantity'], 2) ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" style="text-align: right;"><strong>Total Price:</strong></td>
+                                <td><strong>$<?= number_format($totalPrice, 2) ?></strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                    <!-- Submit button to process the sale -->
+                    <button type="submit" class="btn-submit" name="submit_sale">Submit Sale</button>
+                </form>
             <?php else: ?>
                 <p>No products scanned yet.</p>
             <?php endif; ?>
         </div>
     </div>
+
+    <?php
+    // Handle sale submission
+    if (isset($_POST['submit_sale'])) {
+        // Assuming you have a PDO instance $pdo already configured
+        // Insert the products from the cart into the 'sales' table
+
+        if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
+            foreach ($_SESSION['cart'] as $item) {
+                $query = "INSERT INTO sales (product_name, price, quantity, total_price, date) VALUES (:product_name, :price, :quantity, :total_price, NOW())";
+                $stmt = $pdo->prepare($query);
+                $stmt->execute([
+                    ':product_name' => $item['name'],
+                    ':price' => $item['price'],
+                    ':quantity' => $item['quantity'],
+                    ':total_price' => $item['total_price']
+                ]);
+            }
+
+            // After successfully processing the sale, clear the cart
+            unset($_SESSION['cart']);
+
+            // Optionally, redirect to a success page or show a success message
+            header("Location: /sales_success.php");
+            exit;
+        } else {
+            echo "<p>No products in the cart to submit.</p>";
+        }
+    }
+    ?>
 </main>
