@@ -77,6 +77,33 @@ class InputProductModel {
         $result = $this->db->query("DELETE FROM sales WHERE id = :id", ['id' => $id]);
         return $result;
     }
+
+
+    public function getSaleById($id)
+    {
+        try {
+            $stmt = $this->db->query("SELECT * FROM sales WHERE id = :id", ['id' => $id]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Error fetching sale: " . $e->getMessage();
+            return null;
+        }
+    }
+
+
+
+    public function updateSale($id, $product_id, $quantity, $total_price) {
+        $result = $this->db->query(
+            "UPDATE sales SET product_id = :product_id, quantity = :quantity, total_price = :total_price WHERE id = :id",
+            [
+                ':id' => $id,
+                ':product_id' => $product_id,
+                ':quantity' => $quantity,
+                ':total_price' => $total_price
+            ]
+        );
+        return $result;
+    }
     
 }
 

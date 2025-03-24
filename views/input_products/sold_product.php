@@ -65,7 +65,7 @@
     </div>
 
     <!-- Product Selection and Quantity Update Form -->
-    <form action="/inputproduct/processSale" method="post">
+    <form action="/input_products/processSale" method="post">
         <!-- CSRF Protection -->
         <input type="hidden" name="csrf_token" value="">
 
@@ -158,14 +158,14 @@
                                         style="min-width: 100px; margin-right: 30px;">
                                         <li>
                                             <a class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small"
-                                                href="/sold_product/edit/<?= $sale['id'] ?>" style="font-size: 0.8rem;">
+                                                href="/input_products/edit/<?= $sale['id'] ?>" style="font-size: 0.8rem;">
                                                 <i class="bi bi-pencil-square text-primary" style="font-size: 0.8rem;"></i>
                                                 Edit
                                             </a>
                                         </li>
                                         <li>
                                             <a class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small text-danger"
-                                                href="/sold_product/delete<?= $sale['id'] ?>" style="font-size: 0.8rem;">
+                                                href="/input_products/delete<?= $sale['id'] ?>" style="font-size: 0.8rem;">
                                                 <i class="bi bi-trash3" style="font-size: 0.8rem;"></i>
                                                 Delete
                                             </a>
