@@ -291,7 +291,7 @@ if ($isLoggedIn):
         </a>
       </li>
       <li>
-        <a href="#">
+      <a class="nav-link collapsed" href="/sales/low_selling">
           <i class="bi bi-circle"></i><span>Low Selling</span>
         </a>
       </li>

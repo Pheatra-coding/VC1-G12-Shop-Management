@@ -9,6 +9,7 @@ require_once "Controllers/UserController.php";
 require_once "Controllers/InputProductController.php";
 require_once "Controllers/LowStockAlertController.php";
 require_once "Controllers/TopSellingController.php";
+require_once "Controllers/LowSellingController.php";
 require_once "Controllers/DeletedEmployeeController.php";
 require_once "Controllers/ScanBarcodeController.php";
 
@@ -58,5 +59,6 @@ $route->get("/", [LowStockAlertController::class, 'index']);
 
 // sales
 $route->get("/sales/top_selling", [TopSellingController::class, 'index']);
+$route->get("/sales/low_selling", [lowSellingController::class, 'index']);
 
 $route->route();
