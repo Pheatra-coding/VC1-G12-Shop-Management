@@ -128,8 +128,8 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
         <div class="d-flex justify-content-between mb-3 flex-wrap">
              <!-- Bulk Actions -->
             <div class="bulk-actions">
-                <button class="btn btn-primary btn-sm" style="margin-bottom: -14px;" onclick="restoreSelected()">Restore Selected</button>
-                <button class="btn btn-danger btn-sm" style="margin-bottom: -14px;" onclick="deleteSelected()">Delete Selected Permanently</button>
+                <button class="btn btn-primary btn-sm" style="margin-bottom: -14px;" onclick="restoreSelected()">Restore</button>
+                <button class="btn btn-danger btn-sm" style="margin-bottom: -14px;" onclick="deleteSelected()">Delete Permanently</button>
             </div>
 
             <div class="input-group w-50">
