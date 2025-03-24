@@ -3,10 +3,12 @@
 // WelcomeController.php
 class WelcomeController extends BaseController {
     private $lowStockModel;
+    private $topSellingModel;
 
     public function __construct() {
-        // Initialize LowStockAlertModel to access low stock data
+        // Initialize models to access data
         $this->lowStockModel = new LowStockAlertModel();
+        $this->topSellingModel = new TopSellingModel();
     }
 
     public function welcome() {
@@ -14,10 +16,14 @@ class WelcomeController extends BaseController {
         $lowStockProducts = $this->lowStockModel->getLowStockProducts(10); // Adjust threshold as needed
         $lowStockCount = $this->lowStockModel->countLowStockProducts(10); // Count low stock items
         
-        // Pass the low stock data to the view along with other data
+        // Get top-selling products
+        $topSellingProducts = $this->topSellingModel->getTopSellingProducts();
+        
+        // Pass the data to the view
         $this->view('welcome/welcome', [
             'lowStockProducts' => $lowStockProducts,
-            'lowStockCount' => $lowStockCount
+            'lowStockCount' => $lowStockCount,
+            'topSellingProducts' => $topSellingProducts,
         ]);
     }
 }
