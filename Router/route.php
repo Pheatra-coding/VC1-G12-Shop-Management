@@ -40,11 +40,9 @@ $route->get("/users/profile", [UserController::class, 'viewProfile']);
 
 // sold products
 $route->get("/input_products/sold_product", [InputProductController::class, 'index']);
-$route->post("/input_products/processSale", [InputProductController::class, 'processSale']);
-$route->get("/input_products/delete{saleId}", action: [InputProductController::class, 'deleteSale']);
-$route->get("/input_products/edit/{id}", [InputProductController::class, 'editSale']);
-$route->put("/input_products/updateSale/{id}", [InputProductController::class, 'updateSale']);
-$route->put("/input_products/receipt", [InputProductController::class, 'receipt']);
+$route->post("/input_products/scan", [InputProductController::class, 'scan']);
+$route->post("/input_products/submit", [InputProductController::class, 'submit']);
+$route->post("/input_products/confirm", [InputProductController::class, 'confirm']);
 
 
 
