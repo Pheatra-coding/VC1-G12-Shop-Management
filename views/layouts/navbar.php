@@ -224,7 +224,6 @@ if ($isLoggedIn):
     <ul class="dropdown-menu dropdown-menu-end  profile">
         <li class="dropdown-header">
             <h6><?php echo isset($_SESSION['user_name']) ? htmlspecialchars($_SESSION['user_name']) : 'Guest'; ?></h6>
-            <span><?php echo isset($_SESSION['user_role']) ? htmlspecialchars($_SESSION['user_role']) : 'Visitor'; ?></span>
         </li>
         <li>
             <hr class="dropdown-divider">
@@ -275,18 +274,24 @@ if ($isLoggedIn):
   </li><!-- End Forms Nav -->
 
   <li class="nav-item">
+  <a class="nav-link collapsed" href="/scan_barcodes/barcode">
+    <i class="bi bi-upc-scan"></i><span>Scan Barcode</span>
+    </a>
+  </li><!-- End Forms Nav -->
+
+  <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
     <i class="bi bi-layout-text-window-reverse"></i><span>All Products</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
     <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
       <li>
-        <a href="#">
-          <i class="bi bi-circle"></i><span>Top Selling Products</span>
+        <a class="nav-link collapsed" href="/sales/top_selling">
+          <i class="bi bi-circle"></i><span>Top Selling</span>
         </a>
       </li>
       <li>
         <a href="#">
-          <i class="bi bi-circle"></i><span>Low Selling Products</span>
+          <i class="bi bi-circle"></i><span>Low Selling</span>
         </a>
       </li>
       <li>
@@ -305,7 +310,7 @@ if ($isLoggedIn):
 
   <li class="nav-item">
     <a class="nav-link collapsed" href="/products">
-    <i class="bi bi-table"></i><span>Products Management</span></i>
+    <i class="bi bi-table"></i><span>Products</span></i>
     </a>
   </li><!-- End Icons Nav -->
 
@@ -320,14 +325,14 @@ if ($isLoggedIn):
   <li class="nav-item">
     <a class="nav-link collapsed" href="/users">
     <i class="bi bi-people-fill"></i>
-      <span>Employees Management</span>
+      <span>Employees</span>
     </a>
   </li><!-- End Profile Page Nav -->
 
   <li class="nav-item">
     <a class="nav-link collapsed" href="/users/deleted">
     <i class="bi bi-person-x"></i>
-      <span>Deleted Employees</span>
+      <span>Terminated Employees</span>
     </a>
   </li><!-- End Profile Page Nav -->
   <?php endif; ?>
