@@ -224,7 +224,6 @@ if ($isLoggedIn):
     <ul class="dropdown-menu dropdown-menu-end  profile">
         <li class="dropdown-header">
             <h6><?php echo isset($_SESSION['user_name']) ? htmlspecialchars($_SESSION['user_name']) : 'Guest'; ?></h6>
-            <span><?php echo isset($_SESSION['user_role']) ? htmlspecialchars($_SESSION['user_role']) : 'Visitor'; ?></span>
         </li>
         <li>
             <hr class="dropdown-divider">
