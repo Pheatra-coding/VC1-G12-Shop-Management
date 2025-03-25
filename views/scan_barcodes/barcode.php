@@ -1,189 +1,384 @@
 <main id="main" class="main">
     <style>
-        body {
-            background-color: #f6f9ff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
         .scanner-container {
-            margin-top: 50px;
-            padding: 30px;
-            border: none;
-            border-radius: 12px;
-            background-color: #ffffff;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            margin-left: auto;
+            margin-right: auto;
         }
-
+        
+        .scanner-header {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #eaeaea;
+            text-align: center;
+        }
+        
         .input-group {
-            display: flex;
-            gap: 20px;
-            align-items: center;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
         }
-
-        .input-group .form-control {
-            border: 2px solid #e9ecef;
-            padding: 12px;
-            font-size: 16px;
-            flex: 0.5;
+        
+        #barcodeInput {
+            height: 50px;
+            font-size: 1.1rem;
+            border: 1px solid #e0e0e0;
+            border-right: none;
+            padding-left: 15px;
         }
-
-        .input-group .btn {
-            padding: 12px 20px;
-            font-size: 16px;
+        
+        .btn-custom {
+            border-radius: 0;
+            height: 50px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
             transition: all 0.3s ease;
         }
-
-        .btn-custom {
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
+        
         .btn-search {
-            background-color: #007bff;
+            background-color: #3498db;
             color: white;
             border: none;
+            padding: 0 25px;
         }
-
+        
         .btn-search:hover {
-            background-color: #0056b3;
+            background-color: #2980b9;
+            transform: translateY(-1px);
+        }
+        
+        .btn-submit {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 0;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 6px;
+            margin-top: 2rem;
+            width: 100%;
+            transition: all 0.3s ease;
+            display: none; /* Hidden by default */
+        }
+        
+        .btn-submit:hover {
+            background-color:#007bff;
             transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(39, 73, 174, 0.3);
         }
-
-        h1 {
-            color: #343a40;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        h4 {
-            color: #495057;
-            margin-bottom: 15px;
-        }
-
-        p {
-            color: #6c757d;
-            font-size: 16px;
-        }
-
-        .fa-search {
-            margin-right: 8px;
-        }
-
-        .alert-info {
-            background-color: #d1ecf1;
-            color: #0c5460;
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 20px;
-        }
-
+        
         .cart-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin: 1.5rem 0;
+            font-size: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            display: none; /* Hidden by default */
         }
-
-        .cart-table th, .cart-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
+        
         .cart-table th {
-            background-color: #f2f2f2;
+            background-color: #f8f9fa;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #2c3e50;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .cart-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+            vertical-align: middle;
+        }
+        
+        .cart-table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .cart-table tfoot td {
+            font-weight: 600;
+            background-color: #f8f9fa;
+            border-top: 2px solid #e0e0e0;
+        }
+        
+        .alert-info {
+            background-color: #e3f2fd;
+            color: #1976d2;
+            border-left: 4px solid #1976d2;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 1.5rem 0;
+            display: none; /* Hidden by default */
+        }
+        
+        .cart-section {
+            display: none; /* Will be shown when products are scanned */
+        }
+        
+        /* New styles for quantity controls */
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .quantity-btn {
+            background-color: #e0e0e0;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+        
+        .quantity-btn:hover {
+            background-color: #d0d0d0;
+        }
+        
+        .remove-btn {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+        
+        .remove-btn:hover {
+            background-color: #e04343;
+        }
+        
+        /* Style for the navigation button */
+        .nav-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover {
+            background-color: #218838;
+            transform: translateY(-1px);
+        }
+        
+        @media (max-width: 768px) {
+            .scanner-container {
+                padding: 1.5rem;
+            }
+            
+            #barcodeInput, .btn-custom {
+                height: 45px;
+                font-size: 1rem;
+            }
+            
+            .cart-table {
+                font-size: 0.9rem;
+            }
+            
+            .cart-table th, .cart-table td {
+                padding: 8px 10px;
+            }
         }
     </style>
 
-    <div class="">
-        <div class="pagetitle">
-            <h1>Scan Barcode</h1>
+    <div class="pagetitle">
+        <h1>Barcode Scanner</h1>
+        <!-- New navigation button -->
+        <!-- <a href="/dashboard" class="nav-btn">
+            <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+        </a> -->
+    </div>
+
+    <div class="scanner-container">
+        <div class="scanner-header">
+            <h4><i class="fas fa-barcode me-2"></i>Scan Product</h4>
         </div>
-        <p>Scan products to add them to the cart and process sales.</p>
+        
+        <form method="POST" action="/scan_barcodes/scan" class="mb-4">
+            <div class="input-group">
+                <input type="text" id="barcodeInput" class="form-control" 
+                       name="barcode" placeholder="Scan or enter barcode number" 
+                       autofocus autocomplete="off">
+                <button class="btn btn-custom btn-search" type="submit">
+                    <i class="fas fa-search me-2"></i>Search
+                </button>
+            </div>
+        </form>
 
-        <div class="scanner-container mt-4">
-            <h4>Barcode Scanner</h4>
-            <p>Scan a barcode or enter it manually to add products.</p>
+        <?php if (isset($message)): ?>
+            <div class="alert alert-info" id="message-alert">
+                <i class="fas fa-info-circle me-2"></i>
+                <?= htmlspecialchars($message) ?>
+            </div>
+        <?php endif; ?>
 
-            <!-- Form to submit the barcode -->
-            <form method="POST" action="/scan_barcodes/scan">
-                <div class="input-group">
-                    <input type="text" id="barcodeInput" class="form-control" name="barcode" placeholder="Enter barcode" aria-label="Enter barcode" autofocus>
-                    <button class="btn btn-custom btn-search" type="submit">
-                        <i class="fas fa-search"></i> Search
-                    </button>
-                </div>
-            </form>
-
-            <!-- Display message if available -->
-            <?php if (isset($message)): ?>
-                <div class="alert alert-info mt-4">
-                    <?= htmlspecialchars($message) ?>
-                </div>
-            <?php endif; ?>
-
-            <!-- Display product information if available -->
-            <?php if (isset($productInfo) && is_array($productInfo)): ?>
-                <?php
-                    // Initialize cart session if not already done
-                    if (!isset($_SESSION['cart'])) {
-                        $_SESSION['cart'] = [];
-                    }
-
-                    // Check if the product is already in the cart
-                    $barcode = htmlspecialchars($productInfo['barcode']);
-                    if (isset($_SESSION['cart'][$barcode])) {
-                        // If the product is already in the cart, increment the quantity
-                        $_SESSION['cart'][$barcode]['quantity'] += 1;
-                    } else {
-                        // If it's a new product, add it to the cart
-                        $_SESSION['cart'][$barcode] = [
-                            'name' => $productInfo['name'],
-                            'price' => $productInfo['price'],
-                            'quantity' => 1
-                        ];
-                    }
-
-                    // Calculate the total price
-                    $totalPrice = 0;
-                    foreach ($_SESSION['cart'] as $item) {
-                        $totalPrice += $item['price'] * $item['quantity'];
-                    }
-                ?>
-            <?php endif; ?>
-
-            <!-- Display the cart in a table -->
-            <?php if (!empty($_SESSION['cart'])): ?>
-                <table class="cart-table">
+        <div class="cart-section" id="cart-section">
+            <h5 class="mb-3"><i class="fas fa-shopping-cart me-2"></i>Your Cart</h5>
+            
+            <div class="table-responsive">
+                <table class="cart-table" id="cart-table">
                     <thead>
                         <tr>
-                            <th>Product Name</th>
+                            <th>Product</th>
                             <th>Price</th>
-                            <th>Quantity</th>
+                            <th>Qty</th>
                             <th>Total</th>
+                            <th>Actions</th> <!-- New column for actions -->
                         </tr>
                     </thead>
-                    <tbody>
-                        <?php foreach ($_SESSION['cart'] as $barcode => $item): ?>
-                            <tr>
-                                <td><?= htmlspecialchars($item['name']) ?></td>
-                                <td>$<?= htmlspecialchars($item['price']) ?></td>
-                                <td><?= htmlspecialchars($item['quantity']) ?></td>
-                                <td>$<?= number_format($item['price'] * $item['quantity'], 2) ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="3" style="text-align: right;"><strong>Total Price:</strong></td>
-                            <td><strong>$<?= number_format($totalPrice, 2) ?></strong></td>
-                        </tr>
-                    </tfoot>
+                    <tbody></tbody>
+                    <tfoot></tfoot>
                 </table>
-            <?php else: ?>
-                <p>No products scanned yet.</p>
-            <?php endif; ?>
+            </div>
+
+            <form method="POST" action="/scan_barcodes/submit" id="submit-form">
+                <input type="hidden" name="cart_data" id="cart-data">
+                <button type="submit" class="btn btn-custom btn-submit">
+                    <i class="fas fa-paper-plane me-2"></i>Submit Order
+                </button>
+            </form>
         </div>
     </div>
+
+    <script>
+        // Initialize cart - reset if coming from confirm
+        let cart = <?php echo isset($data['reset']) && $data['reset'] ? '{}': 'JSON.parse(localStorage.getItem("cart")) || {}'; ?>;
+        
+        function showCartSection(show) {
+            const cartSection = document.getElementById('cart-section');
+            const submitBtn = document.querySelector('.btn-submit');
+            const cartTable = document.getElementById('cart-table');
+            
+            if (show) {
+                cartSection.style.display = 'block';
+                submitBtn.style.display = 'block';
+                cartTable.style.display = 'table';
+            } else {
+                cartSection.style.display = 'none';
+            }
+        }
+        
+        function showMessageAlert(show) {
+            const alert = document.getElementById('message-alert');
+            if (alert) {
+                alert.style.display = show ? 'block' : 'none';
+            }
+        }
+
+        function updateCartTable() {
+            const tbody = document.querySelector('#cart-table tbody');
+            const tfoot = document.querySelector('#cart-table tfoot');
+            tbody.innerHTML = '';
+            let totalPrice = 0;
+
+            if (Object.keys(cart).length === 0) {
+                showCartSection(false);
+                showMessageAlert(false);
+            } else {
+                showCartSection(true);
+                showMessageAlert(true);
+                
+                for (let barcode in cart) {
+                    const item = cart[barcode];
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${item.name}</td>
+                        <td>$${item.price.toFixed(2)}</td>
+                        <td>
+                            <div class="quantity-controls">
+                                <button class="quantity-btn" onclick="updateQuantity('${barcode}', -1)">-</button>
+                                <span>${item.quantity}</span>
+                                <button class="quantity-btn" onclick="updateQuantity('${barcode}', 1)">+</button>
+                            </div>
+                        </td>
+                        <td>$${(item.price * item.quantity).toFixed(2)}</td>
+                        <td>
+                            <button class="remove-btn" onclick="removeItem('${barcode}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                    totalPrice += item.price * item.quantity;
+                }
+                tfoot.innerHTML = `
+                    <tr>
+                        <td colspan="4" style="text-align: right;"><strong>Total:</strong></td>
+                        <td><strong>$${totalPrice.toFixed(2)}</strong></td>
+                    </tr>
+                `;
+            }
+            document.getElementById('cart-data').value = JSON.stringify(cart);
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        // Function to update quantity
+        function updateQuantity(barcode, change) {
+            if (cart[barcode]) {
+                cart[barcode].quantity += change;
+                if (cart[barcode].quantity <= 0) {
+                    delete cart[barcode];
+                }
+                updateCartTable();
+            }
+        }
+
+        // Function to remove item
+        function removeItem(barcode) {
+            if (cart[barcode]) {
+                delete cart[barcode];
+                updateCartTable();
+            }
+        }
+
+        <?php if (isset($productInfo)): ?>
+            const barcode = '<?= htmlspecialchars($productInfo['barcode']) ?>';
+            if (cart[barcode]) {
+                cart[barcode].quantity += 1;
+            } else {
+                cart[barcode] = {
+                    product_id: <?= $productInfo['id'] ?>,
+                    name: '<?= htmlspecialchars($productInfo['name']) ?>',
+                    price: <?= $productInfo['price'] ?>,
+                    quantity: 1
+                };
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartTable();
+        <?php else: ?>
+            // Reset cart if coming from confirm
+            <?php if (isset($data['reset']) && $data['reset']): ?>
+                localStorage.removeItem('cart');
+                cart = {};
+            <?php endif; ?>
+            updateCartTable();
+        <?php endif; ?>
+
+        // Clear cart after submit
+        document.getElementById('submit-form').onsubmit = function() {
+            localStorage.setItem('cart', JSON.stringify(cart)); // Save current state before submit
+            setTimeout(() => {
+                localStorage.removeItem('cart'); // Clear after submission
+            }, 1000);
+        };
+
+        // Focus on barcode input on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('barcodeInput').focus();
+        });
+    </script>
 </main>

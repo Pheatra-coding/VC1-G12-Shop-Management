@@ -55,6 +55,8 @@ $route->get("/users/restore/{id}", [DeletedEmployeeController::class, 'restore']
 //display scan barcode
 $route->get("/scan_barcodes/barcode", [ScanBarcodeController::class, 'index']);
 $route->post("/scan_barcodes/scan", [ScanBarcodeController::class, 'scan']);
+$route->post("/scan_barcodes/submit", [ScanBarcodeController::class, 'submit']);
+$route->post("/scan_barcodes/confirm", [ScanBarcodeController::class, 'confirm']);
 
 
 //low stock alert 

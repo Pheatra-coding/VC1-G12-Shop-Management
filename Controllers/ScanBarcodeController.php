@@ -3,50 +3,81 @@ require_once 'Models/ScanBarcodeModel.php';
 
 class ScanBarcodeController extends BaseController {
 
-    // Handle the form submission for scanning the barcode
+    public function index() {
+        $this->view('scan_barcodes/barcode', [
+            'reset' => isset($_GET['reset']) // Pass reset flag if present
+        ]);
+    }
+    
     public function scan() {
-        // Check if barcode was submitted
         if (isset($_POST['barcode'])) {
-            // Retrieve the barcode and normalize it
-            $barcode = trim($_POST['barcode']); // Trim any leading/trailing spaces
-            $barcode = strtolower($barcode);   // Convert barcode to lowercase for consistency
-
-            // Create an instance of the model
+            $barcode = trim(strtolower($_POST['barcode']));
             $model = new ScanBarcodeModel();
-
-            // Get the product information by barcode
             $productInfo = $model->getProductByBarcode($barcode);
 
-            // Message to display based on the result
             if ($productInfo) {
-                // If product is found, attempt to update the quantity
                 $updateResult = $model->updateProductQuantity($barcode);
-
-                if ($updateResult) {
-                    // Successfully updated the quantity
-                    $message = "Product quantity updated successfully!";
-                } else {
-                    // If no quantity left or another issue
-                    $message = "Product not found or insufficient stock!";
-                }
+                $message = $updateResult ? 
+                    "Product scanned successfully!" : 
+                    "Insufficient stock!";
             } else {
-                // Product not found
-                $message = "Product with the given barcode does not exist!";
+                $message = "Product not found!";
             }
 
-            // Pass the product info and message to the view
-            $this->view('scan_barcodes/barcode', ['productInfo' => $productInfo, 'message' => $message]);
+            $this->view('scan_barcodes/barcode', [
+                'productInfo' => $productInfo,
+                'message' => $message
+            ]);
         } else {
-            // If barcode wasn't submitted
-            $message = "Please scan or enter a barcode.";
-            $this->view('scan_barcodes/barcode', ['message' => $message]);
+            $this->view('scan_barcodes/barcode', [
+                'message' => "Please scan a barcode"
+            ]);
         }
     }
 
-    // Display the barcode scanning page
-    public function index() {
-        // Show the scanning form with no initial product info
-        $this->view('scan_barcodes/barcode');
+    public function submit() {
+        if (isset($_POST['cart_data'])) {  // Check if 'cart_data' exists in the POST data
+            $model = new ScanBarcodeModel();
+            $cart = json_decode($_POST['cart_data'], true);
+    
+            // Save to sales table
+            foreach ($cart as $barcode => $item) {
+                $model->saveSale(
+                    $item['product_id'],
+                    $item['quantity'],
+                    $item['price'] * $item['quantity'],
+                    'pending'
+                );
+            }
+    
+            // Store cart data in session for all tabs
+            $_SESSION['cart'] = $cart;  // Store the cart in session
+    
+            // Clear cart flag and render receipt view
+            $this->view('scan_barcodes/receipt', [
+                'cart' => $cart,
+                'total' => array_sum(array_map(function($item) {
+                    return $item['price'] * $item['quantity'];
+                }, $cart)),
+                'clear_cart' => true
+            ]);
+        } else {
+            // If there's no cart data, redirect back to the scan page
+            header("Location: /scan_barcodes/barcode");
+            exit();
+        }
     }
+    
+    
+
+    public function confirm() {
+        $model = new ScanBarcodeModel();
+        $model->updateSalesStatus('completed');
+        
+        // Redirect to scan page with a fresh start
+        header("Location: /scan_barcodes/barcode?reset=true");
+        exit();
+    }
+
+
 }
-?>
