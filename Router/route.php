@@ -40,8 +40,12 @@ $route->get("/users/profile", [UserController::class, 'viewProfile']);
 
 // sold products
 $route->get("/input_products/sold_product", [InputProductController::class, 'index']);
-$route->post("/inputproduct/processSale", [InputProductController::class, 'processSale']);
-$route->get("/sold_product/delete{saleId}", action: [InputProductController::class, 'deleteSale']);
+$route->post("/input_products/scan", [InputProductController::class, 'scan']);
+$route->post("/input_products/submit", [InputProductController::class, 'submit']);
+$route->post("/input_products/confirm", [InputProductController::class, 'confirm']);
+
+
+
  
 //display deleted users
 $route->get("/users/deleted", [DeletedEmployeeController::class, 'index']);
