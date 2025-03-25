@@ -5,7 +5,6 @@
             max-width: 500px;
             margin: 20px auto;
             padding: 0;
-            background-color: #f5f5f5;
         }
         .receipt-container {
             background-color: white;

@@ -63,11 +63,11 @@
             margin-top: 2rem;
             width: 100%;
             transition: all 0.3s ease;
-            display: none; /* Hidden by default */
+            display: none;
         }
         
         .btn-submit:hover {
-            background-color:#007bff;
+            background-color: #0069d9;
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(39, 73, 174, 0.3);
         }
@@ -78,7 +78,7 @@
             margin: 1.5rem 0;
             font-size: 1rem;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            display: none; /* Hidden by default */
+            display: table; /* Changed from none to always show table */
         }
         
         .cart-table th {
@@ -113,14 +113,13 @@
             padding: 15px;
             border-radius: 4px;
             margin: 1.5rem 0;
-            display: none; /* Hidden by default */
+            display: none;
         }
         
         .cart-section {
-            display: none; /* Will be shown when products are scanned */
+            display: block; /* Changed from none to always show */
         }
         
-        /* New styles for quantity controls */
         .quantity-controls {
             display: flex;
             align-items: center;
@@ -156,7 +155,6 @@
             background-color: #e04343;
         }
         
-        /* Style for the navigation button */
         .nav-btn {
             background-color: #28a745;
             color: white;
@@ -197,10 +195,9 @@
 
     <div class="pagetitle">
         <h1>Barcode Scanner</h1>
-        <!-- New navigation button -->
-        <!-- <a href="/dashboard" class="nav-btn">
-            <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
-        </a> -->
+        <a href="/input_products/sold_product" class="btn btn-primary mt-3 mb-2 text-white outline-none">
+            <i class="fas fa-arrow-right me-2"></i> Input Products
+        </a>
     </div>
 
     <div class="scanner-container">
@@ -213,8 +210,8 @@
                 <input type="text" id="barcodeInput" class="form-control" 
                        name="barcode" placeholder="Scan or enter barcode number" 
                        autofocus autocomplete="off">
-                <button class="btn btn-custom btn-search" type="submit">
-                    <i class="fas fa-search me-2"></i>Search
+                <button class="btn btn-custom btn-search text-white" type="submit">
+                    <i class="fas fa-search me-2"></i>Scan
                 </button>
             </div>
         </form>
@@ -227,17 +224,15 @@
         <?php endif; ?>
 
         <div class="cart-section" id="cart-section">
-            <h5 class="mb-3"><i class="fas fa-shopping-cart me-2"></i>Your Cart</h5>
-            
             <div class="table-responsive">
                 <table class="cart-table" id="cart-table">
                     <thead>
                         <tr>
                             <th>Product</th>
                             <th>Price</th>
-                            <th>Qty</th>
+                            <th>QUANTITY</th>
                             <th>Total</th>
-                            <th>Actions</th> <!-- New column for actions -->
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -247,29 +242,19 @@
 
             <form method="POST" action="/scan_barcodes/submit" id="submit-form">
                 <input type="hidden" name="cart_data" id="cart-data">
-                <button type="submit" class="btn btn-custom btn-submit">
-                    <i class="fas fa-paper-plane me-2"></i>Submit Order
+                <button type="submit" class="btn btn-custom btn-submit text-white">
+                    <i class="fas fa-check-circle me-2"></i> Submit Order
                 </button>
             </form>
         </div>
     </div>
 
     <script>
-        // Initialize cart - reset if coming from confirm
         let cart = <?php echo isset($data['reset']) && $data['reset'] ? '{}': 'JSON.parse(localStorage.getItem("cart")) || {}'; ?>;
         
         function showCartSection(show) {
-            const cartSection = document.getElementById('cart-section');
             const submitBtn = document.querySelector('.btn-submit');
-            const cartTable = document.getElementById('cart-table');
-            
-            if (show) {
-                cartSection.style.display = 'block';
-                submitBtn.style.display = 'block';
-                cartTable.style.display = 'table';
-            } else {
-                cartSection.style.display = 'none';
-            }
+            submitBtn.style.display = show ? 'block' : 'none';
         }
         
         function showMessageAlert(show) {
@@ -288,6 +273,7 @@
             if (Object.keys(cart).length === 0) {
                 showCartSection(false);
                 showMessageAlert(false);
+                tbody.innerHTML = '<tr><td colspan="5">No products selected yet.</td></tr>';
             } else {
                 showCartSection(true);
                 showMessageAlert(true);
@@ -326,7 +312,6 @@
             localStorage.setItem('cart', JSON.stringify(cart));
         }
 
-        // Function to update quantity
         function updateQuantity(barcode, change) {
             if (cart[barcode]) {
                 cart[barcode].quantity += change;
@@ -337,7 +322,6 @@
             }
         }
 
-        // Function to remove item
         function removeItem(barcode) {
             if (cart[barcode]) {
                 delete cart[barcode];
@@ -360,7 +344,6 @@
             localStorage.setItem('cart', JSON.stringify(cart));
             updateCartTable();
         <?php else: ?>
-            // Reset cart if coming from confirm
             <?php if (isset($data['reset']) && $data['reset']): ?>
                 localStorage.removeItem('cart');
                 cart = {};
@@ -368,15 +351,13 @@
             updateCartTable();
         <?php endif; ?>
 
-        // Clear cart after submit
         document.getElementById('submit-form').onsubmit = function() {
-            localStorage.setItem('cart', JSON.stringify(cart)); // Save current state before submit
+            localStorage.setItem('cart', JSON.stringify(cart));
             setTimeout(() => {
-                localStorage.removeItem('cart'); // Clear after submission
+                localStorage.removeItem('cart');
             }, 1000);
         };
 
-        // Focus on barcode input on page load
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('barcodeInput').focus();
         });

@@ -268,14 +268,8 @@ if ($isLoggedIn):
 
   
   <li class="nav-item">
-     <a class="nav-link collapsed" href="/input_products/sold_product">
+     <a class="nav-link collapsed" href="/scan_barcodes/barcode">
     <i class="bi bi-box-seam"></i><span>Sold Products</span>
-    </a>
-  </li><!-- End Forms Nav -->
-
-  <li class="nav-item">
-  <a class="nav-link collapsed" href="/scan_barcodes/barcode">
-    <i class="bi bi-upc-scan"></i><span>Scan Barcode</span>
     </a>
   </li><!-- End Forms Nav -->
 
