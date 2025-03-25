@@ -22,7 +22,7 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true && isset($user) && 
                     <!-- Profile Avatar with subtle hover effect -->
                     <div style="margin-right: 20px; position: relative;">
                         <div style="width: 110px; height: 110px; border-radius: 15px; background: #3b82f6; transform: rotate(-3deg); position: absolute; top: -4px; left: -4px; z-index: -1; opacity: 0.5;"></div>
-                        <img src="/uploads/<?= htmlspecialchars($user['image'] ?? 'default.jpg', ENT_QUOTES, 'UTF-8') ?>"
+                        <img src="/views/uploads/<?= htmlspecialchars($user['image'] ?? 'default.jpg', ENT_QUOTES, 'UTF-8') ?>"
                             alt="User Profile"
                             class="rounded-3 border-2 border-white"
                             style="width: 110px; height: 110px; object-fit: cover; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); transition: all 0.3s ease;"
