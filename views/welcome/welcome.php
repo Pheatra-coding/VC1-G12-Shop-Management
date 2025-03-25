@@ -281,7 +281,7 @@
                                   foreach ($displayedProducts as $product): ?>
                                       <tr class="hover-shadow"> <!-- Added hover effect -->
                                           <td class="text-center">
-                                              <img src="/uploads/<?= htmlspecialchars($product['image']) ?>" alt="<?= htmlspecialchars($product['name']) ?>" class="img-thumbnail rounded-circle" style="width: 60px; height: 60px; object-fit: cover;">
+                                              <img src="/views/uploads/<?= htmlspecialchars($product['image']) ?>" alt="<?= htmlspecialchars($product['name']) ?>" class="img-thumbnail rounded-circle" style="width: 60px; height: 60px; object-fit: cover;">
                                           </td>
                                           <td class="fw-medium align-middle text-dark"><?= htmlspecialchars($product['name']) ?></td> <!-- Darker text for better contrast -->
                                           <td class="text-center align-middle">
@@ -344,7 +344,7 @@
                                   foreach ($displayedProducts as $product): ?>
                                       <tr class="hover-shadow"> <!-- Added hover effect -->
                                           <td class="text-center">
-                                              <img src="/uploads/<?= htmlspecialchars($product['image']) ?>" alt="<?= htmlspecialchars($product['name']) ?>" class="img-thumbnail rounded-circle " style="width: 60px; height: 60px; object-fit: cover;"> <!-- Added shadow to image -->
+                                              <img src="/views/uploads/<?= htmlspecialchars($product['image']) ?>" alt="<?= htmlspecialchars($product['name']) ?>" class="img-thumbnail rounded-circle " style="width: 60px; height: 60px; object-fit: cover;"> <!-- Added shadow to image -->
                                           </td>
                                           <td class="fw-medium align-middle text-dark"><?= htmlspecialchars($product['name']) ?></td> <!-- Darker text for better contrast -->
                                           <td class="text-center align-middle">

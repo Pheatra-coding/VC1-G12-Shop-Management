@@ -70,7 +70,7 @@
                             <td>
                                 <?php if (!empty($product['image']) && $product['image'] !== "No Image") : ?>
                                     <img
-                                        src="/uploads/<?php echo htmlspecialchars($product['image']); ?>"
+                                        src="/views/uploads/<?php echo htmlspecialchars($product['image']); ?>"
                                         alt="Product Image"
                                         style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
                                 <?php else : ?>

@@ -12,7 +12,7 @@
                 <div class="image-preview-container">
                     <img 
                         id="image_preview" 
-                        src="<?= $product['image'] ? '/uploads/' . htmlspecialchars($product['image']) : '#' ?>" 
+                        src="<?= $product['image'] ? '/views/uploads/' . htmlspecialchars($product['image']) : '#' ?>" 
                         alt="Product Image" 
                         class="img-fluid <?= $product['image'] ? 'rounded-circle' : 'd-none' ?>" 
                         style="width: 160px; height: 160px; object-fit: cover; border: 2px solid #ddd;"
