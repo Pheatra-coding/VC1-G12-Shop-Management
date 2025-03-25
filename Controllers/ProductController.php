@@ -9,9 +9,9 @@ class ProductController extends BaseController {
         $this->products = new ProductModel();
     }
 
-    // Get all products
+    // get all products
     public function index() {
-        $products = $this->products->getProduct(); // Fetch products from the model
+        $products = $this->products->getProduct(); 
         $this->view('products/product_list', ['products' => $products]); // Pass data to the view
     }
     
@@ -44,7 +44,7 @@ class ProductController extends BaseController {
 
     // Handle Image Upload
     $image = "No Image"; // Default value if no image is uploaded
-    $targetDir = "uploads/";
+    $targetDir = "/views/uploads/";
 
     if (!file_exists($targetDir)) {
         mkdir($targetDir, 0777, true);
@@ -109,7 +109,7 @@ class ProductController extends BaseController {
     
         // Handle Image Upload
         $image = $_FILES['image']['name'] ?? null;
-        $targetDir = "uploads/";
+        $targetDir = "/views/uploads/";
     
         if (!file_exists($targetDir)) {
             mkdir($targetDir, 0777, true);

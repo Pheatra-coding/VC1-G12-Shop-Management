@@ -215,7 +215,7 @@ if ($isLoggedIn):
         <li class="nav-item dropdown pe-3">
     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
         <!-- Ensure the image is styled as a rounded circle -->
-        <img src="/uploads/<?php echo isset($_SESSION['user_image']) ? htmlspecialchars($_SESSION['user_image']) : 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'; ?>" alt="Profile" class="rounded-circle" style="width: 38px; height: 40px; object-fit: cover; border-radius: 50%;">
+        <img src="/views/uploads/<?php echo isset($_SESSION['user_image']) ? htmlspecialchars($_SESSION['user_image']) : 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'; ?>" alt="Profile" class="rounded-circle" style="width: 38px; height: 40px; object-fit: cover; border-radius: 50%;">
         <span class="d-none d-md-block dropdown-toggle ps-2">
             <?php echo isset($_SESSION['user_name']) ? htmlspecialchars($_SESSION['user_name']) : 'Guest'; ?>
         </span>
@@ -224,7 +224,6 @@ if ($isLoggedIn):
     <ul class="dropdown-menu dropdown-menu-end  profile">
         <li class="dropdown-header">
             <h6><?php echo isset($_SESSION['user_name']) ? htmlspecialchars($_SESSION['user_name']) : 'Guest'; ?></h6>
-            <span><?php echo isset($_SESSION['user_role']) ? htmlspecialchars($_SESSION['user_role']) : 'Visitor'; ?></span>
         </li>
         <li>
             <hr class="dropdown-divider">
@@ -286,18 +285,23 @@ if ($isLoggedIn):
     </a>
     <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
       <li>
-        <a href="#">
-          <i class="bi bi-circle"></i><span>Top Selling Products</span>
+        <a class="nav-link collapsed" href="/sales/top_selling">
+          <i class="bi bi-circle"></i><span>Top Selling</span>
         </a>
       </li>
       <li>
         <a href="#">
-          <i class="bi bi-circle"></i><span>Low Selling Products</span>
+          <i class="bi bi-circle"></i><span>Low Selling</span>
         </a>
       </li>
       <li>
         <a href="#">
           <i class="bi bi-circle"></i><span>Expiring Inventory</span>
+        </a>
+      </li>
+      <li>
+        <a class="nav-link collapsed" href="/products/low-stock-alert">
+          <i class="bi bi-circle"></i><span>Low Stock Products</span>
         </a>
       </li>
     </ul>
@@ -311,7 +315,7 @@ if ($isLoggedIn):
 
   <li class="nav-item">
     <a class="nav-link collapsed" href="/products">
-    <i class="bi bi-table"></i><span>Products Management</span></i>
+    <i class="bi bi-table"></i><span>Products</span></i>
     </a>
   </li><!-- End Icons Nav -->
 
@@ -326,14 +330,14 @@ if ($isLoggedIn):
   <li class="nav-item">
     <a class="nav-link collapsed" href="/users">
     <i class="bi bi-people-fill"></i>
-      <span>Employees Management</span>
+      <span>Employees</span>
     </a>
   </li><!-- End Profile Page Nav -->
 
   <li class="nav-item">
     <a class="nav-link collapsed" href="/users/deleted">
     <i class="bi bi-person-x"></i>
-      <span>Deleted Employees</span>
+      <span>Terminated Employees</span>
     </a>
   </li><!-- End Profile Page Nav -->
   <?php endif; ?>

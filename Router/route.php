@@ -8,6 +8,7 @@ require_once "Controllers/ProductController.php";
 require_once "Controllers/UserController.php";
 require_once "Controllers/InputProductController.php";
 require_once "Controllers/LowStockAlertController.php";
+require_once "Controllers/TopSellingController.php";
 require_once "Controllers/DeletedEmployeeController.php";
 require_once "Controllers/ScanBarcodeController.php";
 
@@ -21,7 +22,6 @@ $route->post("/products/store", [ProductController::class, 'store']);
 $route->get("/products/edit/{id}", [ProductController::class, 'edit']);
 $route->put("/products/update/{id}", [ProductController::class, 'update']);
 $route->delete("/products/delete/{id}", [ProductController::class, 'delete']);
-
 
 //users
 $route->get("/users", [UserController::class, 'index']);
@@ -56,6 +56,9 @@ $route->post("/scan_barcodes/confirm", [ScanBarcodeController::class, 'confirm']
 
 
 //low stock alert 
-$route->get("/", [LowStockAlertController::class, 'index']);
+$route->get("/products/low-stock-alert", [LowStockAlertController::class, 'index']);
+
+// sales
+$route->get("/sales/top_selling", [TopSellingController::class, 'index']);
 
 $route->route();
