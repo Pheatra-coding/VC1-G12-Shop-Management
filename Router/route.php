@@ -8,6 +8,7 @@ require_once "Controllers/ProductController.php";
 require_once "Controllers/UserController.php";
 require_once "Controllers/InputProductController.php";
 require_once "Controllers/LowStockAlertController.php";
+require_once "Controllers/TopSellingController.php";
 require_once "Controllers/DeletedEmployeeController.php";
 require_once "Controllers/ScanBarcodeController.php";
 
@@ -21,7 +22,6 @@ $route->post("/products/store", [ProductController::class, 'store']);
 $route->get("/products/edit/{id}", [ProductController::class, 'edit']);
 $route->put("/products/update/{id}", [ProductController::class, 'update']);
 $route->delete("/products/delete/{id}", [ProductController::class, 'delete']);
-
 
 //users
 $route->get("/users", [UserController::class, 'index']);
@@ -40,8 +40,12 @@ $route->get("/users/profile", [UserController::class, 'viewProfile']);
 
 // sold products
 $route->get("/input_products/sold_product", [InputProductController::class, 'index']);
-$route->post("/inputproduct/processSale", [InputProductController::class, 'processSale']);
-$route->get("/sold_product/delete{saleId}", action: [InputProductController::class, 'deleteSale']);
+$route->post("/input_products/scan", [InputProductController::class, 'scan']);
+$route->post("/input_products/submit", [InputProductController::class, 'submit']);
+$route->post("/input_products/confirm", [InputProductController::class, 'confirm']);
+
+
+
  
 //display deleted users
 $route->get("/users/deleted", [DeletedEmployeeController::class, 'index']);
@@ -53,9 +57,14 @@ $route->post("/users/bulk_restore", [DeletedEmployeeController::class, 'bulkRest
 //display scan barcode
 $route->get("/scan_barcodes/barcode", [ScanBarcodeController::class, 'index']);
 $route->post("/scan_barcodes/scan", [ScanBarcodeController::class, 'scan']);
+$route->post("/scan_barcodes/submit", [ScanBarcodeController::class, 'submit']);
+$route->post("/scan_barcodes/confirm", [ScanBarcodeController::class, 'confirm']);
 
 
 //low stock alert 
-$route->get("/", [LowStockAlertController::class, 'index']);
+$route->get("/products/low-stock-alert", [LowStockAlertController::class, 'index']);
+
+// sales
+$route->get("/sales/top_selling", [TopSellingController::class, 'index']);
 
 $route->route();

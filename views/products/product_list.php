@@ -16,7 +16,7 @@
         <h1>Products Management</h1>
     </div>
     <div class="d-flex justify-content-between mb-3">
-        <a href="/products/create" class="btn btn-primary">Add Product</a>
+        <a href="/products/create" class="btn btn-primary"> <i class="fas fa-plus"></i> Add Product</a>
         <div class="input-group w-50">
             <input
                 type="text"
@@ -33,13 +33,13 @@
     <div class="table-responsive">
         <table id="productTable" class="table" style="vertical-align: middle;">
             <thead>
-            <tr>
+                    <tr>
                         <th>Image</th>
                         <th onclick="sortTable(2)">
                             <div class="header-content">Name <i id="sortIconName" class="fas fa-arrow-up small-icon" ></i> <!-- Single arrow icon --></div>
                         </th>
                         <th onclick="sortTable(3)">
-                            <div class="header-content">End Date <i id="sortIconEndDate" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
+                            <div class="header-content">Expires  <i id="sortIconEndDate" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
                         </th>
                         <th onclick="sortTable(4)">
                             <div class="header-content">Barcode <i id="sortIconBarcode" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
@@ -51,7 +51,10 @@
                             <div class="header-content">Quantity <i id="sortIconQuantity" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
                         </th>
                         <th>Actions</th>
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
                     </tr>
 
             </thead>
@@ -71,7 +74,7 @@
                             <td>
                                 <?php if (!empty($product['image']) && $product['image'] !== "No Image") : ?>
                                     <img
-                                        src="/uploads/<?php echo htmlspecialchars($product['image']); ?>"
+                                        src="/views/uploads/<?php echo htmlspecialchars($product['image']); ?>"
                                         alt="Product Image"
                                         style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
                                 <?php else : ?>
