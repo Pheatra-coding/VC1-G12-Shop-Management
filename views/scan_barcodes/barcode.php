@@ -228,9 +228,9 @@
                 <table class="cart-table" id="cart-table">
                     <thead>
                         <tr>
-                            <th>Product</th>
+                            <th>Name</th>
                             <th>Price</th>
-                            <th>QUANTITY</th>
+                            <th>Quantity</th>
                             <th>Total</th>
                             <th>Actions</th>
                         </tr>

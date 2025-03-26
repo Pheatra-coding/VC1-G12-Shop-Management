@@ -2,12 +2,11 @@
     <style>
         .main {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            max-width: 500px;
-            margin: 20px auto;
             padding: 0;
-            
         }
         .receipt-container {
+            width: 40%;
+            margin: auto;
             background-color: white;
             border-radius: 12px;
             padding: 25px;
@@ -110,7 +109,7 @@
         .btn-confirm:hover {
             background-color: #2ecc71;
         }
-        .btn-telegram {
+        .btn-download {
             background-color: #0088cc;
             color: white;
             padding: 12px 25px;
@@ -126,7 +125,7 @@
             justify-content: center;
             gap: 8px;
         }
-        .btn-telegram:hover {
+        .btn-download:hover {
             background-color: #1a9ce0;
         }
         .receipt-footer {
@@ -137,7 +136,7 @@
         }
     </style>
 
-    <div class="receipt-container">
+    <div class="receipt-container" id="receipt">
         <div class="receipt-header">
             <h1>DINO SHOP</h1>
             <p>Order Receipt</p>
@@ -177,23 +176,24 @@
         </table>
 
         <div class="qr-code">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" alt="Payment QR Code">
+            <img src="/views/assets/img/DinoQR.png" alt="Payment QR Code">
             <p>Scan to complete payment</p>
         </div>
 
-        <form method="POST" action="/scan_barcodes/confirm">
+        <form method="POST" action="/scan_barcodes/confirm" id="confirm-form">
             <button type="submit" class="btn-confirm">Confirm Payment</button>
         </form>
 
-        <button class="btn-telegram" onclick="shareToTelegram()">
+        <button class="btn-download" onclick="downloadReceipt()" id="download-btn">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.287 5.906c-.778.324-2.334.994-4.666 2.01-.378.15-.577.298-.595.442-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294.26.006.549-.1.868-.32 2.179-1.471 3.304-2.214 3.374-2.23.05-.012.12-.026.166.016.047.041.042.12.037.141-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8.154 8.154 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629.093.06.183.125.27.187.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.426 1.426 0 0 0-.013-.315.337.337 0 0 0-.114-.217.526.526 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09z"/>
+                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
             </svg>
-            Share to Telegram
+            Download Receipt
         </button>
 
         <div class="receipt-footer">
-            <p>Thank you for程度上 shopping with us!</p>
+            <p>Thank you for shopping with us!</p>
         </div>
     </div>
 
@@ -203,29 +203,49 @@
         </script>
     <?php endif; ?>
 
+    <!-- Add html2canvas library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
     <script>
-        function shareToTelegram() {
-            // Generate receipt text
-            let receiptText = `*DINO SHOP - Order Receipt*\n\n`;
-            receiptText += `*Shop:* Dino Shop\n`;
-            receiptText += `*Date:* ${new Date().toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}\n\n`;
-            receiptText += `*Order Summary:*\n`;
-            
-            // Add cart items
-            <?php foreach ($data['cart'] as $item): ?>
-                receiptText += `- ${<?= $item['quantity'] ?>} × ${<?= json_encode($item['name']) ?>}: $${<?= number_format($item['price'], 2) ?>}\n`;
-            <?php endforeach; ?>
-            
-            receiptText += `\n*Subtotal:* $${<?= number_format($data['total'], 2) ?>}\n`;
-            receiptText += `*Discount:* $0.00\n`;
-            receiptText += `*Total Amount:* $${<?= number_format($data['total'], 2) ?>}\n\n`;
-            receiptText += `Thank you for shopping with us!`;
-            
-            // Encode the text for URL
-            const encodedText = encodeURIComponent(receiptText);
-            
-            // Open Telegram share link
-            window.open(`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodedText}`, '_blank');
+        async function downloadReceipt() {
+            try {
+                // Get the elements to hide
+                const confirmForm = document.getElementById('confirm-form');
+                const downloadBtn = document.getElementById('download-btn');
+
+                // Temporarily hide the buttons
+                confirmForm.style.display = 'none';
+                downloadBtn.style.display = 'none';
+
+                // Capture the receipt as an image
+                const element = document.getElementById('receipt');
+                const canvas = await html2canvas(element, {
+                    scale: 2, // Increase resolution
+                    useCORS: true, // Allow cross-origin images
+                    backgroundColor: '#ffffff' // Ensure white background
+                });
+
+                // Show the buttons again
+                confirmForm.style.display = 'block';
+                downloadBtn.style.display = 'flex';
+
+                // Create download link
+                const image = canvas.toDataURL('image/png');
+                const link = document.createElement('a');
+                link.download = 'dino-shop-receipt.png';
+                link.href = image;
+                link.click();
+                
+            } catch (error) {
+                // Ensure buttons are shown even if there's an error
+                const confirmForm = document.getElementById('confirm-form');
+                const downloadBtn = document.getElementById('download-btn');
+                confirmForm.style.display = 'block';
+                downloadBtn.style.display = 'flex';
+
+                console.error('Error generating receipt image:', error);
+                alert('Failed to generate receipt image. Please try again.');
+            }
         }
     </script>
 </main>
