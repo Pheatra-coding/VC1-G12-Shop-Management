@@ -51,10 +51,6 @@
                             <div class="header-content">Quantity <i id="sortIconQuantity" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
                         </th>
                         <th>Actions</th>
-<<<<<<< HEAD
-
-=======
->>>>>>> main
                     </tr>
 
             </thead>

@@ -48,40 +48,72 @@
               </div>
             </div><!-- End Sales Card -->
 
-            <!-- Revenue Card -->
+          <!-- Revenue Card -->
             <div class="col-xxl-4 col-md-6">
-              <div class="card info-card revenue-card">
-
-                <div class="filter">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
-                    </li>
-
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                  </ul>
-                </div>
-
-                <div class="card-body">
-                  <h5 class="card-title">Revenue <span>| This Month</span></h5>
-
-                  <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-currency-dollar"></i>
+                <div class="card info-card revenue-card">
+                    <div class="filter">
+                        <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                            <li class="dropdown-header text-start">
+                                <h6>Filter</h6>
+                            </li>
+                            <li><a class="dropdown-item" href="#" onclick="showRevenue('daily')">Today</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="showRevenue('weekly')">This Week</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="showRevenue('monthly')">This Month</a></li>
+                        </ul>
                     </div>
-                    <div class="ps-3">
-                      <h6>$3,264</h6>
-                      <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
 
+                    <div class="card-body">
+                        <h5 class="card-title">Revenue <span id="revenue-period">| Today</span></h5>
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-currency-dollar"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6 id="revenue-amount">$<?php echo number_format($dailySales['total'], 2); ?></h6>
+                                <span id="revenue-percentage" class="small pt-1 fw-bold 
+                                    <?php echo $dailySales['trend'] === 'increase' ? 'text-success' : 'text-danger'; ?>">
+                                    <?php echo $dailySales['percentage']; ?>%
+                                </span>
+                                <span id="revenue-trend" class="text-muted small pt-2 ps-1">
+                                    <?php echo $dailySales['trend']; ?>
+                                </span>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
+            </div>
 
-              </div>
-            </div><!-- End Revenue Card -->
+            <script>
+                const revenueData = {
+                    'daily': {
+                        total: '<?php echo $dailySales['total']; ?>',
+                        percentage: '<?php echo $dailySales['percentage']; ?>',
+                        trend: '<?php echo $dailySales['trend']; ?>'
+                    },
+                    'weekly': {
+                        total: '<?php echo $weeklySales['total']; ?>',
+                        percentage: '<?php echo $weeklySales['percentage']; ?>',
+                        trend: '<?php echo $weeklySales['trend']; ?>'
+                    },
+                    'monthly': {
+                        total: '<?php echo $monthlySales['total']; ?>',
+                        percentage: '<?php echo $monthlySales['percentage']; ?>',
+                        trend: '<?php echo $monthlySales['trend']; ?>'
+                    }
+                };
+
+                function showRevenue(period) {
+                    const data = revenueData[period];
+                    document.getElementById('revenue-period').textContent = '| ' + 
+                        (period === 'daily' ? 'Today' : period === 'weekly' ? 'This Week' : 'This Month');
+                    document.getElementById('revenue-amount').textContent = '$' + parseFloat(data.total).toFixed(2);
+                    document.getElementById('revenue-percentage').textContent = data.percentage + '%';
+                    document.getElementById('revenue-percentage').className = 'small pt-1 fw-bold ' + 
+                        (data.trend === 'increase' ? 'text-success' : 'text-danger');
+                    document.getElementById('revenue-trend').textContent = data.trend;
+                }
+            </script><!-- End Revenue Card -->
 
             <!-- Customers Card -->
             <div class="col-xxl-4 col-xl-12">

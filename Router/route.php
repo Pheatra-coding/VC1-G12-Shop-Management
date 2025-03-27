@@ -11,6 +11,7 @@ require_once "Controllers/LowStockAlertController.php";
 require_once "Controllers/TopSellingController.php";
 require_once "Controllers/DeletedEmployeeController.php";
 require_once "Controllers/ScanBarcodeController.php";
+require_once "Controllers/SaleController.php";
 
 $route = new Router();
 $route->get("/", [WelcomeController::class, 'welcome']);
