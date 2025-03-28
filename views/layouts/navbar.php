@@ -215,7 +215,7 @@ if ($isLoggedIn):
         <li class="nav-item dropdown pe-3">
     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
         <!-- Ensure the image is styled as a rounded circle -->
-        <img src="/uploads/<?php echo isset($_SESSION['user_image']) ? htmlspecialchars($_SESSION['user_image']) : 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'; ?>" alt="Profile" class="rounded-circle" style="width: 38px; height: 40px; object-fit: cover; border-radius: 50%;">
+        <img src="/views/uploads/<?php echo isset($_SESSION['user_image']) ? htmlspecialchars($_SESSION['user_image']) : 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'; ?>" alt="Profile" class="rounded-circle" style="width: 38px; height: 40px; object-fit: cover; border-radius: 50%;">
         <span class="d-none d-md-block dropdown-toggle ps-2">
             <?php echo isset($_SESSION['user_name']) ? htmlspecialchars($_SESSION['user_name']) : 'Guest'; ?>
         </span>
@@ -224,7 +224,6 @@ if ($isLoggedIn):
     <ul class="dropdown-menu dropdown-menu-end  profile">
         <li class="dropdown-header">
             <h6><?php echo isset($_SESSION['user_name']) ? htmlspecialchars($_SESSION['user_name']) : 'Guest'; ?></h6>
-            <span><?php echo isset($_SESSION['user_role']) ? htmlspecialchars($_SESSION['user_role']) : 'Visitor'; ?></span>
         </li>
         <li>
             <hr class="dropdown-divider">
@@ -269,14 +268,8 @@ if ($isLoggedIn):
 
   
   <li class="nav-item">
-     <a class="nav-link collapsed" href="/input_products/sold_product">
+     <a class="nav-link collapsed" href="/scan_barcodes/barcode">
     <i class="bi bi-box-seam"></i><span>Sold Products</span>
-    </a>
-  </li><!-- End Forms Nav -->
-
-  <li class="nav-item">
-  <a class="nav-link collapsed" href="/scan_barcodes/barcode">
-    <i class="bi bi-upc-scan"></i><span>Scan Barcode</span>
     </a>
   </li><!-- End Forms Nav -->
 
@@ -298,6 +291,11 @@ if ($isLoggedIn):
       <li>
       <a class="nav-link collapsed" href="/products/product_expiring">
           <i class="bi bi-circle"></i><span>Expiring Inventory</span>
+        </a>
+      </li>
+      <li>
+        <a class="nav-link collapsed" href="/products/low-stock-alert">
+          <i class="bi bi-circle"></i><span>Low Stock Products</span>
         </a>
       </li>
     </ul>
