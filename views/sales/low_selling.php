@@ -14,14 +14,11 @@
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
             position: relative;
             margin: 0 auto;
-            animation: fadeInUp 0.5s ease forwards;
         }
-
         .card:hover {
             transform: translateY(-4px);
             box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
         }
-
         .card-header {
             display: flex;
             justify-content: space-between;
@@ -29,12 +26,11 @@
             padding: 1rem 1.25rem;
             position: relative;
             z-index: 1;
-            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
-            border-bottom: 1px solid #d1d5db;
+            background: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
         }
-
         .price-header {
-            color: #1e3a8a;
+            color: #1e40af;
             font-size: 1.15rem;
             font-weight: 600;
             text-align: center;
@@ -45,40 +41,32 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
             font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
             transition: transform 0.3s ease, background 0.3s ease;
-            background: #ffffff;
         }
-
         .card:hover .price-header {
             transform: translateY(-2px);
-            background: #e0e7ff;
+            background: #dbeafe;
         }
-
         .card-img-top {
-            width: 100%;
-            height: 220px;
-            object-fit: contain;
+            width: 100%; /* Full width to match the card */
+            height: 220px; /* Adjusted to match the example's proportion */
+            object-fit: contain; /* Ensures the full product is visible */
             transition: all 0.3s ease;
             border: none;
             position: relative;
-            background: transparent;
-            padding: 1rem;
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.05));
+            background: transparent; /* Transparent background to match the example */
+            padding: 1rem; /* Padding to ensure the product fits nicely */
         }
-
         .card:hover .card-img-top {
             transform: scale(1.02);
-            filter: brightness(1.03) drop-shadow(0 6px 12px rgba(0, 0, 0, 0.08));
+            filter: brightness(1.03);
         }
-
         .card-body {
             padding: 1rem 1.25rem;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
             position: relative;
-            background: linear-gradient(to top, #f8fafc, #ffffff);
         }
-
         .content-center {
             flex-grow: 1;
             display: flex;
@@ -87,23 +75,24 @@
             text-align: center;
             gap: 0.5rem;
         }
-
         .card-title {
             font-size: 1.15rem;
             font-weight: 600;
-            color: #1f2937;
+            color: #111827;
             margin-bottom: 0;
             line-height: 1.3;
             text-transform: capitalize;
             padding: 0.5rem 1rem;
             border-radius: 6px;
             font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-            background: rgba(241, 245, 249, 0.7);
+            transition: color 0.3s ease;
         }
-
+        .card:hover .card-title {
+            color: #1e40af;
+        }
         .text-muted {
             font-size: 0.9rem;
-            color: #4b5563;
+            color: #6b7280;
             margin-bottom: 0;
             display: flex;
             justify-content: center;
@@ -112,93 +101,38 @@
             padding: 0.4rem 1rem;
             border-radius: 6px;
             font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-            background: #f1f5f9;
+            transition: transform 0.3s ease, background 0.3s ease;
         }
-
         .text-muted i {
             margin-right: 0.5rem;
             font-size: 1.1rem;
-            color: #b91c1c;
+            color: #dc2626; /* Red for stock, matching the example */
+            transition: transform 0.2s ease;
         }
-
         .text-muted:nth-child(2) i {
-            color: #15803d;
+            color: #16a34a; /* Green for date, matching the example */
         }
-
+        .card:hover .text-muted {
+            transform: scale(1.02);
+            background: #f3f4f6;
+        }
+        .card:hover .text-muted i {
+            transform: scale(1.1);
+        }
         .no-image {
-            background: #e2e8f0;
+            background: #f3f4f6;
             display: flex;
             align-items: center;
             justify-content: center;
             width: 100%;
             height: 220px;
             font-size: 0.9rem;
-            color: #64748b;
+            color: #6b7280;
             font-weight: 500;
             border-radius: 0;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             position: relative;
-            transition: background 0.3s ease;
-        }
-
-        .no-image:hover {
-            background: #cbd5e1;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Page Title Style from Image */
-        .pagetitle h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #003087;
-            /* Dark blue from image */
-            margin-bottom: 1rem;
-        }
-
-        /* Search Bar Style from Image */
-        .input-group {
-            width: 100%;
-            max-width: 400px;
-            /* Matches the width in the image */
-        }
-
-        .input-group .form-control {
-            border: 1px solid #d1d5db;
-            /* Light gray border */
-            border-radius: 0.25rem 0 0 0.25rem;
-            padding: 0.5rem 1rem;
-            font-size: 0.9rem;
-            color: #6b7280;
-            /* Placeholder text color */
-        }
-
-        .input-group .form-control::placeholder {
-            color: #6b7280;
-        }
-
-        .input-group .btn-secondary {
-            background: #6b7280;
-            /* Gray button background */
-            border: 1px solid #6b7280;
-            border-radius: 0 0.25rem 0.25rem 0;
-            padding: 0.5rem 1rem;
-        }
-
-        .input-group .btn-secondary i {
-            color: #ffffff;
-            /* White icon */
         }
     </style>
 
@@ -210,13 +144,8 @@
     <!-- Search Box -->
     <div class="d-flex justify-content-end mb-3">
         <div class="input-group w-50">
-            <input
-                type="text"
-                id="searchInput"
-                class="form-control"
-                placeholder="Search low selling product..."
-                onkeyup="searchTable()">
-            <button class="btn btn-secondary">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search low selling products..." onkeyup="searchTable()">
+            <button class="btn btn-secondary" aria-label="Search">
                 <i class="fas fa-search"></i>
             </button>
         </div>
@@ -236,9 +165,9 @@
                             </div>
                         </div>
                         <?php if (!empty($product['image']) && file_exists("uploads/" . $product['image'])): ?>
-                            <img src="/uploads/<?= htmlspecialchars($product['image']) ?>"
-                                class="card-img-top"
-                                alt="<?= htmlspecialchars($product['name']); ?>">
+                            <img src="/uploads/<?= htmlspecialchars($product['image']) ?>" 
+                                 class="card-img-top" 
+                                 alt="<?= htmlspecialchars($product['name']); ?>">
                         <?php else: ?>
                             <div class="no-image"><span>No Image</span></div>
                         <?php endif; ?>
@@ -270,10 +199,6 @@
 
 <!-- JavaScript for Search Functionality -->
 <script>
-    /**
-     * Filters product cards based on search input
-     * @returns {void}
-     */
     function searchTable() {
         const input = document.getElementById('searchInput').value.toLowerCase();
         const productItems = document.querySelectorAll('.product-item');
