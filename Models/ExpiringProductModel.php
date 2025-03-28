@@ -10,7 +10,7 @@ class ExpiringProductModel {
             // SQL query to select products with end_date less than 2025-03-24
             $query = "SELECT * 
                 FROM products 
-                WHERE end_date <= CURDATE() + INTERVAL 0 DAY 
+                WHERE end_date <= CURDATE() + INTERVAL 7 DAY 
                 ORDER BY end_date ASC;
 
                 ";
