@@ -11,13 +11,10 @@ class ProductModel {
     }
 
     // Function to get a single product by its ID
-
     public function getProductById($id) {
         $result = $this->db->query("SELECT * FROM products WHERE id = :id", ['id' => $id]);
         return $result->fetch(PDO::FETCH_ASSOC);
     }
-    
-
     
     // Check if the email already exists
     public function barcodelExists($barcode) {
@@ -27,17 +24,19 @@ class ProductModel {
     }
 
     // Functions add a new product
-    public function addProduct($image, $name, $end_date, $barcode, $price, $quantity) {
+    public function addProduct($image, $name, $end_date, $barcode, $price, $quantity, $purchase_price) {
         try {
             $this->db->query(
-                "INSERT INTO products (image, name, end_date, barcode, price, quantity) VALUES (:image, :name, :end_date, :barcode, :price, :quantity)",
+                "INSERT INTO products (image, name, end_date, barcode, price, quantity, purchase_price) 
+                 VALUES (:image, :name, :end_date, :barcode, :price, :quantity, :purchase_price)",
                 [
                     ':image' => $image,
                     ':name' => $name,
                     ':end_date' => $end_date,
                     ':barcode' => $barcode,
                     ':price' => $price,
-                    ':quantity' => $quantity
+                    ':quantity' => $quantity,
+                    ':purchase_price' => $purchase_price
                 ]
             );
         } catch (PDOException $e) {
@@ -52,10 +51,17 @@ class ProductModel {
     }
 
     // Function to update a product
-    public function updateProduct($id, $image, $name, $end_date, $barcode, $price, $quantity){
-        
+    public function updateProduct($id, $image, $name, $end_date, $barcode, $price, $quantity, $purchase_price){
         $result = $this->db->query(
-            "UPDATE products SET image = :image, name = :name, end_date = :end_date, barcode = :barcode, price = :price, quantity = :quantity WHERE id = :id",
+            "UPDATE products SET 
+                image = :image, 
+                name = :name, 
+                end_date = :end_date, 
+                barcode = :barcode, 
+                price = :price, 
+                quantity = :quantity,
+                purchase_price = :purchase_price 
+             WHERE id = :id",
             [
                 ':id' => $id,
                 ':image' => $image,
@@ -63,13 +69,14 @@ class ProductModel {
                 ':end_date' => $end_date,
                 ':barcode' => $barcode,
                 ':price' => $price,
-                ':quantity' => $quantity
+                ':quantity' => $quantity,
+                ':purchase_price' => $purchase_price
             ]
         );
         return $result;
     }
 
-        // Function to check if a barcode already exists
+    // Function to check if a barcode already exists
     public function getProductByBarcode($barcode, $currentProductId) {
         $stmt = $this->db->query("SELECT * FROM products WHERE barcode = :barcode AND id != :id", [
             ':barcode' => $barcode,
@@ -77,6 +84,4 @@ class ProductModel {
         ]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-
 }
-
