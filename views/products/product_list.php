@@ -39,10 +39,10 @@
                             <div class="header-content">Name <i id="sortIconName" class="fas fa-arrow-up small-icon" ></i> <!-- Single arrow icon --></div>
                         </th>
                         <th onclick="sortTable(3)">
-                            <div class="header-content">Cost Price  <i id="sortIconEndDate" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
+                            <div class="header-content">Barcode <i id="sortIconBarcode" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
                         </th>
                         <th onclick="sortTable(4)">
-                            <div class="header-content">Barcode <i id="sortIconBarcode" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
+                            <div class="header-content">Cost Price  <i id="sortIconEndDate" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
                         </th>
                         <th onclick="sortTable(5)">
                             <div class="header-content">Selling Price <i id="sortIconPrice" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
@@ -78,8 +78,8 @@
                                 <?php endif; ?>
                             </td>
                             <td><?php echo htmlspecialchars($product['name']); ?></td>
-                            <td>$<?php echo number_format((float)$product['purchase_price'], 2, '.', ''); ?></td>
                             <td><?php echo htmlspecialchars($product['barcode']); ?></td>
+                            <td>$<?php echo number_format((float)$product['purchase_price'], 2, '.', ''); ?></td>
                             <td>$<?php echo number_format((float)$product['price'], 2, '.', ''); ?></td>
                             <td><?php echo htmlspecialchars($product['quantity']); ?></td>
                             <td class="text-center align-middle" style="width: 50px;">
