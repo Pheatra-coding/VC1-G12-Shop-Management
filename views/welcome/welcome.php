@@ -13,40 +13,88 @@
         <div class="col-lg-8">
           <div class="row">
 
-            <!-- Sales Card -->
-            <div class="col-xxl-4 col-md-6">
+           <!-- Sales Card -->
+          <div class="col-xxl-4 col-md-6">
               <div class="card info-card sales-card">
-
-                <div class="filter">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
-                    </li>
-
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                  </ul>
-                </div>
-
-                <div class="card-body">
-                  <h5 class="card-title">Sales <span>| Today</span></h5>
-
-                  <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-cart"></i>
-                    </div>
-                    <div class="ps-3">
-                      <h6>145</h6>
-                      <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
-
-                    </div>
+                  <div class="filter">
+                      <a class="icon" href="#" data-bs-toggle="dropdown">
+                          <i class="bi bi-three-dots"></i>
+                      </a>
+                      <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                          <li class="dropdown-header text-start">
+                              <h6>Filter</h6>
+                          </li>
+                          <li><a class="dropdown-item" href="#" onclick="showSales('today')">Today</a></li>
+                          <li><a class="dropdown-item" href="#" onclick="showSales('week')">This Week</a></li>
+                          <li><a class="dropdown-item" href="#" onclick="showSales('month')">This Month</a></li>
+                      </ul>
                   </div>
-                </div>
 
+                  <div class="card-body">
+                      <h5 class="card-title">Sales <span id="sales-period">| Today</span></h5>
+
+                      <div class="d-flex align-items-center">
+                          <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                              <i class="bi bi-cart"></i>
+                          </div>
+                          <div class="ps-3">
+                              <h6 id="sales-count"><?php echo $salesToday['total_quantity']; ?> items</h6>
+                              <span id="sales-trend" class="small pt-1 fw-bold 
+                                  <?php echo $salesToday['trend'] === 'increase' ? 'text-success' : ($salesToday['trend'] === 'decrease' ? 'text-danger' : ''); ?>">
+                                  <?php 
+                                  echo $salesToday['trend'] === 'increase' ? '⬆ Increase' : 
+                                      ($salesToday['trend'] === 'decrease' ? '⬇ Decrease' : '-- No Change --'); 
+                                  ?>
+                              </span>
+                              <span class="text-muted small pt-2 ps-1" id="sales-change">
+                                  <?php echo $salesToday['trend'] !== 'no-change' ? $salesToday['percentage'] . '% ' . $salesToday['trend'] : ''; ?>
+                              </span>
+                          </div>
+                      </div>
+                  </div>
               </div>
-            </div><!-- End Sales Card -->
+          </div>
+
+          <script>
+              const salesData = {
+                  'today': {
+                      quantity: '<?php echo $salesToday['total_quantity']; ?>',
+                      trend: '<?php echo $salesToday['trend']; ?>',
+                      percentage: '<?php echo $salesToday['percentage']; ?>'
+                  },
+                  'week': {
+                      quantity: '<?php echo $salesWeek['total_quantity']; ?>',
+                      trend: '<?php echo $salesWeek['trend']; ?>',
+                      percentage: '<?php echo $salesWeek['percentage']; ?>'
+                  },
+                  'month': {
+                      quantity: '<?php echo $salesMonth['total_quantity']; ?>',
+                      trend: '<?php echo $salesMonth['trend']; ?>',
+                      percentage: '<?php echo $salesMonth['percentage']; ?>'
+                  }
+              };
+
+              function showSales(period) {
+                  const data = salesData[period];
+                  document.getElementById('sales-period').textContent = '| ' + period.charAt(0).toUpperCase() + period.slice(1);
+                  document.getElementById('sales-count').textContent = data.quantity + ' items';
+                  
+                  const trendElement = document.getElementById('sales-trend');
+                  trendElement.className = 'small pt-1 fw-bold';
+                  if (data.trend === 'increase') {
+                      trendElement.classList.add('text-success');
+                      trendElement.textContent = '⬆ Increase';
+                  } else if (data.trend === 'decrease') {
+                      trendElement.classList.add('text-danger');
+                      trendElement.textContent = '⬇ Decrease';
+                  } else {
+                      trendElement.textContent = '-- No Change --';
+                  }
+
+                  document.getElementById('sales-change').textContent = 
+                      data.trend !== 'no-change' ? data.percentage + '% ' + data.trend : '';
+              }
+          </script>
 
             <!-- Revenue Card -->
             <div class="col-xxl-4 col-md-6">
