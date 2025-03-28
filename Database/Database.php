@@ -6,7 +6,7 @@ class Database
 
     /**
      * Constructor to initialize the database connection.
-     *
+     *A
      * @param string $host The hostname of the database server.
      * @param string $dbname The name of the database.
      * @param string $username The username for the database connection.
