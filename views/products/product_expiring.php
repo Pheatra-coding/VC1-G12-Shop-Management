@@ -20,10 +20,8 @@
             font-weight: bold;
             padding: 5px;
             border-radius: 5px;
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
+            display: inline-block;
+            margin-left: 8px; /* This controls the space between name and Expired label */
         }
         .no-image {
             height: 120px;
@@ -33,6 +31,16 @@
             background: #f8f9fa;
             border-radius: 5px;
             color: #6c757d;
+        }
+        .product-name-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+            gap: 8px; /* Additional way to control space between elements */
+        }
+        .card-title.product-name {
+            margin-right: 8px; /* Another way to control space specifically after the name */
         }
     </style>
 
@@ -44,7 +52,7 @@
         <?php if (!empty($products)): ?>
             <?php foreach ($products as $product): ?>
                 <div class="col product-item">
-                    <div class="card product-card position-relative">
+                    <div class="card product-card">
                         <?php if (!empty($product['image']) && file_exists("uploads/" . $product['image'])): ?>
                             <img src="/uploads/<?= htmlspecialchars($product['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($product['name']); ?>">
                         <?php else: ?>
@@ -52,10 +60,10 @@
                                 <span>No Image</span>
                             </div>
                         <?php endif; ?>
-                        <div class="card-body">
-                            <h6 class="card-title product-name mb-1"> <?= htmlspecialchars($product['name']); ?> </h6>
+                        <div class="product-name-row">
+                            <h6 class="card-title product-name"><?= htmlspecialchars($product['name']); ?></h6>
+                            <div class="expired-label">Expired</div>
                         </div>
-                        <div class="expired-label">Expired</div>
                     </div>
                 </div>
             <?php endforeach; ?>

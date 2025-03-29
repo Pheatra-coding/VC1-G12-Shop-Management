@@ -20,14 +20,7 @@
             box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
         }
         .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 1.25rem;
-            position: relative;
-            z-index: 1;
-            background: #f9fafb;
-            border-bottom: 1px solid #e5e7eb;
+            display: none; /* Hide the header since name and price are moved */
         }
         .price-header {
             color: #1e40af;
@@ -36,6 +29,7 @@
             text-align: center;
             display: flex;
             align-items: center;
+            justify-content: center;
             padding: 0.5rem 1rem;
             border-radius: 6px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -47,14 +41,14 @@
             background: #dbeafe;
         }
         .card-img-top {
-            width: 100%; /* Full width to match the card */
-            height: 220px; /* Adjusted to match the example's proportion */
-            object-fit: contain; /* Ensures the full product is visible */
+            width: 100%;
+            height: 220px;
+            object-fit: contain;
             transition: all 0.3s ease;
             border: none;
             position: relative;
-            background: transparent; /* Transparent background to match the example */
-            padding: 1rem; /* Padding to ensure the product fits nicely */
+            background: transparent;
+            padding: 1rem;
         }
         .card:hover .card-img-top {
             transform: scale(1.02);
@@ -75,6 +69,12 @@
             text-align: center;
             gap: 0.5rem;
         }
+        .name-price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.5rem;
+        }
         .card-title {
             font-size: 1.15rem;
             font-weight: 600;
@@ -86,6 +86,7 @@
             border-radius: 6px;
             font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
             transition: color 0.3s ease;
+            flex: 1; /* Allows it to take available space */
         }
         .card:hover .card-title {
             color: #1e40af;
@@ -101,24 +102,18 @@
             padding: 0.4rem 1rem;
             border-radius: 6px;
             font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-            transition: transform 0.3s ease, background 0.3s ease;
+            /* Removed transition for hover */
         }
         .text-muted i {
             margin-right: 0.5rem;
             font-size: 1.1rem;
-            color: #dc2626; /* Red for stock, matching the example */
-            transition: transform 0.2s ease;
+            color: #dc2626;
+            /* Removed transition for hover */
         }
-        .text-muted:nth-child(2) i {
-            color: #16a34a; /* Green for date, matching the example */
+        .text-muted:nth-child(2) i { /* Adjusted for new order: date is now 2nd */
+            color: #16a34a;
         }
-        .card:hover .text-muted {
-            transform: scale(1.02);
-            background: #f3f4f6;
-        }
-        .card:hover .text-muted i {
-            transform: scale(1.1);
-        }
+        /* Removed .card:hover .text-muted and .card:hover .text-muted i */
         .no-image {
             background: #f3f4f6;
             display: flex;
@@ -157,13 +152,6 @@
             <?php foreach ($products as $product): ?>
                 <div class="col product-item">
                     <div class="card border-0 shadow-sm">
-                        <div class="card-header">
-                            <h6 class="card-title product-name"><?= htmlspecialchars($product['name']); ?></h6>
-                            <div class="price-header">
-                                <i class="bi bi-currency-dollar me-1"></i>
-                                <?= number_format($product['price'], 2); ?>
-                            </div>
-                        </div>
                         <?php if (!empty($product['image']) && file_exists("uploads/" . $product['image'])): ?>
                             <img src="/uploads/<?= htmlspecialchars($product['image']) ?>" 
                                  class="card-img-top" 
@@ -173,6 +161,13 @@
                         <?php endif; ?>
                         <div class="card-body">
                             <div class="content-center">
+                                <div class="name-price-row">
+                                    <h6 class="card-title product-name"><?= htmlspecialchars($product['name']); ?></h6>
+                                    <div class="price-header">
+                                        <i class="bi bi-currency-dollar me-1"></i>
+                                        <?= number_format($product['price'], 2); ?>
+                                    </div>
+                                </div>
                                 <p class="text-muted">
                                     <i class="bi bi-box-seam"></i>
                                     Stock: <?= htmlspecialchars($product['quantity']); ?>
