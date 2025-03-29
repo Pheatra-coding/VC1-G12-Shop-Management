@@ -21,7 +21,7 @@ $imageUrl = !empty($user['image']) ? htmlspecialchars($user['image']) : 'path/to
                 <div class="image-preview-container">
                     <img 
                         id="image_preview" 
-                        src="<?= $user['image'] ? '/uploads/' . htmlspecialchars($user['image']) : '#' ?>" 
+                        src="<?= $user['image'] ? '/views/uploads/' . htmlspecialchars($user['image']) : '#' ?>" 
                         alt="Image Preview" 
                         class="img-fluid <?= $user['image'] ? 'rounded-circle' : 'd-none' ?>" 
                         style="width: 160px; height: 160px; object-fit: cover; border: 2px solid #ddd;"

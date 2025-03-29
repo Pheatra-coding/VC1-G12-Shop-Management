@@ -35,7 +35,47 @@ class DeletedEmployeeController extends BaseController {
         header('Location: /users/deleted');
         exit;
     }
+
+    // Bulk Permanently Delete
+    public function bulkPermanentlyDelete() {
+        if (!isset($_POST['ids']) || empty($_POST['ids'])) {
+            $_SESSION['error'] = "No users selected!";
+            header('Location: /users/deleted');
+            exit();
+        }
+
+        $ids = $_POST['ids']; // Get the selected IDs
+
+        if ($this->DeletedEmployeeModel->bulkPermanentlyDeleteUsers($ids)) {
+            $_SESSION['success'] = "Selected users deleted permanently!";
+        } else {
+            $_SESSION['error'] = "Failed to delete selected users.";
+        }
+
+        header('Location: /users/deleted');
+        exit();
+    }
+
     
+    public function bulkRestore() {
+        // Check if 'ids' are present in the POST request
+        if (!isset($_POST['ids']) || empty($_POST['ids'])) {
+            $_SESSION['error'] = "No users selected!";
+            header('Location: /users/deleted');
+            exit();
+        }
+    
+        $ids = $_POST['ids']; // Get the selected IDs
+    
+        // Loop through the selected IDs and restore each user
+        foreach ($ids as $id) {
+            $this->DeletedEmployeeModel->restoreUser($id);
+        }
+    
+        $_SESSION['success'] = "Selected users restored successfully!";
+        echo json_encode(['success' => true]);  // Respond with success
+        exit();
+    }
     
 }
 ?>

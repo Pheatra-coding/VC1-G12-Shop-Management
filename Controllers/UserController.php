@@ -175,7 +175,7 @@ class UserController extends BaseController
     private function handleImageUpload()
     {
         if (!empty($_FILES['image']['name'])) {
-            $targetDir = "uploads/";
+            $targetDir = "/views/uploads/";
             $targetFile = $targetDir . basename($_FILES["image"]["name"]);
             return move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile) ? $_FILES['image']['name'] : null;
         }

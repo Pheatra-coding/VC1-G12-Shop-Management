@@ -144,6 +144,7 @@ CREATE TABLE `products` (
   `name` varchar(100) NOT NULL,
   `category_id` int(11) DEFAULT NULL,
   `price` decimal(10,2) NOT NULL,
+  `purchase_price` decimal(10,2) DEFAULT NULL,
   `supplier_id` int(11) DEFAULT NULL,
   `barcode` varchar(50) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),

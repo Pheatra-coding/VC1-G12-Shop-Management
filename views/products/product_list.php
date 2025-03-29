@@ -39,13 +39,13 @@
                             <div class="header-content">Name <i id="sortIconName" class="fas fa-arrow-up small-icon" ></i> <!-- Single arrow icon --></div>
                         </th>
                         <th onclick="sortTable(3)">
-                            <div class="header-content">Expires  <i id="sortIconEndDate" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
-                        </th>
-                        <th onclick="sortTable(4)">
                             <div class="header-content">Barcode <i id="sortIconBarcode" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
                         </th>
+                        <th onclick="sortTable(4)">
+                            <div class="header-content">Cost Price  <i id="sortIconEndDate" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
+                        </th>
                         <th onclick="sortTable(5)">
-                            <div class="header-content">Price <i id="sortIconPrice" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
+                            <div class="header-content">Selling Price <i id="sortIconPrice" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
                         </th>
                         <th onclick="sortTable(6)">
                             <div class="header-content">Quantity <i id="sortIconQuantity" class="fas fa-arrow-up small-icon"></i> <!-- Single arrow icon --></div>
@@ -70,7 +70,7 @@
                             <td>
                                 <?php if (!empty($product['image']) && $product['image'] !== "No Image") : ?>
                                     <img
-                                        src="/uploads/<?php echo htmlspecialchars($product['image']); ?>"
+                                        src="/views/uploads/<?php echo htmlspecialchars($product['image']); ?>"
                                         alt="Product Image"
                                         style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
                                 <?php else : ?>
@@ -78,8 +78,8 @@
                                 <?php endif; ?>
                             </td>
                             <td><?php echo htmlspecialchars($product['name']); ?></td>
-                            <td><?php echo htmlspecialchars($product['end_date']); ?></td>
                             <td><?php echo htmlspecialchars($product['barcode']); ?></td>
+                            <td>$<?php echo number_format((float)$product['purchase_price'], 2, '.', ''); ?></td>
                             <td>$<?php echo number_format((float)$product['price'], 2, '.', ''); ?></td>
                             <td><?php echo htmlspecialchars($product['quantity']); ?></td>
                             <td class="text-center align-middle" style="width: 50px;">
