@@ -1,3 +1,6 @@
+<?php session_start(); ?> 
+<?php if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
+
 <main id="main" class="main">
     <!-- Product Update Form -->
     <form action="/products/update/<?= $product['id'] ?>" method="post" enctype="multipart/form-data">
@@ -38,49 +41,64 @@
             </div>
         </div>
 
-        <!-- Name and Barcode in one line -->
-        <div class="row mb-3 mt-3">
+        <!-- Two Column Layout -->
+        <div class="row">
+            <!-- Left Column -->
             <div class="col-md-6">
-                <label for="name" class="form-label">Product Name:</label>
-                <input type="text" class="form-control" id="name" placeholder="Enter name" name="name" value="<?php echo isset($_POST['name']) ? htmlspecialchars($_POST['name']) : htmlspecialchars($product['name']); ?>" required>
+                <!-- Product Name -->
+                <div class="mb-3">
+                    <label for="name" class="form-label">Product Name:</label>
+                    <input type="text" class="form-control" id="name" placeholder="Enter name" name="name" value="<?php echo isset($_POST['name']) ? htmlspecialchars($_POST['name']) : htmlspecialchars($product['name']); ?>" required>
+                </div>
+                
+                <!-- Purchase Price -->
+                <div class="mb-3">
+                    <label for="purchase_price" class="form-label">Purchase Price ($):</label>
+                    <input type="number" step="0.01" class="form-control" id="purchase_price" name="purchase_price" value="<?php echo isset($_POST['purchase_price']) ? htmlspecialchars($_POST['purchase_price']) : htmlspecialchars($product['purchase_price']); ?>" min="0">
+                </div>
+                
+                <!-- Stock Quantity -->
+                <div class="mb-3">
+                    <label for="quantity" class="form-label">Stock Quantity:</label>
+                    <input type="number" class="form-control <?= isset($errors['general']) ? 'is-invalid' : '' ?>" id="quantity" name="quantity" value="<?php echo isset($_POST['quantity']) ? htmlspecialchars($_POST['quantity']) : htmlspecialchars($product['quantity']); ?>" min="0" required>
+                    <?php if (isset($errors['general'])): ?>
+                        <div class="invalid-feedback">
+                            <?= htmlspecialchars($errors['general']) ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
             </div>
+            
+            <!-- Right Column -->
             <div class="col-md-6">
-                <label for="barcode" class="form-label">Barcode Number:</label>
-                <input type="text" class="form-control <?= isset($errors['barcode']) ? 'is-invalid' : '' ?>" id="barcode" name="barcode" value="<?php echo isset($_POST['barcode']) ? htmlspecialchars($_POST['barcode']) : htmlspecialchars($product['barcode']); ?>" required>
-                <?php if (isset($errors['barcode'])): ?>
-                    <div class="invalid-feedback">
-                        <?= htmlspecialchars($errors['barcode']) ?>
-                    </div>
-                <?php endif; ?>
+                <!-- Barcode -->
+                <div class="mb-3">
+                    <label for="barcode" class="form-label">Barcode Number:</label>
+                    <input type="text" class="form-control <?= isset($errors['barcode']) ? 'is-invalid' : '' ?>" id="barcode" name="barcode" value="<?php echo isset($_POST['barcode']) ? htmlspecialchars($_POST['barcode']) : htmlspecialchars($product['barcode']); ?>" required>
+                    <?php if (isset($errors['barcode'])): ?>
+                        <div class="invalid-feedback">
+                            <?= htmlspecialchars($errors['barcode']) ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                
+                <!-- Selling Price -->
+                <div class="mb-3">
+                    <label for="price" class="form-label">Selling Price ($):</label>
+                    <input type="number" step="0.01" class="form-control <?= isset($errors['general']) ? 'is-invalid' : '' ?>" id="price" name="price" value="<?php echo isset($_POST['price']) ? htmlspecialchars($_POST['price']) : htmlspecialchars($product['price']); ?>" min="0" required>
+                    <?php if (isset($errors['general'])): ?>
+                        <div class="invalid-feedback">
+                            <?= htmlspecialchars($errors['general']) ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                
+                <!-- Expiration Date -->
+                <div class="mb-3">
+                    <label for="endDate" class="form-label">Expiration Date:</label>
+                    <input type="date" class="form-control" id="endDate" name="end_date" value="<?php echo isset($_POST['end_date']) ? htmlspecialchars($_POST['end_date']) : htmlspecialchars($product['end_date']); ?>" required>
+                </div>
             </div>
-        </div>
-
-        <!-- Price and Quantity in one line -->
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label for="price" class="form-label">Unit Price ($):</label>
-                <input type="number" step="0.01" class="form-control <?= isset($errors['general']) ? 'is-invalid' : '' ?>" id="price" name="price" value="<?php echo isset($_POST['price']) ? htmlspecialchars($_POST['price']) : htmlspecialchars($product['price']); ?>" min="0" required>
-                <?php if (isset($errors['general'])): ?>
-                    <div class="invalid-feedback">
-                        <?= htmlspecialchars($errors['general']) ?>
-                    </div>
-                <?php endif; ?>
-            </div>
-            <div class="col-md-6">
-                <label for="quantity" class="form-label">Stock Quantity:</label>
-                <input type="number" class="form-control <?= isset($errors['general']) ? 'is-invalid' : '' ?>" id="quantity" name="quantity" value="<?php echo isset($_POST['quantity']) ? htmlspecialchars($_POST['quantity']) : htmlspecialchars($product['quantity']); ?>" min="0" required>
-                <?php if (isset($errors['general'])): ?>
-                    <div class="invalid-feedback">
-                        <?= htmlspecialchars($errors['general']) ?>
-                    </div>
-                <?php endif; ?>
-            </div>
-        </div>
-
-        <!-- End Date -->
-        <div class="mb-3">
-            <label for="endDate" class="form-label">Expiration Date:</label>
-            <input type="date" class="form-control" id="endDate" name="end_date" value="<?php echo isset($_POST['end_date']) ? htmlspecialchars($_POST['end_date']) : htmlspecialchars($product['end_date']); ?>" required>
         </div>
 
         <!-- Submit and Cancel Buttons -->
@@ -122,11 +140,13 @@ function closeImagePreview() {
     // Clear the file input
     fileInput.value = '';
 }
-</script>
 
-<!-- JavaScript for enforcing positive numbers -->
-<script>
+// Enforce positive numbers
 document.getElementById('price').addEventListener('input', function() {
+    if (this.value < 0) this.value = 0;
+});
+
+document.getElementById('purchase_price').addEventListener('input', function() {
     if (this.value < 0) this.value = 0;
 });
 
@@ -180,3 +200,8 @@ document.getElementById('quantity').addEventListener('input', function() {
     border-radius: 50% !important;
 }
 </style>
+
+<?php else:
+    $this->redirect('/users/login');
+endif;
+?>
