@@ -6,7 +6,6 @@ class WelcomeController extends BaseController
     private $saleModel;
     private $expenseModel;
     private $profitModel;
-    private $saleQuantityModel;
 
     public function __construct()
     {
@@ -19,16 +18,24 @@ class WelcomeController extends BaseController
 
     public function welcome()
     {
-        // Existing data retrieval...
+        // Get low stock data
         $lowStockProducts = $this->lowStockModel->getLowStockProducts(10);
         $lowStockCount = $this->lowStockModel->countLowStockProducts(10);
+
+        // Get top-selling products
         $topSellingProducts = $this->topSellingModel->getTopSellingProducts();
+
+        // Get sales data
         $dailySales = $this->saleModel->getDailySales();
         $weeklySales = $this->saleModel->getWeeklySales();
         $monthlySales = $this->saleModel->getMonthlySales();
+        //  Profit
         $profitToday = $this->profitModel->getProfit('today');
         $profitThisWeek = $this->profitModel->getProfit('this_week');
         $profitThisMonth = $this->profitModel->getProfit('this_month');
+
+
+        // New expense data
         $dailyExpenses = $this->expenseModel->getDailyExpenses();
         $weeklyExpenses = $this->expenseModel->getWeeklyExpenses();
         $monthlyExpenses = $this->expenseModel->getMonthlyExpenses();
@@ -44,11 +51,9 @@ class WelcomeController extends BaseController
             'dailyExpenses' => $dailyExpenses,
             'weeklyExpenses' => $weeklyExpenses,
             'monthlyExpenses' => $monthlyExpenses,
-            'profitToday' => $profitToday,
+            'profitToday' => $profitToday, 
             'profitThisWeek' => $profitThisWeek,
             'profitThisMonth' => $profitThisMonth,
-            'dailySalesQuantity' => $dailySalesQuantity,
-
         ]);
     }
 }
