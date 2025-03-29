@@ -4,74 +4,176 @@
 <style>
     /* Card Container */
     .card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        border: 1px solid #e0e0e0;
-        border-radius: 10px;
+        transition: all 0.3s ease;
+        border: none;
+        border-radius: 12px;
         overflow: hidden;
-        background-color: #fff;
-        height: 350px; /* Medium height for the card */
+        background-color: #ffffff;
+        height: 350px;
         display: flex;
         flex-direction: column;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+        position: relative;
     }
 
     .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        transform: translateY(-4px);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
     }
 
     /* Card Image */
     .card-img-top {
-        transition: transform 0.3s ease;
-        border-radius: 10px 10px 0 0;
+        transition: all 0.3s ease;
+        border-radius: 0;
         width: 100%;
-        height: 180px; /* Adjusted height for medium-sized cards */
-        object-fit: cover; /* Ensure images cover the area */
+        height: 180px;
+        object-fit: contain;
+        background: transparent;
+        padding: 1rem;
     }
 
     .card:hover .card-img-top {
-        transform: scale(1.05);
+        transform: scale(1.02);
+        filter: brightness(1.03);
     }
 
     /* Card Body */
     .card-body {
-        padding: 1.5rem;
+        padding: 1rem 1.25rem;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        flex-grow: 1; /* Allow body to grow and fill remaining space */
+        flex-grow: 1;
+        position: relative;
     }
 
     /* Product Name */
     .card-title {
-        font-size: 1.20rem;
+        font-size: 1.15rem;
         font-weight: 600;
-        margin-bottom: 0.75rem;
-        color: #333; /* Darker text for better readability */
+        margin-bottom: 0;
+        color: #111827; /* Match Low Selling Products */
+        line-height: 1.3;
+        text-transform: capitalize;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+        transition: color 0.3s ease;
+    }
+
+    .card:hover .card-title {
+        color: #1e40af; /* Match Low Selling Products */
     }
 
     /* Price */
     .text-success {
-        font-weight: 700;
-        color: #28a745;
-        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #1e40af; /* Match Low Selling Products and image */
+        margin-bottom: 0;
+        font-size: 1.15rem;
+        font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    .card:hover .text-success {
+        transform: translateY(-2px);
+        background: #dbeafe; /* Match Low Selling Products */
     }
 
     /* Quantity and Date */
     .text-muted {
-        font-size: 0.76rem;
-        color: #6c757d;
-        margin-bottom: 0.25rem;
+        font-size: 0.9rem;
+        color: #6b7280; /* Match Low Selling Products */
+        margin-bottom: 0;
+        font-weight: 500;
+        padding: 0.4rem 1rem;
+        border-radius: 6px;
+        font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
     }
 
     /* No Image Placeholder */
     .no-image {
-        background-color: #f8f9fa;
+        background: #f3f4f6; /* Match Low Selling Products */
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 180px; /* Match image height */
-        font-size: 1rem;
-        color: #6c757d;
+        height: 180px;
+        font-size: 0.9rem;
+        color: #6b7280; /* Match Low Selling Products */
+        font-weight: 500;
+        border-radius: 0;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        position: relative;
+    }
+    
+    /* Title and price row container */
+    .title-price-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Adjust card title to work in flex row */
+    .title-price-row .card-title {
+        margin-bottom: 0;
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-right: 10px;
+    }
+    
+    /* Price container with icon */
+    .price-container {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        white-space: nowrap;
+    }
+    
+    /* Stats row */
+    .stats-row {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: center;
+        justify-content: space-between;
+        flex-grow: 1;
+    }
+    
+    /* Stat item */
+    .stat-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    
+    /* Small icon style */
+    .stat-icon {
+        font-size: 1.1rem;
+        color: #6b7280;
+        margin-right: 0.5rem;
+    }
+    
+    /* Adjust icon colors to match Low Selling Products and image */
+    .stat-item:nth-child(1) .stat-icon {
+        color: #16a34a; /* Red for stock, matching both Low Selling Products and image */
+    }
+    .stat-item:nth-child(2) .stat-icon {
+        color: #dc2626; /* Green for date, matching both Low Selling Products and image */
+    }
+    
+    /* Small text style */
+    .small-stat-text {
+        font-size: 0.9rem;
+        color: #6b7280; /* Match Low Selling Products */
+        margin-bottom: 0;
+        font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
     }
 </style>
 
@@ -101,7 +203,7 @@
         <?php foreach ($products as $product): ?>
             <div class="col product-item">
                 <div class="card border-0 shadow-sm product-card">
-                    <?php if (!empty($product['image']) && file_exists("/views/uploads/" . $product['image'])): ?>
+                    <?php if (!empty($product['image']) && file_exists("views/uploads/" . $product['image'])): ?>
                         <img src="/views/uploads/<?= htmlspecialchars($product['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($product['name']); ?>">
                     <?php else: ?>
                         <div class="no-image">
@@ -109,10 +211,22 @@
                         </div>
                     <?php endif; ?>
                     <div class="card-body">
-                        <h6 class="card-title product-name mb-1"><?= htmlspecialchars($product['name']); ?></h6>
-                        <p class="text-success fw-bold mb-2">$<?= number_format($product['price'], 2); ?></p>
-                        <p class="text-muted mb-1">Total Items Sold: <?= htmlspecialchars($product['total_sold']); ?></p>
-                        <p class="text-muted mb-0">Last Sale Date: <?= !empty($product['last_sale_date']) ? htmlspecialchars(date('M d, Y', strtotime($product['last_sale_date']))) : 'N/A'; ?></p>
+                        <div class="title-price-row">
+                            <h6 class="card-title product-name"><?= htmlspecialchars($product['name']); ?></h6>
+                            <div class="price-container">
+                                <p class="text-success fw-bold mb-0">$<?= number_format($product['price'], 2); ?></p>
+                            </div>
+                        </div>
+                        <div class="stats-row">
+                            <div class="stat-item">
+                                <i class="stat-icon bi bi-box-seam"></i>
+                                <p class="small-stat-text mb-0">Stock: <?= htmlspecialchars($product['total_sold']); ?></p>
+                            </div>
+                            <div class="stat-item">
+                                <i class="stat-icon bi bi-calendar-event"></i>
+                                <p class="small-stat-text mb-0"><?= !empty($product['last_sale_date']) ? htmlspecialchars(date('M d, Y', strtotime($product['last_sale_date']))) : 'N/A'; ?></p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
