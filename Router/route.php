@@ -14,6 +14,8 @@ require_once "Controllers/DeletedEmployeeController.php";
 require_once "Controllers/ScanBarcodeController.php";
 require_once "Controllers/ExpiringProductController.php";
 require_once "Controllers/SaleController.php";
+require_once "Controllers/ExpenseController.php";
+require_once "Controllers/ProfitController.php";
 require_once "Controllers/ProfitController.php";
 
 $route = new Router();
