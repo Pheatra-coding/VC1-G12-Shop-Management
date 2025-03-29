@@ -152,8 +152,8 @@
             <?php foreach ($products as $product): ?>
                 <div class="col product-item">
                     <div class="card border-0 shadow-sm">
-                        <?php if (!empty($product['image']) && file_exists("uploads/" . $product['image'])): ?>
-                            <img src="/uploads/<?= htmlspecialchars($product['image']) ?>" 
+                        <?php if (!empty($product['image']) && file_exists("views/uploads/" . $product['image'])): ?>
+                            <img src="/views/uploads/<?= htmlspecialchars($product['image']) ?>" 
                                  class="card-img-top" 
                                  alt="<?= htmlspecialchars($product['name']); ?>">
                         <?php else: ?>

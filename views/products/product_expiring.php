@@ -45,7 +45,17 @@
     </style>
 
     <div class="pagetitle">
-        <h1>Expirations</h1>
+        <h1>Expiring Inventory</h1>
+    </div>
+
+     <!-- Search Box -->
+     <div class="d-flex justify-content-end mb-3">
+        <div class="input-group w-50">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search expiring products..." onkeyup="searchTable()">
+            <button class="btn btn-secondary" aria-label="Search">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
     </div>
 
     <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4" id="productGrid">
@@ -53,8 +63,8 @@
             <?php foreach ($products as $product): ?>
                 <div class="col product-item">
                     <div class="card product-card">
-                        <?php if (!empty($product['image']) && file_exists("uploads/" . $product['image'])): ?>
-                            <img src="/uploads/<?= htmlspecialchars($product['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($product['name']); ?>">
+                        <?php if (!empty($product['image']) && file_exists("views/uploads/" . $product['image'])): ?>
+                            <img src="/views/uploads/<?= htmlspecialchars($product['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($product['name']); ?>">
                         <?php else: ?>
                             <div class="no-image">
                                 <span>No Image</span>
@@ -76,3 +86,23 @@
         <?php endif; ?>
     </div>
 </main>
+
+<!-- JavaScript for Search Functionality -->
+<script>
+    function searchTable() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const productItems = document.querySelectorAll('.product-item');
+        let hasResults = false;
+
+        productItems.forEach(item => {
+            const productName = item.querySelector('.product-name').innerText.toLowerCase();
+            item.style.display = productName.includes(input) ? '' : 'none';
+            if (productName.includes(input)) hasResults = true;
+        });
+
+        const noProductsMessage = document.getElementById('noProductsMessage');
+        if (noProductsMessage) {
+            noProductsMessage.style.display = hasResults ? 'none' : 'block';
+        }
+    }
+</script>
