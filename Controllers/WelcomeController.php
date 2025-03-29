@@ -1,25 +1,39 @@
 <?php
-class WelcomeController extends BaseController {
+class WelcomeController extends BaseController
+{
     private $lowStockModel;
     private $topSellingModel;
     private $saleModel;
     private $expenseModel;
+    private $profitModel;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->lowStockModel = new LowStockAlertModel();
         $this->topSellingModel = new TopSellingModel();
         $this->saleModel = new SaleModel();
         $this->expenseModel = new ExpenseModel();
+        $this->profitModel = new ProfitModel();
     }
 
-    public function welcome() {
-        // Existing data
+    public function welcome()
+    {
+        // Get low stock data
         $lowStockProducts = $this->lowStockModel->getLowStockProducts(10);
         $lowStockCount = $this->lowStockModel->countLowStockProducts(10);
+
+        // Get top-selling products
         $topSellingProducts = $this->topSellingModel->getTopSellingProducts();
+
+        // Get sales data
         $dailySales = $this->saleModel->getDailySales();
         $weeklySales = $this->saleModel->getWeeklySales();
         $monthlySales = $this->saleModel->getMonthlySales();
+        //  Profit
+        $profitToday = $this->profitModel->getProfit('today');
+        $profitThisWeek = $this->profitModel->getProfit('this_week');
+        $profitThisMonth = $this->profitModel->getProfit('this_month');
+
 
         // New expense data
         $dailyExpenses = $this->expenseModel->getDailyExpenses();
@@ -36,8 +50,10 @@ class WelcomeController extends BaseController {
             'monthlySales' => $monthlySales,
             'dailyExpenses' => $dailyExpenses,
             'weeklyExpenses' => $weeklyExpenses,
-            'monthlyExpenses' => $monthlyExpenses
+            'monthlyExpenses' => $monthlyExpenses,
+            'profitToday' => $profitToday, 
+            'profitThisWeek' => $profitThisWeek,
+            'profitThisMonth' => $profitThisMonth,
         ]);
     }
 }
-?>

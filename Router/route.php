@@ -9,10 +9,14 @@ require_once "Controllers/UserController.php";
 require_once "Controllers/InputProductController.php";
 require_once "Controllers/LowStockAlertController.php";
 require_once "Controllers/TopSellingController.php";
+require_once "Controllers/LowSellingController.php";
 require_once "Controllers/DeletedEmployeeController.php";
 require_once "Controllers/ScanBarcodeController.php";
+require_once "Controllers/ExpiringProductController.php";
 require_once "Controllers/SaleController.php";
 require_once "Controllers/ExpenseController.php";
+require_once "Controllers/ProfitController.php";
+require_once "Controllers/ProfitController.php";
 
 $route = new Router();
 $route->get("/", [WelcomeController::class, 'welcome']);
@@ -24,6 +28,7 @@ $route->post("/products/store", [ProductController::class, 'store']);
 $route->get("/products/edit/{id}", [ProductController::class, 'edit']);
 $route->put("/products/update/{id}", [ProductController::class, 'update']);
 $route->delete("/products/delete/{id}", [ProductController::class, 'delete']);
+$route->get("/products/product_expiring", [ExpiringProductController::class, 'expiring']);
 
 //users
 $route->get("/users", [UserController::class, 'index']);
@@ -68,5 +73,6 @@ $route->get("/products/low-stock-alert", [LowStockAlertController::class, 'index
 
 // sales
 $route->get("/sales/top_selling", [TopSellingController::class, 'index']);
+$route->get("/sales/low_selling", [lowSellingController::class, 'index']);
 
 $route->route();

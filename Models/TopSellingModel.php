@@ -6,7 +6,7 @@ class TopSellingModel {
         $this->db = new Database("localhost", "shop_management", "root", "");
     }
     
-    // TopSellingModel.php
+    // TopSelling
     public function getTopSellingProducts() {
         $sql = "
             SELECT p.id, p.name, p.image, p.price, p.quantity, 
