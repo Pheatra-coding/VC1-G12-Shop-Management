@@ -314,7 +314,7 @@ if ($isLoggedIn):
   </li><!-- End Icons Nav -->
 
   <li class="nav-item">
-    <a class="nav-link collapsed" href="#">
+    <a class="nav-link collapsed" href="/sold_history/sold_history">
     <i class="bi bi-clock-history"></i>
       <span>Sell History</span>
     </a>
