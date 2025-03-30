@@ -66,6 +66,7 @@ $route->get("/scan_barcodes/barcode", [ScanBarcodeController::class, 'index']);
 $route->post("/scan_barcodes/scan", [ScanBarcodeController::class, 'scan']);
 $route->post("/scan_barcodes/submit", [ScanBarcodeController::class, 'submit']);
 $route->post("/scan_barcodes/confirm", [ScanBarcodeController::class, 'confirm']);
+$route->get("/scan_barcodes/customer", [ScanBarcodeController::class, 'customerView']);
 
 
 //low stock alert 

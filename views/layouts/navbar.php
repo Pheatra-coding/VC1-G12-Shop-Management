@@ -330,12 +330,18 @@ if ($isLoggedIn):
 
   <li class="nav-item">
     <a class="nav-link collapsed" href="/users/deleted">
-    <i class="bi bi-person-x"></i>
-      <span>Terminated Employees</span>
+    <i class="bi bi-trash"></i>
+      <span>Trash</span>
     </a>
   </li><!-- End Profile Page Nav -->
   <?php endif; ?>
   
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="/scan_barcodes/customer">
+    <i class="bi bi-person"></i><span>Costumer</span></i>
+    </a>
+</li><!-- End Icons Nav -->
+
 </ul>
 
 </aside><!-- End Sidebar-->
