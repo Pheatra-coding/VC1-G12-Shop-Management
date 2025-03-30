@@ -6,6 +6,7 @@ class WelcomeController extends BaseController
     private $saleModel;
     private $expenseModel;
     private $profitModel;
+    private $inventoryModel; // Inventory model
 
     public function __construct()
     {
@@ -14,6 +15,7 @@ class WelcomeController extends BaseController
         $this->saleModel = new SaleModel();
         $this->expenseModel = new ExpenseModel();
         $this->profitModel = new ProfitModel();
+        $this->inventoryModel = new InventoryModel();
     }
 
     public function welcome()
@@ -40,6 +42,9 @@ class WelcomeController extends BaseController
         $weeklyExpenses = $this->expenseModel->getWeeklyExpenses();
         $monthlyExpenses = $this->expenseModel->getMonthlyExpenses();
 
+        // Inventory
+        $totalInventoryQuantity = $this->inventoryModel->getTotalQuantity('this_year');
+
         // Pass the data to the view
         $this->view('welcome/welcome', [
             'lowStockProducts' => $lowStockProducts,
@@ -54,6 +59,7 @@ class WelcomeController extends BaseController
             'profitToday' => $profitToday, 
             'profitThisWeek' => $profitThisWeek,
             'profitThisMonth' => $profitThisMonth,
+            'totalInventoryQuantity' => $totalInventoryQuantity,
         ]);
     }
 }
