@@ -1,10 +1,17 @@
 <?php
+    require_once 'Models/LowStockAlertModel.php';
+    require_once 'Models/TopSellingModel.php';
+    require_once 'Models/SaleModel.php';
+    require_once 'Models/ProfitModel.php';
+    require_once 'Controllers/BarchartController.php'; // Add this line
+
 class WelcomeController extends BaseController
 {
     private $lowStockModel;
     private $topSellingModel;
     private $saleModel;
     private $profitModel;
+    private $barchartController; // Add this property
 
     public function __construct()
     {
@@ -12,6 +19,7 @@ class WelcomeController extends BaseController
         $this->topSellingModel = new TopSellingModel();
         $this->saleModel = new SaleModel();
         $this->profitModel = new ProfitModel();
+        $this->barchartController = new BarchartController(); // Initialize here
     }
 
     public function welcome()
@@ -27,11 +35,14 @@ class WelcomeController extends BaseController
         $dailySales = $this->saleModel->getDailySales();
         $weeklySales = $this->saleModel->getWeeklySales();
         $monthlySales = $this->saleModel->getMonthlySales();
-        //  Profit
+        
+        // Profit
         $profitToday = $this->profitModel->getProfit('today');
         $profitThisWeek = $this->profitModel->getProfit('this_week');
         $profitThisMonth = $this->profitModel->getProfit('this_month');
-
+        
+        // Get bar chart data
+        $monthlySalesData = $this->barchartController->getMonthlySalesData();
 
         // Pass the data to the view
         $this->view('welcome/welcome', [
@@ -41,9 +52,10 @@ class WelcomeController extends BaseController
             'dailySales' => $dailySales,
             'weeklySales' => $weeklySales,
             'monthlySales' => $monthlySales,
-            'profitToday' => $profitToday,  // Passing the profit value
+            'profitToday' => $profitToday,
             'profitThisWeek' => $profitThisWeek,
             'profitThisMonth' => $profitThisMonth,
+            'monthlySalesData' => $monthlySalesData, // Add this line
         ]);
     }
 }
