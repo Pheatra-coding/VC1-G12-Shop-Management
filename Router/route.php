@@ -77,7 +77,8 @@ $route->get("/sales/top_selling", [TopSellingController::class, 'index']);
 $route->get("/sales/low_selling", [lowSellingController::class, 'index']);
 
 // Sold History
-$route->get('sold_history/sold_history', [SoldHistoryController::class, 'index']); // Show all transactions
+$route->get("/sold_history/sold_history", [SoldHistoryController::class, 'index']);
+$route->get("/sold_history/delete/{id}", [SoldHistoryController::class, 'delete']);
 
 
 $route->route();

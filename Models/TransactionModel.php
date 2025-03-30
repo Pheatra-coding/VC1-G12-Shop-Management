@@ -1,13 +1,13 @@
 <?php
-
-class TransactionModel {
+class TransactionModel
+{
     private $db;
-
-    public function __construct() {
+    public function __construct()
+    {
         $this->db = new Database("localhost", "shop_management", "root", "");
     }
-
-    public function getAllTransactions() {
+    public function getAllTransactions()
+    {
         // Join sales table with products table to get the product name
         $sql = "SELECT s.product_id, p.name AS product_name, s.quantity, s.total_price, s.sale_date 
                 FROM sales s
@@ -23,9 +23,9 @@ class TransactionModel {
 
         return $transactions; // Return the formatted results
     }
+
+    public function deleteTransaction($id) {
+        $result = $this->db->query("DELETE FROM sales WHERE product_id = :id", ['id' => $id]);
+        return $result;
+    }
 }
-
-
-
-
-?>
