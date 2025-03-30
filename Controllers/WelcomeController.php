@@ -10,6 +10,7 @@ class WelcomeController extends BaseController
     private $lowStockModel;
     private $topSellingModel;
     private $saleModel;
+    private $expenseModel;
     private $profitModel;
     private $barchartController; // Add this property
 
@@ -18,6 +19,7 @@ class WelcomeController extends BaseController
         $this->lowStockModel = new LowStockAlertModel();
         $this->topSellingModel = new TopSellingModel();
         $this->saleModel = new SaleModel();
+        $this->expenseModel = new ExpenseModel();
         $this->profitModel = new ProfitModel();
         $this->barchartController = new BarchartController(); // Initialize here
     }
@@ -44,6 +46,11 @@ class WelcomeController extends BaseController
         // Get bar chart data
         $monthlySalesData = $this->barchartController->getMonthlySalesData();
 
+        // New expense data
+        $dailyExpenses = $this->expenseModel->getDailyExpenses();
+        $weeklyExpenses = $this->expenseModel->getWeeklyExpenses();
+        $monthlyExpenses = $this->expenseModel->getMonthlyExpenses();
+
         // Pass the data to the view
         $this->view('welcome/welcome', [
             'lowStockProducts' => $lowStockProducts,
@@ -53,6 +60,10 @@ class WelcomeController extends BaseController
             'weeklySales' => $weeklySales,
             'monthlySales' => $monthlySales,
             'profitToday' => $profitToday,
+            'dailyExpenses' => $dailyExpenses,
+            'weeklyExpenses' => $weeklyExpenses,
+            'monthlyExpenses' => $monthlyExpenses,
+            'profitToday' => $profitToday, 
             'profitThisWeek' => $profitThisWeek,
             'profitThisMonth' => $profitThisMonth,
             'monthlySalesData' => $monthlySalesData, // Add this line

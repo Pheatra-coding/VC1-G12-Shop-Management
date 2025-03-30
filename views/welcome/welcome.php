@@ -127,7 +127,7 @@
                   <h5 class="card-title">Profit <span id="profit-period">| Today</span></h5>
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-people"></i>
+                    <i class="bi bi-graph-up"></i>
                     </div>
                     <div class="ps-3">
                       <h6 id="profit-amount">$0.00</h6>
@@ -166,6 +166,75 @@
               // Initially show profit for 'today'
               showProfit('today');
             </script>
+
+            <!-- Expense Card -->
+            <div class="col-xxl-4 col-md-6">
+                <div class="card info-card expense-card">
+                    <div class="filter">
+                        <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                            <li class="dropdown-header text-start">
+                                <h6>Filter</h6>
+                            </li>
+                            <li><a class="dropdown-item" href="#" onclick="showExpenses('daily')">Today</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="showExpenses('weekly')">This Week</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="showExpenses('monthly')">This Month</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="card-body">
+                        <h5 class="card-title">Expenses <span id="expense-period">| Today</span></h5>
+                        <div class="d-flex align-items-center">
+                          <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" 
+                              style="width: 60px; height: 60px; background-color: rgba(255, 0, 0, 0.1);">
+                              <i class="bi bi-cart text-danger" style="font-size: 30px;"></i>
+                          </div>
+                            <div class="ps-3">
+                                <h6 id="expense-amount">$<?php echo number_format($dailyExpenses['total'], 2); ?></h6>
+                                <span id="expense-percentage" class="small pt-1 fw-bold 
+                                    <?php echo $dailyExpenses['trend'] === 'increase' ? 'text-danger' : 'text-success'; ?>">
+                                    <?php echo $dailyExpenses['percentage']; ?>%
+                                </span>
+                                <span id="expense-trend" class="text-muted small pt-2 ps-1">
+                                    <?php echo $dailyExpenses['trend']; ?>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                const expenseData = {
+                    'daily': {
+                        total: '<?php echo $dailyExpenses['total']; ?>',
+                        percentage: '<?php echo $dailyExpenses['percentage']; ?>',
+                        trend: '<?php echo $dailyExpenses['trend']; ?>'
+                    },
+                    'weekly': {
+                        total: '<?php echo $weeklyExpenses['total']; ?>',
+                        percentage: '<?php echo $weeklyExpenses['percentage']; ?>',
+                        trend: '<?php echo $weeklyExpenses['trend']; ?>'
+                    },
+                    'monthly': {
+                        total: '<?php echo $monthlyExpenses['total']; ?>',
+                        percentage: '<?php echo $monthlyExpenses['percentage']; ?>',
+                        trend: '<?php echo $monthlyExpenses['trend']; ?>'
+                    }
+                };
+
+                function showExpenses(period) {
+                    const data = expenseData[period];
+                    document.getElementById('expense-period').textContent = '| ' + 
+                        (period === 'daily' ? 'Today' : period === 'weekly' ? 'This Week' : 'This Month');
+                    document.getElementById('expense-amount').textContent = '$' + parseFloat(data.total).toFixed(2);
+                    document.getElementById('expense-percentage').textContent = data.percentage + '%';
+                    document.getElementById('expense-percentage').className = 'small pt-1 fw-bold ' + 
+                        (data.trend === 'increase' ? 'text-danger' : 'text-success');
+                    document.getElementById('expense-trend').textContent = data.trend;
+                }
+            </script>
+            <!-- End Expense Card -->
 
             <!-- Reports -->
             <div class="col-12">
