@@ -1,4 +1,10 @@
 <?php
+    require_once 'Models/LowStockAlertModel.php';
+    require_once 'Models/TopSellingModel.php';
+    require_once 'Models/SaleModel.php';
+    require_once 'Models/ProfitModel.php';
+    require_once 'Controllers/BarchartController.php'; // Add this line
+
 class WelcomeController extends BaseController
 {
     private $lowStockModel;
@@ -7,6 +13,7 @@ class WelcomeController extends BaseController
     private $expenseModel;
     private $profitModel;
     private $inventoryModel; // Inventory model
+    private $barchartController; // Add this property
 
     public function __construct()
     {
@@ -16,6 +23,7 @@ class WelcomeController extends BaseController
         $this->expenseModel = new ExpenseModel();
         $this->profitModel = new ProfitModel();
         $this->inventoryModel = new InventoryModel();
+        $this->barchartController = new BarchartController(); // Initialize here
     }
 
     public function welcome()
@@ -31,11 +39,14 @@ class WelcomeController extends BaseController
         $dailySales = $this->saleModel->getDailySales();
         $weeklySales = $this->saleModel->getWeeklySales();
         $monthlySales = $this->saleModel->getMonthlySales();
-        //  Profit
+        
+        // Profit
         $profitToday = $this->profitModel->getProfit('today');
         $profitThisWeek = $this->profitModel->getProfit('this_week');
         $profitThisMonth = $this->profitModel->getProfit('this_month');
-
+        
+        // Get bar chart data
+        $monthlySalesData = $this->barchartController->getMonthlySalesData();
 
         // New expense data
         $dailyExpenses = $this->expenseModel->getDailyExpenses();
@@ -53,6 +64,7 @@ class WelcomeController extends BaseController
             'dailySales' => $dailySales,
             'weeklySales' => $weeklySales,
             'monthlySales' => $monthlySales,
+            'profitToday' => $profitToday,
             'dailyExpenses' => $dailyExpenses,
             'weeklyExpenses' => $weeklyExpenses,
             'monthlyExpenses' => $monthlyExpenses,
@@ -60,6 +72,7 @@ class WelcomeController extends BaseController
             'profitThisWeek' => $profitThisWeek,
             'profitThisMonth' => $profitThisMonth,
             'totalInventoryQuantity' => $totalInventoryQuantity,
+            'monthlySalesData' => $monthlySalesData, // Add this line
         ]);
     }
 }

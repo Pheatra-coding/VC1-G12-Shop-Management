@@ -8,11 +8,21 @@
             padding: 10px;
             background: #fff;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            transition: 0.3s;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
         }
         .product-card img {
             max-height: 120px;
             object-fit: contain;
+            transition: transform 0.3s ease-in-out;
+        }
+        .product-card:hover img {
+            transform: scale(1.05);
         }
         .expired-label {
             background: red;
@@ -21,7 +31,7 @@
             padding: 5px;
             border-radius: 5px;
             display: inline-block;
-            margin-left: 8px; /* This controls the space between name and Expired label */
+            margin-left: 8px;
         }
         .no-image {
             height: 120px;
@@ -37,10 +47,14 @@
             justify-content: center;
             align-items: center;
             margin-top: 10px;
-            gap: 8px; /* Additional way to control space between elements */
+            gap: 8px;
         }
         .card-title.product-name {
-            margin-right: 8px; /* Another way to control space specifically after the name */
+            margin-right: 8px;
+            transition: color 0.3s ease-in-out;
+        }
+        .product-card:hover .card-title.product-name {
+            color: #1e40af;
         }
     </style>
 
