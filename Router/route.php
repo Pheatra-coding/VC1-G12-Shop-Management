@@ -18,6 +18,7 @@ require_once "Controllers/ExpenseController.php";
 require_once "Controllers/ProfitController.php";
 require_once "Controllers/ProfitController.php";
 require_once "Controllers/SoldHistoryController.php";
+require_once "Controllers/InventoryController.php";
 
 $route = new Router();
 $route->get("/", [WelcomeController::class, 'welcome']);
