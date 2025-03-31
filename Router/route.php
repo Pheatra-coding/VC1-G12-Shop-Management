@@ -17,6 +17,8 @@ require_once "Controllers/SaleController.php";
 require_once "Controllers/ExpenseController.php";
 require_once "Controllers/ProfitController.php";
 require_once "Controllers/ProfitController.php";
+require_once "Controllers/SoldHistoryController.php";
+require_once "Controllers/InventoryController.php";
 
 $route = new Router();
 $route->get("/", [WelcomeController::class, 'welcome']);
@@ -75,5 +77,10 @@ $route->get("/products/low-stock-alert", [LowStockAlertController::class, 'index
 // sales
 $route->get("/sales/top_selling", [TopSellingController::class, 'index']);
 $route->get("/sales/low_selling", [lowSellingController::class, 'index']);
+
+// Sold History
+$route->get("/sold_history/sold_history", [SoldHistoryController::class, 'index']);
+$route->get("/sold_history/delete/{id}", [SoldHistoryController::class, 'delete']);
+
 
 $route->route();

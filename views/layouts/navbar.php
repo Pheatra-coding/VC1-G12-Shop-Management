@@ -5,7 +5,31 @@
   color: #4154f1 !important;  /* Icon color adjusted to match text */
 }
 
-
+ /* Add to your existing style block */
+  body.locked-customer-view {
+    overflow: hidden;
+  }
+  
+  body.locked-customer-view #header,
+  body.locked-customer-view #sidebar,
+  body.locked-customer-view .toggle-sidebar-btn {
+    display: none !important;
+  }
+  
+  body.locked-customer-view .main {
+    margin-left: 0 !important;
+    padding-top: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  /* Exit button styling */
+  .exit-customer-view {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  }
 
 
 
@@ -314,7 +338,7 @@ if ($isLoggedIn):
   </li><!-- End Icons Nav -->
 
   <li class="nav-item">
-    <a class="nav-link collapsed" href="#">
+    <a class="nav-link collapsed" href="/sold_history/sold_history">
     <i class="bi bi-clock-history"></i>
       <span>Sell History</span>
     </a>
@@ -336,8 +360,8 @@ if ($isLoggedIn):
   </li><!-- End Profile Page Nav -->
   <?php endif; ?>
   
-  <li class="nav-item">
-    <a class="nav-link collapsed" href="/scan_barcodes/customer">
+<li class="nav-item">
+    <a class="nav-link collapsed lock-to-customer-page" href="/scan_barcodes/customer">
     <i class="bi bi-person"></i><span>Costumer</span></i>
     </a>
 </li><!-- End Icons Nav -->
@@ -351,6 +375,58 @@ if ($isLoggedIn):
     link.classList.add('active');
   }
 });
+
+   // Lock to Customer Page functionality
+   document.addEventListener('DOMContentLoaded', function() {
+    // Check if we're on the customer page
+    const isCustomerPage = window.location.pathname.includes('/scan_barcodes/customer');
+    
+    if (isCustomerPage) {
+      // Hide header and sidebar
+      document.querySelector('body').classList.add('locked-customer-view');
+      document.getElementById('header').style.display = 'none';
+      document.getElementById('sidebar').style.display = 'none';
+      
+      // Prevent navigation attempts
+      window.addEventListener('beforeunload', function(e) {
+        e.preventDefault();
+        e.returnValue = 'You are currently locked in Customer view. Are you sure you want to leave?';
+        return e.returnValue;
+      });
+      
+      // Disable all navigation links
+      document.querySelectorAll('a:not(.lock-to-customer-page)').forEach(link => {
+        link.addEventListener('click', function(e) {
+          if (!this.href.includes('/scan_barcodes/customer')) {
+            e.preventDefault();
+            alert('Please exit Customer view first before navigating elsewhere');
+          }
+        });
+      });
+      
+    //   // Add exit button (you can customize this)
+    //   const exitBtn = document.createElement('button');
+    //   exitBtn.innerHTML = 'Exit Customer View';
+    //   exitBtn.className = 'btn btn-danger exit-customer-view';
+    //   exitBtn.style.position = 'fixed';
+    //   exitBtn.style.bottom = '20px';
+    //   exitBtn.style.right = '20px';
+    //   exitBtn.style.zIndex = '9999';
+    //   exitBtn.addEventListener('click', function() {
+    //     localStorage.removeItem('customerViewLocked');
+    //     window.location.href = '/'; // Redirect to home or previous page
+    //   });
+    //   document.body.appendChild(exitBtn);
+    // }
+    
+    // // Handle customer link click
+    // const customerLink = document.querySelector('.lock-to-customer-page');
+    // if (customerLink) {
+    //   customerLink.addEventListener('click', function() {
+    //     localStorage.setItem('customerViewLocked', 'true');
+    //   });
+    }
+  });
 
 </script>
 

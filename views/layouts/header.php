@@ -1,3 +1,10 @@
+<?php
+$isCustomerPage = strpos($_SERVER['REQUEST_URI'], '/scan_barcodes/customer') !== false;
+if (!$isCustomerPage) {
+  // Your existing header/sidebar inclusion code remains here
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
