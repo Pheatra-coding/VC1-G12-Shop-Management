@@ -1,214 +1,238 @@
 <main id="main" class="main">
     <style>
-        /* General container styling */
-        .main {
-            margin: 0 auto;
-            padding: 20px;
-            font-family: 'Arial', sans-serif;
-        }
-
-        /* Scanner container */
         .scanner-container {
-            background: #fff;
-            padding: 20px;
+            background: #ffffff;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            margin-left: auto;
+            margin-right: auto;
         }
-
-        .scanner-container h4 {
-            font-size: 1.25rem;
-            color: #444;
-            margin-bottom: 15px;
+        
+        .scanner-header {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #eaeaea;
+            text-align: center;
         }
-
-        /* Input group */
+        
         .input-group {
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
             display: flex;
-            gap: 10px;
             align-items: center;
         }
-
+        
         .form-control {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
+            height: 50px;
+            font-size: 1.1rem;
+            border: 1px solid #e0e0e0;
+            border-right: none;
+            padding-left: 15px;
+            flex: 1;
         }
-
-        .form-control:focus {
-            border-color:rgb(6, 114, 230);
-            outline: none;
-            box-shadow: 0 0 5px rgba(40, 93, 167, 0.3);
+        
+        .btn-custom {
+            border-radius: 0;
+            height: 50px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
         }
-
-        /* Add button */
+        
         .btn-search {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 0 25px;
+        }
+        
+        .btn-search:hover {
+            background-color: #2980b9;
+            transform: translateY(-1px);
+        }
+        
+        .btn-submit {
             background-color: #007bff;
             color: white;
-            padding: 10px 15px;
+            padding: 12px 0;
+            font-size: 1.1rem;
             border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
+            border-radius: 6px;
+            margin-top: 2rem;
+            width: 100%;
+            transition: all 0.3s ease;
+            display: none; /* Hidden by default */
         }
-
-        .btn-search:hover {
-            background-color: #0056b3;
+        
+        .btn-submit:hover {
+            background-color: #0069d9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(39, 73, 174, 0.3);
         }
-
-        /* Cart table */
+        
         .cart-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
-            background: #fff;
-            border-radius: 8px;
-            overflow: hidden;
+            margin: 1.5rem 0;
+            font-size: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
-
-        .cart-table th,
-        .cart-table td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-
+        
         .cart-table th {
             background-color: #f8f9fa;
-            color: #333;
+            padding: 12px 15px;
+            text-align: left;
             font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.9rem;
+            color: #2c3e50;
+            border-bottom: 2px solid #e0e0e0;
         }
-
+        
         .cart-table td {
-            color: #555;
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+            vertical-align: middle;
         }
-
+        
         .cart-table tbody tr:hover {
-            background-color: #f5f5f5;
-            transition: background-color 0.2s;
-        }
-
-        .cart-table tfoot td {
-            font-weight: bold;
-            color: #333;
             background-color: #f8f9fa;
         }
-
-        /* Quantity controls */
+        
+        .cart-table tfoot td {
+            font-weight: 600;
+            background-color: #f8f9fa;
+            border-top: 2px solid #e0e0e0;
+        }
+        
+        .alert-info {
+            background-color: #e3f2fd;
+            color: #1976d2;
+            border-left: 4px solid #1976d2;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 1.5rem 0;
+        }
+        
         .quantity-controls {
             display: flex;
             align-items: center;
             gap: 5px;
         }
-
+        
         .quantity-btn {
-            background-color: #e9ecef;
-            border: 1px solid #ced4da;
-            border-radius: 3px;
+            background-color: #e0e0e0;
+            border: none;
             padding: 5px 10px;
             cursor: pointer;
+            border-radius: 4px;
             font-size: 1rem;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s ease;
         }
-
+        
         .quantity-btn:hover {
-            background-color: #dee2e6;
+            background-color: #d0d0d0;
         }
-
-        .quantity-btn.remove-btn {
-            background-color: #dc3545;
+        
+        .remove-btn {
+            background-color: #ff4d4d;
             color: white;
             border: none;
-        }
-
-        .quantity-btn.remove-btn:hover {
-            background-color: #c82333;
-        }
-
-        .quantity-display {
-            width: 30px;
-            text-align: center;
-            border: none;
-            font-size: 1rem;
-            color: #555;
-        }
-
-        /* Submit button */
-        .btn-submit {
-            background-color: #007bff;
-            color: white;
-            margin-top: 20px;
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 5px;
-            font-size: 1.1rem;
+            padding: 5px 10px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: background-color 0.3sjustice;
+            transition: background-color 0.3s ease;
         }
-
-        .btn-submit:hover {
-            background-color:rgb(2, 93, 191);
-            color:white;
+        
+        .remove-btn:hover {
+            background-color: #e04343;
         }
-
-        /* Alert */
-        .alert-info {
-            background-color: #e7f1ff;
-            color: #31708f;
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 20px;
+        
+        .nav-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
         }
-
-        /* Responsive adjustments */
-        @media (max-width: 600px) {
-            .input-group {
-                flex-direction: column;
+        
+        .nav-btn:hover {
+            background-color: #218838;
+            transform: translateY(-1px);
+        }
+        
+        @media (max-width: 768px) {
+            .scanner-container {
+                padding: 1.5rem;
             }
-            .form-control,
-            .btn-search {
-                width: 100%;
+            
+            .form-control, .btn-custom {
+                height: 45px;
+                font-size: 1rem;
+            }
+            
+            .cart-table {
+                font-size: 0.9rem;
+            }
+            
+            .cart-table th, .cart-table td {
+                padding: 8px 10px;
             }
         }
     </style>
 
     <div class="pagetitle">
         <h1>Input Product Sale</h1>
+        <a href="/scan_barcodes/barcode" class="btn btn-primary mt-3 mb-2 text-white outline-none">
+            <i class="fas fa-arrow-left me-2"></i> Scan Barcode
+        </a>
     </div>
 
-    <div class="scanner-container mt-4">
-        <h4>Product Selector</h4>
+    <div class="scanner-container">
+        <div class="scanner-header">
+            <h4><i class="fas fa-barcode me-2"></i>Product Selector</h4>
+        </div>
+        
         <form method="POST" action="/input_products/scan">
             <div class="input-group">
-                <input type="text" class="form-control" name="product_name" list="product-list" placeholder="Search for a product" required>
+                <input type="text" class="form-control" name="product_name" list="product-list" 
+                       placeholder="Search for a product" required>
                 <datalist id="product-list">
                     <?php foreach ($data['products'] as $product): ?>
                         <option value="<?= htmlspecialchars($product['name']) ?>" data-id="<?= $product['id'] ?>">
                     <?php endforeach; ?>
                 </datalist>
                 <input type="hidden" name="product_id" id="product-id">
-                <input type="number" class="form-control" name="quantity" min="1" placeholder="Quantity" required>
+                <input type="number" class="form-control" name="quantity" min="1" 
+                       placeholder="Quantity" required>
                 <button class="btn btn-custom btn-search" type="submit">
-                    <i class="fas fa-plus"></i> Add
+                    <i class="fas fa-plus me-2"></i>Add
                 </button>
             </div>
         </form>
 
         <?php if (isset($data['message'])): ?>
-            <div class="alert alert-info mt-4">
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>
                 <?= htmlspecialchars($data['message']) ?>
             </div>
         <?php endif; ?>
 
-        <div id="cart-table-container">
+        <div class="table-responsive">
             <table class="cart-table" id="cart-table">
                 <thead>
                     <tr>
-                        <th>Product Name</th>
+                        <th>Name</th>
                         <th>Price</th>
                         <th>Quantity</th>
                         <th>Total</th>
@@ -222,23 +246,28 @@
 
         <form method="POST" action="/input_products/submit" id="submit-form">
             <input type="hidden" name="cart_data" id="cart-data">
-            <button type="submit" class="btn btn-custom btn-submit">Submit Order</button>
+            <button type="submit" class="btn btn-custom btn-submit">
+                <i class="fas fa-check-circle me-2"></i> Submit Order
+            </button>
         </form>
     </div>
 
     <script>
-        let cart = <?php echo isset($data['reset']) && $data['reset'] ? '{}': 'JSON.parse(localStorage.getItem("cart")) || {}'; ?>;
+        let cart = <?php echo isset($data['reset']) && $data['reset'] ? '{}' : 'JSON.parse(localStorage.getItem("cart")) || {}'; ?>;
 
         function updateCartTable() {
             const tbody = document.querySelector('#cart-table tbody');
             const tfoot = document.querySelector('#cart-table tfoot');
+            const submitBtn = document.querySelector('.btn-submit');
             tbody.innerHTML = '';
             let totalPrice = 0;
 
             if (Object.keys(cart).length === 0) {
                 tbody.innerHTML = '<tr><td colspan="5">No products selected yet.</td></tr>';
                 tfoot.innerHTML = '';
+                submitBtn.style.display = 'none';
             } else {
+                submitBtn.style.display = 'block';
                 for (let productId in cart) {
                     const item = cart[productId];
                     const row = document.createElement('tr');
@@ -248,13 +277,13 @@
                         <td>
                             <div class="quantity-controls">
                                 <button class="quantity-btn" onclick="updateQuantity('${productId}', -1)">-</button>
-                                <span class="quantity-display">${item.quantity}</span>
+                                <span>${item.quantity}</span>
                                 <button class="quantity-btn" onclick="updateQuantity('${productId}', 1)">+</button>
                             </div>
                         </td>
                         <td>$${(item.price * item.quantity).toFixed(2)}</td>
                         <td>
-                            <button class="quantity-btn remove-btn" onclick="removeProduct('${productId}')">
+                            <button class="remove-btn" onclick="removeProduct('${productId}')">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </td>
@@ -264,8 +293,8 @@
                 }
                 tfoot.innerHTML = `
                     <tr>
-                        <td colspan="4" style="text-align: right;"><strong>Total Price:</strong></td>
-                        <td><strong>$${totalPrice.toFixed(2)}</strong></td>
+                        <td colspan="3" style="text-align: right;"><strong>Total:</strong></td>
+                        <td colspan="2"><strong>$${totalPrice.toFixed(2)}</strong></td>
                     </tr>
                 `;
             }

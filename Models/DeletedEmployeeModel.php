@@ -30,6 +30,13 @@ class DeletedEmployeeModel {
         $this->db->query($deleteQuery, [$id]);
     }
     
+    public function bulkPermanentlyDeleteUsers($ids) {
+        if (empty($ids)) return false;
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+        $query = "DELETE FROM `deleted_users` WHERE `id` IN ($placeholders)";
+        return $this->db->query($query, $ids);  // Pass the array of IDs
+    }
+    
     
     
 }

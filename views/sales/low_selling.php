@@ -1,6 +1,6 @@
 <main id="main" class="main">
     <style>
-        /* Card Container */
+        /* Card Container - Unified Style */
         .card {
             transition: all 0.3s ease;
             border: none;
@@ -12,6 +12,7 @@
             flex-direction: column;
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
             position: relative;
+            margin: 0 auto;
         }
 
         .card:hover {
@@ -22,7 +23,6 @@
         /* Card Image */
         .card-img-top {
             transition: all 0.3s ease;
-            border-radius: 0;
             width: 100%;
             height: 180px;
             object-fit: contain;
@@ -52,7 +52,7 @@
             color: #111827;
             line-height: 1.3;
             text-transform: capitalize;
-            text-align: center; /* Center align the title */
+            text-align: center;
             font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
             transition: color 0.3s ease;
         }
@@ -63,8 +63,8 @@
 
         /* Price */
         .price-container {
-            text-align: center; /* Center align the price */
-            margin-bottom: 1rem; /* Added space below price */
+            text-align: center;
+            margin-bottom: 1rem;
         }
 
         .text-success {
@@ -72,8 +72,8 @@
             color: #1e40af;
             font-size: 1.15rem;
             font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-            transition: transform 0.3s ease, background 0.3s ease;
-            display: inline-block; /* Allows transform to work properly */
+            transition: transform 0.3s ease;
+            display: inline-block;
         }
 
         .card:hover .text-success {
@@ -101,16 +101,17 @@
         /* Small icon style */
         .stat-icon {
             font-size: 1.1rem;
-            color: #6b7280;
             margin-right: 0.5rem;
         }
 
-        /* Adjust icon colors */
+        /* Stock icon */
         .stat-item:nth-child(1) .stat-icon {
-            color: #16a34a;
-        }
-        .stat-item:nth-child(2) .stat-icon {
             color: #dc2626;
+        }
+        
+        /* Date icon */
+        .stat-item:nth-child(2) .stat-icon {
+            color: #16a34a;
         }
 
         /* Small text style */
@@ -134,25 +135,31 @@
             border-radius: 0;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            position: relative;
+        }
+
+        /* Search Box */
+        .search-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-box {
+            width: 100%;
+            max-width: 400px;
         }
     </style>
 
-    <!-- Header -->
+    <!-- Page Title -->
     <div class="pagetitle">
-        <h1>Top Selling Products</h1>
+        <h1>Low Selling Products</h1>
     </div>
 
     <!-- Search Box -->
-    <div class="d-flex justify-content-end mb-3">
-        <div class="input-group w-50">
-            <input
-                type="text"
-                id="searchInput"
-                class="form-control"
-                placeholder="Search top selling product..."
-                onkeyup="searchTable()">
-            <button class="btn btn-secondary">
+    <div class="search-container">
+        <div class="input-group search-box">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search low selling products..." onkeyup="searchTable()">
+            <button class="btn btn-secondary" aria-label="Search">
                 <i class="fas fa-search"></i>
             </button>
         </div>
@@ -163,13 +170,13 @@
         <?php if (!empty($products)): ?>
             <?php foreach ($products as $product): ?>
                 <div class="col product-item">
-                    <div class="card border-0 shadow-sm product-card">
+                    <div class="card border-0 shadow-sm">
                         <?php if (!empty($product['image']) && file_exists("views/uploads/" . $product['image'])): ?>
-                            <img src="/views/uploads/<?= htmlspecialchars($product['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($product['name']); ?>">
+                            <img src="/views/uploads/<?= htmlspecialchars($product['image']) ?>" 
+                                 class="card-img-top" 
+                                 alt="<?= htmlspecialchars($product['name']); ?>">
                         <?php else: ?>
-                            <div class="no-image">
-                                <span>No Image</span>
-                            </div>
+                            <div class="no-image"><span>No Image</span></div>
                         <?php endif; ?>
                         <div class="card-body">
                             <h6 class="card-title product-name"><?= htmlspecialchars($product['name']); ?></h6>
@@ -179,11 +186,13 @@
                             <div class="stats-row">
                                 <div class="stat-item">
                                     <i class="stat-icon bi bi-box-seam"></i>
-                                    <p class="small-stat-text mb-0">Quantity: <?= htmlspecialchars($product['total_sold']); ?></p>
+                                    <p class="small-stat-text mb-0">Quantity: <?= htmlspecialchars($product['quantity']); ?></p>
                                 </div>
                                 <div class="stat-item">
                                     <i class="stat-icon bi bi-calendar-event"></i>
-                                    <p class="small-stat-text mb-0"><?= !empty($product['last_sale_date']) ? htmlspecialchars(date('M d, Y', strtotime($product['last_sale_date']))) : 'N/A'; ?></p>
+                                    <p class="small-stat-text mb-0">
+                                        <?= htmlspecialchars(date('M d, Y', strtotime($product['updated_at']))); ?>
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -191,40 +200,33 @@
                 </div>
             <?php endforeach; ?>
         <?php else: ?>
-            <!-- No Products Message -->
             <div class="col-12 text-center mt-4">
                 <div class="alert alert-warning" role="alert">
-                    No top-selling products available at the moment.
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    No low-selling products available at the moment.
                 </div>
             </div>
         <?php endif; ?>
     </div>
 </main>
 
-<!-- JavaScript for Search -->
+<!-- JavaScript for Search Functionality -->
 <script>
     function searchTable() {
-        let input = document.getElementById('searchInput').value.toLowerCase();
-        let productItems = document.querySelectorAll('.product-item');
-
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const productItems = document.querySelectorAll('.product-item');
         let hasResults = false;
 
         productItems.forEach(item => {
-            let productName = item.querySelector('.product-name').innerText.toLowerCase();
-            
-            // Show or hide products based on search input
-            if (productName.includes(input)) {
-                item.style.display = '';
-                hasResults = true;
-            } else {
-                item.style.display = 'none';
-            }
+            const productName = item.querySelector('.product-name').innerText.toLowerCase();
+            item.style.display = productName.includes(input) ? '' : 'none';
+            if (productName.includes(input)) hasResults = true;
         });
 
-        // Show or hide the no products message based on search results
-        let noProductsMessage = document.getElementById('noProductsMessage');
+        const noProductsMessage = document.getElementById('noProductsMessage');
         if (noProductsMessage) {
             noProductsMessage.style.display = hasResults ? 'none' : 'block';
         }
     }
 </script>
+

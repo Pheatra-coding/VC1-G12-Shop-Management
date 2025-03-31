@@ -27,6 +27,7 @@ class ProductController extends BaseController {
     $barcode = htmlspecialchars($_POST['barcode']);
     $price = htmlspecialchars($_POST['price']);
     $quantity = htmlspecialchars($_POST['quantity']);
+    $purchase_price = htmlspecialchars($_POST['purchase_price']);
 
     // Ensure required fields are not empty
     if (empty($name) || empty($end_date) || empty($barcode) || empty($price) || empty($quantity)) {
@@ -62,7 +63,7 @@ class ProductController extends BaseController {
     }
 
     // Insert product into database
-    $this->products->addProduct($image, $name, $end_date, $barcode, $price, $quantity);
+    $this->products->addProduct($image, $name, $end_date, $barcode, $price, $quantity, $purchase_price);
 
     // Redirect to prevent form resubmission
     header("Location: /products");
@@ -89,6 +90,7 @@ class ProductController extends BaseController {
         $barcode = htmlspecialchars($_POST['barcode']);
         $price = htmlspecialchars($_POST['price']);
         $quantity = htmlspecialchars($_POST['quantity']);
+        $purchase_price = htmlspecialchars($_POST['purchase_price']);
     
         // Check if the new barcode is already in use (excluding the current product)
         $existingProduct = $this->products->getProductByBarcode($barcode, $id);
@@ -131,7 +133,7 @@ class ProductController extends BaseController {
         }
     
         // Update product with image
-        $this->products->updateProduct($id, $image, $name, $end_date, $barcode, $price, $quantity);
+        $this->products->updateProduct($id, $image, $name, $end_date, $barcode, $price, $quantity, $purchase_price );
         header("Location: /products");
     }
 }
