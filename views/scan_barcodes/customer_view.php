@@ -226,12 +226,12 @@
     <div class="customer-container">
         <div class="customer-header">
             <h1>Your Shopping Cart</h1>
-            <p>Dino Shop - Making Shopping Fun and Easy!</p>
+            <p>HENG HOUT Shop - Making Shopping Fun and Easy!</p>
         </div>
 
         <div class="welcome-container" id="welcome-container">
             <div class="cart-icon"></div>
-            <h2>Welcome to Dino Shop!</h2>
+            <h2>Welcome to HENG HOUT Shop!</h2>
             <p>Your items will appear here as they're scanned.</p>
             <p>Relax and watch your shopping list grow!</p>
         </div>
