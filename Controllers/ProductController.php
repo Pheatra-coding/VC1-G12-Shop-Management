@@ -45,7 +45,7 @@ class ProductController extends BaseController {
 
     // Handle Image Upload
     $image = "No Image"; // Default value if no image is uploaded
-    $targetDir = "/views/uploads/";
+    $targetDir = "views/uploads/";
 
     if (!file_exists($targetDir)) {
         mkdir($targetDir, 0777, true);
@@ -111,7 +111,7 @@ class ProductController extends BaseController {
     
         // Handle Image Upload
         $image = $_FILES['image']['name'] ?? null;
-        $targetDir = "/views/uploads/";
+        $targetDir = "views/uploads/";
     
         if (!file_exists($targetDir)) {
             mkdir($targetDir, 0777, true);
