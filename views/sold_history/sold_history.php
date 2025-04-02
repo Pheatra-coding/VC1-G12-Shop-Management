@@ -72,7 +72,7 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
                             <tr class="product-item">
                                 <td class="product-name"><?= htmlspecialchars($transaction['product_name']) ?></td>
                                 <td><?= htmlspecialchars($transaction['quantity']) ?></td>
-                                <td><?= htmlspecialchars($transaction['total_price']) ?></td>
+                                <td>$<?= htmlspecialchars($transaction['total_price']) ?></td>
                                 <td><?= htmlspecialchars(date('d-M-Y', strtotime($transaction['sale_date']))) ?></td>
                                 <td class="text-center align-middle" style="width: 50px;">
                                     <div class="dropdown dropdown">
