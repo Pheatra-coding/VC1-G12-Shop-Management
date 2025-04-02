@@ -36,7 +36,7 @@
                                 <i class="bi bi-cart"></i>
                             </div>
                             <div class="ps-3">
-                                <h6 id="sales-count"><?php echo $salesToday['total_quantity']; ?> <?php echo $salesToday['total_quantity'] == 1 ? 'item' : 'items'; ?></h6>
+                                <h6 id="sales-count"><?php echo $salesToday['total_quantity']; ?> <?php echo $salesToday['total_quantity'] == 1 ? 'item' : ''; ?></h6>
                                 <span id="sales-trend" class="text-success small pt-1 fw-bold
                                     <?php echo $salesToday['trend'] === 'increase' ? 'text-success' : ($salesToday['trend'] === 'decrease' ? 'text-danger' : 'text-muted'); ?>">
                                     <?php 
