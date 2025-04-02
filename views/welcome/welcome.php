@@ -11,36 +11,89 @@
         <!-- Left side columns -->
         <div class="col-lg-8">
           <div class="row">
-            <!-- Sales Card -->
-            <div class="col-xxl-4 col-md-6">
-              <div class="card info-card sales-card">
-                <div class="filter">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
-                    </li>
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                  </ul>
-                </div>
 
-                <div class="card-body">
-                  <h5 class="card-title">Sales <span>| Today</span></h5>
-                  <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-cart"></i>
-                    </div>
-                    <div class="ps-3">
-                      <h6>145</h6>
-                      <span class="text-success small pt-1 fw-bold">12%</span> 
-                      <span class="text-muted small pt-2 ps-1">increase</span>
-                    </div>
+           <!-- Sales Card -->
+          <div class="col-xxl-4 col-md-6">
+              <div class="card info-card sales-card">
+                  <div class="filter">
+                      <a class="icon" href="#" data-bs-toggle="dropdown">
+                          <i class="bi bi-three-dots"></i>
+                      </a>
+                      <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                          <li class="dropdown-header text-start">
+                              <h6>Filter</h6>
+                          </li>
+                          <li><a class="dropdown-item" href="#" onclick="showSales('today')">Today</a></li>
+                          <li><a class="dropdown-item" href="#" onclick="showSales('week')">This Week</a></li>
+                          <li><a class="dropdown-item" href="#" onclick="showSales('month')">This Month</a></li>
+                      </ul>
                   </div>
-                </div>
+
+                  <div class="card-body">
+                      <h5 class="card-title">Sales <span id="sales-period">| Today</span></h5>
+
+                      <div class="d-flex align-items-center">
+                          <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                              <i class="bi bi-cart"></i>
+                          </div>
+                          <div class="ps-3">
+                              <h6 id="sales-count"><?php echo $salesToday['total_quantity']; ?> items</h6>
+                              <span id="sales-trend" class="small pt-1 text-secondary
+                                  <?php echo $salesToday['trend'] === 'increase' ? 'text-success' : ($salesToday['trend'] === 'decrease' ? 'text-danger' : ''); ?>">
+                                  <?php 
+                                  echo $salesToday['trend'] === 'increase' ? '⬆ Increase' : 
+                                      ($salesToday['trend'] === 'decrease' ? '⬇ Decrease' : '0% no-change'); 
+                                  ?>
+                              </span>
+                              <span class="text-muted small pt-2 ps-1" id="sales-change">
+                                  <?php echo $salesToday['trend'] !== 'no-change' ? $salesToday['percentage'] . '% ' . $salesToday['trend'] : ''; ?>
+                              </span>
+                          </div>
+                      </div>
+                  </div>
               </div>
-            </div><!-- End Sales Card -->
+          </div>
+
+          <script>
+              const salesData = {
+                  'today': {
+                      quantity: '<?php echo $salesToday['total_quantity']; ?>',
+                      trend: '<?php echo $salesToday['trend']; ?>',
+                      percentage: '<?php echo $salesToday['percentage']; ?>'
+                  },
+                  'week': {
+                      quantity: '<?php echo $salesWeek['total_quantity']; ?>',
+                      trend: '<?php echo $salesWeek['trend']; ?>',
+                      percentage: '<?php echo $salesWeek['percentage']; ?>'
+                  },
+                  'month': {
+                      quantity: '<?php echo $salesMonth['total_quantity']; ?>',
+                      trend: '<?php echo $salesMonth['trend']; ?>',
+                      percentage: '<?php echo $salesMonth['percentage']; ?>'
+                  }
+              };
+
+              function showSales(period) {
+                  const data = salesData[period];
+                  document.getElementById('sales-period').textContent = '| ' + period.charAt(0).toUpperCase() + period.slice(1);
+                  document.getElementById('sales-count').textContent = data.quantity + ' items';
+                  
+                  const trendElement = document.getElementById('sales-trend');
+                  trendElement.className = 'small pt-1 fw-bold';
+                  if (data.trend === 'increase') {
+                      trendElement.classList.add('text-success');
+                      trendElement.textContent = '⬆ Increase';
+                  } else if (data.trend === 'decrease') {
+                      trendElement.classList.add('text-danger');
+                      trendElement.textContent = '⬇ Decrease';
+                  } else {
+                      trendElement.textContent = '0% no-change';
+                  }
+
+                  document.getElementById('sales-change').textContent = 
+                      data.trend !== 'no-change' ? data.percentage + '% ' + data.trend : '';
+              }
+          </script>
 
             <!-- Revenue Card -->
             <div class="col-xxl-4 col-md-6">
@@ -127,7 +180,7 @@
                   <h5 class="card-title">Profit <span id="profit-period">| Today</span></h5>
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                    <i class="bi bi-graph-up"></i>
+                      <i class="bi bi-graph-up"></i>
                     </div>
                     <div class="ps-3">
                       <h6 id="profit-amount">$0.00</h6>
@@ -169,70 +222,91 @@
 
             <!-- Expense Card -->
             <div class="col-xxl-4 col-md-6">
-                <div class="card info-card expense-card">
-                    <div class="filter">
-                        <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                            <li class="dropdown-header text-start">
-                                <h6>Filter</h6>
-                            </li>
-                            <li><a class="dropdown-item" href="#" onclick="showExpenses('daily')">Today</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="showExpenses('weekly')">This Week</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="showExpenses('monthly')">This Month</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="card-body">
-                        <h5 class="card-title">Expenses <span id="expense-period">| Today</span></h5>
-                        <div class="d-flex align-items-center">
-                          <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" 
-                              style="width: 60px; height: 60px; background-color: rgba(255, 0, 0, 0.1);">
-                              <i class="bi bi-cart text-danger" style="font-size: 30px;"></i>
-                          </div>
-                            <div class="ps-3">
-                                <h6 id="expense-amount">$<?php echo number_format($dailyExpenses['total'], 2); ?></h6>
-                                <span id="expense-percentage" class="small pt-1 fw-bold 
-                                    <?php echo $dailyExpenses['trend'] === 'increase' ? 'text-danger' : 'text-success'; ?>">
-                                    <?php echo $dailyExpenses['percentage']; ?>%
-                                </span>
-                                <span id="expense-trend" class="text-muted small pt-2 ps-1">
-                                    <?php echo $dailyExpenses['trend']; ?>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
+              <div class="card info-card expense-card">
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Filter</h6>
+                    </li>
+                    <li><a class="dropdown-item" href="#" onclick="showExpenses('daily')">Today</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="showExpenses('weekly')">This Week</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="showExpenses('monthly')">This Month</a></li>
+                  </ul>
                 </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">Expenses <span id="expense-period">| Today</span></h5>
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center"
+                      style="width: 60px; height: 60px; background-color: rgba(255, 0, 0, 0.1);">
+                      <i class="bi bi-cart text-danger" style="font-size: 30px;"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6 id="expense-amount">$<?php echo number_format($dailyExpenses['total'], 2); ?></h6>
+                      <span id="expense-percentage" class="small pt-1 fw-bold 
+                                    <?php echo $dailyExpenses['trend'] === 'increase' ? 'text-danger' : 'text-success'; ?>">
+                        <?php echo $dailyExpenses['percentage']; ?>%
+                      </span>
+                      <span id="expense-trend" class="text-muted small pt-2 ps-1">
+                        <?php echo $dailyExpenses['trend']; ?>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Stock quantity -->
+
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card inventory-card">
+                <div class="card-body">
+                  <h5 class="card-title">Inventory</h5>
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center"
+                      style="width: 60px; height: 60px; background-color: rgba(0, 128, 0, 0.1);">
+                      <i class="bi bi-box-seam text-success" style="font-size: 30px;"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6 id="total-inventory"><?php echo number_format($totalInventoryQuantity); ?></h6>
+                      <span id="inventory-trend" class="text-muted small pt-2 ps-1">Total Stock</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <script>
-                const expenseData = {
-                    'daily': {
-                        total: '<?php echo $dailyExpenses['total']; ?>',
-                        percentage: '<?php echo $dailyExpenses['percentage']; ?>',
-                        trend: '<?php echo $dailyExpenses['trend']; ?>'
-                    },
-                    'weekly': {
-                        total: '<?php echo $weeklyExpenses['total']; ?>',
-                        percentage: '<?php echo $weeklyExpenses['percentage']; ?>',
-                        trend: '<?php echo $weeklyExpenses['trend']; ?>'
-                    },
-                    'monthly': {
-                        total: '<?php echo $monthlyExpenses['total']; ?>',
-                        percentage: '<?php echo $monthlyExpenses['percentage']; ?>',
-                        trend: '<?php echo $monthlyExpenses['trend']; ?>'
-                    }
-                };
+            <!-- end stock -->
 
-                function showExpenses(period) {
-                    const data = expenseData[period];
-                    document.getElementById('expense-period').textContent = '| ' + 
-                        (period === 'daily' ? 'Today' : period === 'weekly' ? 'This Week' : 'This Month');
-                    document.getElementById('expense-amount').textContent = '$' + parseFloat(data.total).toFixed(2);
-                    document.getElementById('expense-percentage').textContent = data.percentage + '%';
-                    document.getElementById('expense-percentage').className = 'small pt-1 fw-bold ' + 
-                        (data.trend === 'increase' ? 'text-danger' : 'text-success');
-                    document.getElementById('expense-trend').textContent = data.trend;
+            <script>
+              const expenseData = {
+                'daily': {
+                  total: '<?php echo $dailyExpenses['total']; ?>',
+                  percentage: '<?php echo $dailyExpenses['percentage']; ?>',
+                  trend: '<?php echo $dailyExpenses['trend']; ?>'
+                },
+                'weekly': {
+                  total: '<?php echo $weeklyExpenses['total']; ?>',
+                  percentage: '<?php echo $weeklyExpenses['percentage']; ?>',
+                  trend: '<?php echo $weeklyExpenses['trend']; ?>'
+                },
+                'monthly': {
+                  total: '<?php echo $monthlyExpenses['total']; ?>',
+                  percentage: '<?php echo $monthlyExpenses['percentage']; ?>',
+                  trend: '<?php echo $monthlyExpenses['trend']; ?>'
                 }
+              };
+
+              function showExpenses(period) {
+                const data = expenseData[period];
+                document.getElementById('expense-period').textContent = '| ' +
+                  (period === 'daily' ? 'Today' : period === 'weekly' ? 'This Week' : 'This Month');
+                document.getElementById('expense-amount').textContent = '$' + parseFloat(data.total).toFixed(2);
+                document.getElementById('expense-percentage').textContent = data.percentage + '%';
+                document.getElementById('expense-percentage').className = 'small pt-1 fw-bold ' +
+                  (data.trend === 'increase' ? 'text-danger' : 'text-success');
+                document.getElementById('expense-trend').textContent = data.trend;
+              }
             </script>
             <!-- End Expense Card -->
 

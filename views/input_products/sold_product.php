@@ -145,7 +145,7 @@
             cursor: pointer;
             border-radius: 4px;
             font-size: 1rem;
-            transition: background-color 0.3sjustice
+            transition: background-color 0.3sjustice;
             transition: background-color 0.3s ease;
         }
         

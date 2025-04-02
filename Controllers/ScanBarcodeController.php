@@ -79,5 +79,7 @@ class ScanBarcodeController extends BaseController {
         exit();
     }
 
-
+    public function customerView() {
+        $this->view('scan_barcodes/customer_view');
+    }
 }

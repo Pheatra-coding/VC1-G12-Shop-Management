@@ -17,6 +17,9 @@ require_once "Controllers/SaleController.php";
 require_once "Controllers/ExpenseController.php";
 require_once "Controllers/ProfitController.php";
 require_once "Controllers/ProfitController.php";
+require_once "Controllers/SoldHistoryController.php";
+require_once "Controllers/InventoryController.php";
+require_once "Controllers/SalesController.php";
 
 $route = new Router();
 $route->get("/", [WelcomeController::class, 'welcome']);
@@ -66,6 +69,7 @@ $route->get("/scan_barcodes/barcode", [ScanBarcodeController::class, 'index']);
 $route->post("/scan_barcodes/scan", [ScanBarcodeController::class, 'scan']);
 $route->post("/scan_barcodes/submit", [ScanBarcodeController::class, 'submit']);
 $route->post("/scan_barcodes/confirm", [ScanBarcodeController::class, 'confirm']);
+$route->get("/scan_barcodes/customer", [ScanBarcodeController::class, 'customerView']);
 
 
 //low stock alert 
@@ -74,5 +78,10 @@ $route->get("/products/low-stock-alert", [LowStockAlertController::class, 'index
 // sales
 $route->get("/sales/top_selling", [TopSellingController::class, 'index']);
 $route->get("/sales/low_selling", [lowSellingController::class, 'index']);
+
+// Sold History
+$route->get("/sold_history/sold_history", [SoldHistoryController::class, 'index']);
+$route->get("/sold_history/delete/{id}", [SoldHistoryController::class, 'delete']);
+
 
 $route->route();
