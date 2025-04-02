@@ -1,70 +1,13 @@
 <main id="main" class="main">
-    <style>
-        .product-item {
-            text-align: center;
-        }
-        .product-card {
-            border-radius: 10px;
-            padding: 10px;
-            background: #fff;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-            position: relative;
-            overflow: hidden;
-        }
-        .product-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
-        }
-        .product-card img {
-            max-height: 120px;
-            object-fit: contain;
-            transition: transform 0.3s ease-in-out;
-        }
-        .product-card:hover img {
-            transform: scale(1.05);
-        }
-        .expired-label {
-            background: red;
-            color: white;
-            font-weight: bold;
-            padding: 5px;
-            border-radius: 5px;
-            display: inline-block;
-            margin-left: 8px;
-        }
-        .no-image {
-            height: 120px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #f8f9fa;
-            border-radius: 5px;
-            color: #6c757d;
-        }
-        .product-name-row {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 10px;
-            gap: 8px;
-        }
-        .card-title.product-name {
-            margin-right: 8px;
-            transition: color 0.3s ease-in-out;
-        }
-        .product-card:hover .card-title.product-name {
-            color: #1e40af;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 
     <div class="pagetitle">
         <h1>Expiring Inventory</h1>
     </div>
 
-     <!-- Search Box -->
-     <div class="d-flex justify-content-end mb-3">
-        <div class="input-group w-50">
+    <!-- Search Box -->
+    <div class="d-flex justify-content-end mb-3 search-container">
+        <div class="input-group search-wrapper">
             <input type="text" id="searchInput" class="form-control" placeholder="Search expiring products..." onkeyup="searchTable()">
             <button class="btn btn-secondary" aria-label="Search">
                 <i class="fas fa-search"></i>
@@ -72,27 +15,27 @@
         </div>
     </div>
 
-    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4" id="productGrid">
+    <div class="product-grid" id="productGrid">
         <?php if (!empty($products)): ?>
             <?php foreach ($products as $product): ?>
-                <div class="col product-item">
-                    <div class="card product-card">
+                <div class="product-item">
+                    <div class="card product-card expired-card">
+                        <div class="expired-banner">EXPIRED</div>
                         <?php if (!empty($product['image']) && file_exists("views/uploads/" . $product['image'])): ?>
-                            <img src="/views/uploads/<?= htmlspecialchars($product['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($product['name']); ?>">
+                            <img src="/views/uploads/<?= htmlspecialchars($product['image']) ?>" class="card-img-top faded-image" alt="<?= htmlspecialchars($product['name']); ?>">
                         <?php else: ?>
-                            <div class="no-image">
+                            <div class="no-image faded-image">
                                 <span>No Image</span>
                             </div>
                         <?php endif; ?>
                         <div class="product-name-row">
-                            <h6 class="card-title product-name"><?= htmlspecialchars($product['name']); ?></h6>
-                            <div class="expired-label">Expired</div>
+                            <h6 class="card-title product-name expired-text"> <?= htmlspecialchars($product['name']); ?> </h6>
                         </div>
                     </div>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>
-            <div class="col-12 text-center mt-4">
+            <div class="no-products text-center mt-4">
                 <div class="alert alert-warning" role="alert">
                     No expiring products available at the moment.
                 </div>
@@ -113,10 +56,119 @@
             item.style.display = productName.includes(input) ? '' : 'none';
             if (productName.includes(input)) hasResults = true;
         });
-
-        const noProductsMessage = document.getElementById('noProductsMessage');
-        if (noProductsMessage) {
-            noProductsMessage.style.display = hasResults ? 'none' : 'block';
-        }
     }
 </script>
+
+<style>
+    .main {
+        padding: 20px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .search-container {
+        padding: 0 15px;
+    }
+
+    .search-wrapper {
+        width: 100%;
+        max-width: 500px;
+    }
+
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        padding: 0 15px;
+    }
+
+    .product-item {
+        width: 100%;
+    }
+
+    .expired-card {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        height: 300px;
+        padding: 15px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .expired-banner {
+        position: absolute;
+        top: 10px;
+        left: -10px;
+        background: red;
+        color: white;
+        font-weight: bold;
+        padding: 5px 15px;
+        transform: rotate(-20deg);
+        font-size: clamp(12px, 2vw, 14px);
+        z-index: 2;
+    }
+
+    .card-img-top, .no-image {
+        width: 100%;
+        height: 70%;
+        object-fit: cover;
+        max-height: 200px;
+    }
+
+    .no-image {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f5f5f5;
+    }
+
+    .product-name-row {
+        padding: 10px 0;
+        height: 30%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .expired-text {
+        color: red;
+        text-align: center;
+        margin: 0;
+        font-size: clamp(14px, 2.5vw, 16px);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .no-products {
+        grid-column: 1 / -1;
+    }
+
+    /* Media Queries for additional responsiveness */
+    @media (max-width: 768px) {
+        .product-grid {
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .expired-card {
+            height: 250px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .product-grid {
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+        }
+
+        .expired-card {
+            height: 200px;
+            padding: 10px;
+        }
+
+        .search-wrapper {
+            max-width: 100%;
+        }
+    }
+</style>

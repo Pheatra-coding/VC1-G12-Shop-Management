@@ -24,7 +24,7 @@
             transition: all 0.3s ease;
             border-radius: 0;
             width: 100%;
-            height: 180px;
+            height: 150px;
             object-fit: contain;
             background: transparent;
             padding: 1rem;
@@ -120,7 +120,7 @@
             margin-bottom: 0;
             font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
         }
-
+        
         /* No Image Placeholder */
         .no-image {
             background: #f3f4f6;

@@ -24,7 +24,7 @@
         .card-img-top {
             transition: all 0.3s ease;
             width: 100%;
-            height: 180px;
+            height: 150px;
             object-fit: contain;
             background: transparent;
             padding: 1rem;
@@ -137,17 +137,7 @@
             letter-spacing: 0.5px;
         }
 
-        /* Search Box */
-        .search-container {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 1.5rem;
-        }
-
-        .search-box {
-            width: 100%;
-            max-width: 400px;
-        }
+      
     </style>
 
     <!-- Page Title -->
@@ -155,11 +145,17 @@
         <h1>Low Selling Products</h1>
     </div>
 
+  
     <!-- Search Box -->
-    <div class="search-container">
-        <div class="input-group search-box">
-            <input type="text" id="searchInput" class="form-control" placeholder="Search low selling products..." onkeyup="searchTable()">
-            <button class="btn btn-secondary" aria-label="Search">
+    <div class="d-flex justify-content-end mb-3">
+        <div class="input-group w-50">
+            <input
+                type="text"
+                id="searchInput"
+                class="form-control"
+                placeholder="Search top selling product..."
+                onkeyup="searchTable()">
+            <button class="btn btn-secondary">
                 <i class="fas fa-search"></i>
             </button>
         </div>
