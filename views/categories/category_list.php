@@ -23,6 +23,17 @@
         <a href="/categories/create" class="btn btn-primary">
             <i class="fas fa-plus"></i> Add Category
         </a>
+        <div class="input-group w-50">
+            <input
+                type="text"
+                id="searchInput"
+                class="form-control"
+                placeholder="Search product..."
+                onkeyup="searchTable()">
+            <button class="btn btn-secondary">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
     </div>
 
     <div class="table-responsive">
@@ -53,9 +64,35 @@
                                     </ul>
                                 </div>
                             </td>
-                            <td>
-                                <a href="/categories/edit/<?php echo $category['id']; ?>" class="btn btn-sm btn-primary">Edit</a>
-                                <a href="/categories/delete/<?php echo $category['id']; ?>" class="btn btn-sm btn-danger">Delete</a>
+                            <td class="text-center align-middle" style="width: 50px;">
+                                <div class="dropdown dropdown">
+                                    <i class="bi bi-three-dots-vertical"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                        style="cursor: pointer; font-size: 1.2rem; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; transition: background 0.3s;"
+                                        onmouseover="this.style.background='#f1f1f1'"
+                                        onmouseout="this.style.background='transparent'">
+                                    </i>
+                                    <ul class="dropdown-menu shadow-sm rounded-2 border-0 p-1" style="min-width: 100px;">
+                                        <li>
+                                            <a class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small"
+                                                href="/categories/edit/<?= $category['id'] ?>" style="font-size: 0.8rem;">
+                                                <i class="bi bi-pencil-square text-primary" style="font-size: 0.8rem;"></i>
+                                                Edit
+                                            </a>
+                                        </li>
+                                        <?php
+                                        if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'Admin'): ?>
+                                            <li>
+                                                <a class="dropdown-item d-flex align-items-center gap-1 py-1 px-2 small text-danger"
+                                                    href="/categories/delete/<?= $category['id'] ?>" style="font-size: 0.8rem;">
+                                                    <i class="bi bi-trash3" style="font-size: 0.8rem;"></i>
+                                                    Delete
+                                                </a>
+                                            </li>
+                                        <?php endif; ?>
+                                    </ul>
+                                </div>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -83,3 +120,43 @@
 <?php else:
     $this->redirect('/users/login');
 endif; ?>
+<script>
+        function searchTable() {
+        let input = document.getElementById("searchInput").value.toLowerCase().trim();
+        let table = document.getElementById("productTable");
+        let rows = table.getElementsByTagName("tr");
+        let noResultsMessage = document.getElementById("noResultsMessage");
+        let found = false;
+
+        noResultsMessage.style.display = "none";
+
+        for (let i = 1; i < rows.length; i++) {
+            let columns = rows[i].getElementsByTagName("td");
+            let match = false;
+
+            for (let j = 1; j < columns.length - 1; j++) {
+                let cellText = columns[j].innerText.toLowerCase().trim();
+
+                // Normalize price values (remove '$' and compare as number)
+                if (columns[j].innerText.includes('$')) {
+                    cellText = parseFloat(columns[j].innerText.replace('$', '')).toFixed(2);
+                }
+                console.log("Searching for:", input, "in", cellText);
+
+                if (cellText.includes(input)) {
+                    match = true;
+                    break;
+                }
+            }
+
+            rows[i].style.display = match ? "" : "none";
+            if (match) {
+                found = true;
+            }
+        }
+
+        if (!found) {
+            noResultsMessage.style.display = "block";
+        }
+    }
+</script>
