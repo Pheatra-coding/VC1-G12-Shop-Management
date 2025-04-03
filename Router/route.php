@@ -21,6 +21,7 @@ require_once "Controllers/SoldHistoryController.php";
 require_once "Controllers/InventoryController.php";
 require_once "Controllers/SalesController.php";
 require_once "Controllers/ImportController.php";
+require_once "Controllers/CategoryController.php";
 
 $route = new Router();
 $route->get("/", [WelcomeController::class, 'welcome']);
@@ -86,6 +87,6 @@ $route->get("/sales/low_selling", [lowSellingController::class, 'index']);
 // Sold History
 $route->get("/sold_history/sold_history", [SoldHistoryController::class, 'index']);
 $route->get("/sold_history/delete/{id}", [SoldHistoryController::class, 'delete']);
-
-
+// category
+$route->get("/categories", [CategoryController::class, 'index']);
 $route->route();
