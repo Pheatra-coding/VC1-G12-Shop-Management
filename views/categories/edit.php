@@ -113,7 +113,7 @@
                 </div>
 
                 <div class="btn-group">
-                    <button type="submit" class="btn btn-primary">Update Category</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
                     <a href="/categories" class="btn btn-secondary">Cancel</a>
                 </div>
             </form>
