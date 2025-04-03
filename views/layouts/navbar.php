@@ -326,7 +326,7 @@ if ($isLoggedIn):
   </li><!-- End Tables Nav -->
 
   <li class="nav-item">
-    <a class="nav-link collapsed" href="#">
+    <a class="nav-link collapsed" href="/categories">
     <i class="bi bi-grid"></i></i></i><span>Categories</span></i>
     </a>
   </li><!-- End Charts Nav -->
