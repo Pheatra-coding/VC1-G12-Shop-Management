@@ -5,8 +5,8 @@
             padding: 0;
         }
         .receipt-container {
-            width: 40%;
             margin: auto;
+            width: 40%;
             background-color: white;
             border-radius: 12px;
             padding: 25px;
@@ -93,7 +93,7 @@
             background-color: #2ecc71;
         }
         .btn-download {
-            background-color: #0088cc;
+            background-color: #007bff;
             color: white;
             padding: 12px 25px;
             border: none;
@@ -107,9 +107,10 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
+            margin-top: 10px;
         }
         .btn-download:hover {
-            background-color: #1a9ce0;
+            background-color:rgb(25, 116, 214);
         }
         .receipt-footer {
             text-align: center;
@@ -118,7 +119,7 @@
             font-size: 13px;
         }
         
-        /* Enhanced Print Styles */
+        /* Print-specific styles */
         @media print {
             body, html {
                 width: 100%;
@@ -206,8 +207,8 @@
             </tbody>
         </table>
 
-        <form method="POST" action="/scan_barcodes/confirm" id="confirm-form">
-            <button type="button" class="btn-confirm" id="confirm-btn">Confirm Payment</button>
+        <form method="POST" action="/scan_barcodes/confirm" id="confirm-form" onsubmit="printReceiptAndSubmit(event)">
+            <button type="submit" class="btn-confirm">Confirm Payment</button>
         </form>
 
         <button class="btn-download" onclick="downloadReceipt()" id="download-btn">
@@ -233,17 +234,43 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <script>
+        // Function to handle automatic printing when confirming payment
+        function printReceiptAndSubmit(event) {
+            event.preventDefault(); // Prevent form submission temporarily
+            
+            // Get the elements to hide for printing
+            const confirmForm = document.getElementById('confirm-form');
+            const downloadBtn = document.getElementById('download-btn');
+            
+            // Temporarily hide buttons for printing
+            confirmForm.style.display = 'none';
+            downloadBtn.style.display = 'none';
+            
+            // Print the receipt
+            window.print();
+            
+            // Short delay to ensure print dialog opens before submitting form
+            setTimeout(function() {
+                // Show buttons again
+                confirmForm.style.display = 'block';
+                downloadBtn.style.display = 'flex';
+                
+                // Submit the form to complete the payment confirmation
+                document.getElementById('confirm-form').submit();
+            }, 500);
+        }
+
         async function downloadReceipt() {
             try {
                 // Get the elements to hide
-                const confirmBtn = document.getElementById('confirm-btn');
+                const confirmForm = document.getElementById('confirm-form');
                 const downloadBtn = document.getElementById('download-btn');
 
                 // Temporarily hide the buttons
-                confirmBtn.style.display = 'none';
+                confirmForm.style.display = 'none';
                 downloadBtn.style.display = 'none';
 
-                // Create a clone of the receipt with print styles
+                // Create a clone of the receipt to ensure consistent styling
                 const receipt = document.getElementById('receipt');
                 const clone = receipt.cloneNode(true);
                 
@@ -270,7 +297,7 @@
                 document.body.removeChild(clone);
 
                 // Show the buttons again
-                confirmBtn.style.display = 'block';
+                confirmForm.style.display = 'block';
                 downloadBtn.style.display = 'flex';
 
                 // Create download link
@@ -282,45 +309,14 @@
                 
             } catch (error) {
                 // Ensure buttons are shown even if there's an error
-                const confirmBtn = document.getElementById('confirm-btn');
+                const confirmForm = document.getElementById('confirm-form');
                 const downloadBtn = document.getElementById('download-btn');
-                confirmBtn.style.display = 'block';
+                confirmForm.style.display = 'block';
                 downloadBtn.style.display = 'flex';
 
                 console.error('Error generating receipt image:', error);
                 alert('Failed to generate receipt image. Please try again.');
             }
         }
-
-        // Handle confirm payment button click
-        document.getElementById('confirm-btn').addEventListener('click', function() {
-            // First submit the form
-            document.getElementById('confirm-form').submit();
-            
-            // Then print the receipt
-            printReceipt();
-        });
-
-        function printReceipt() {
-            // Hide buttons before printing
-            const confirmBtn = document.getElementById('confirm-btn');
-            const downloadBtn = document.getElementById('download-btn');
-            confirmBtn.style.display = 'none';
-            downloadBtn.style.display = 'none';
-
-            // Use browser's print functionality
-            window.print();
-
-            // Show buttons again after printing is done (or cancelled)
-            setTimeout(() => {
-                confirmBtn.style.display = 'block';
-                downloadBtn.style.display = 'flex';
-            }, 1000);
-        }
-
-        // Clear cart after printing if needed
-        window.onafterprint = function() {
-            localStorage.removeItem('cart');
-        };
     </script>
 </main>
