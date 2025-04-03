@@ -20,6 +20,7 @@ require_once "Controllers/ProfitController.php";
 require_once "Controllers/SoldHistoryController.php";
 require_once "Controllers/InventoryController.php";
 require_once "Controllers/SalesController.php";
+require_once "Controllers/ImportController.php";
 
 $route = new Router();
 $route->get("/", [WelcomeController::class, 'welcome']);
@@ -32,6 +33,9 @@ $route->get("/products/edit/{id}", [ProductController::class, 'edit']);
 $route->put("/products/update/{id}", [ProductController::class, 'update']);
 $route->delete("/products/delete/{id}", [ProductController::class, 'delete']);
 $route->get("/products/product_expiring", [ExpiringProductController::class, 'expiring']);
+// Product Import Routes
+$route->get("/products/import", [ImportController::class, 'index']);
+$route->post("/products/import", [ImportController::class, 'import']);
 
 //users
 $route->get("/users", [UserController::class, 'index']);
