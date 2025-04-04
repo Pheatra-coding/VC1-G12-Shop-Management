@@ -17,80 +17,67 @@
     </div>
     <div class="d-flex justify-content-between mb-3">
         <a href="/products/create" class="btn btn-primary"> <i class="fas fa-plus"></i> Add Product</a>
-                <!-- Add this where you want the import button to appear -->
-                <!-- Add this modal at the bottom of your page -->
-        <div class="modal fade" id="importModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Import Products</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="importForm" enctype="multipart/form-data">
-                <div class="mb-3">
-                    <label for="excelFile" class="form-label">Select Excel File</label>
-                    <input class="form-control" type="file" id="excelFile" name="excel_file" accept=".xls,.xlsx" required>
-                    <div class="form-text">Max size: 5MB (.xls, .xlsx only)</div>
-                </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="submitImport">Import</button>
-            </div>
-            </div>
-        </div>
-        </div>
-
-        <!-- Add this button where your import button was -->
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#importModal">
+        <div class="container">
+    <!-- Your existing product table here -->
+    
+    <!-- Import Button -->
+    <button id="importBtn" class="btn btn-primary mt-3">
         <i class="fas fa-file-import"></i> Import Products
-        </button>
+    </button>
+    
+    <!-- Hidden file input -->
+    <input type="file" id="fileInput" accept=".xls,.xlsx" style="display:none;">
+</div>
 
-        <!-- Add this JavaScript -->
-        <script>
-        document.getElementById('submitImport').addEventListener('click', function() {
-        const fileInput = document.getElementById('excelFile');
-        const file = fileInput.files[0];
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const importBtn = document.getElementById('importBtn');
+    const fileInput = document.getElementById('fileInput');
+    
+    importBtn.addEventListener('click', function() {
+        fileInput.click();
+    });
+    
+    fileInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
         
-        if (!file) {
-            alert('Please select a file first');
-            return;
-        }
-
+        // Update button state
+        importBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Importing...';
+        importBtn.disabled = true;
+        
         const formData = new FormData();
         formData.append('excel_file', file);
-
-        // Show loading state
-        this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span> Importing...';
-        this.disabled = true;
-
+        
         fetch('/products/import', {
             method: 'POST',
             body: formData
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => { throw new Error(err.message); });
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.success) {
-            alert(`Successfully imported ${data.imported} products!`);
-            location.reload(); // Refresh the product list
+                alert(data.message);
+                window.location.reload();
             } else {
-            alert('Error: ' + data.message);
+                throw new Error(data.message);
             }
         })
         .catch(error => {
-            alert('Import failed: ' + error.message);
+            alert('Error: ' + error.message);
         })
         .finally(() => {
-            // Reset button
-            this.innerHTML = 'Import';
-            this.disabled = false;
-            // Close modal
-            bootstrap.Modal.getInstance(document.getElementById('importModal')).hide();
+            importBtn.innerHTML = '<i class="fas fa-file-import"></i> Import Products';
+            importBtn.disabled = false;
+            fileInput.value = '';
         });
-        });
-        </script>
+    });
+});
+</script>
         <div class="input-group w-50">
             <input
                 type="text"
