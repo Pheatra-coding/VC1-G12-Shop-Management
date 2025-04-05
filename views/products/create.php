@@ -1,6 +1,6 @@
 <?php session_start(); ?> 
 <?php if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
-
+    
 <main id="main" class="main">
     <form action="/products/store" method="post" enctype="multipart/form-data">
         <input type="hidden" name="csrf_token" value="">
@@ -63,13 +63,27 @@
                 </div>
                 
                 <div class="mb-3">
-                    <label for="price" class="form-label">Selling Price ($):</label>
+                    <label for "price" class="form-label">Selling Price ($):</label>
                     <input type="number" class="form-control" id="price" name="price" min="0.01" step="0.01" placeholder="0.00" required>
                 </div>
                 
                 <div class="mb-3">
                     <label for="endDate" class="form-label">Expiration Date</label>
                     <input type="date" class="form-control" id="endDate" name="end_date" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="category_id" class="form-label">Category:</label>
+                    <select class="form-control" id="category_id" name="category_id" required>
+                        <option value="">Select a category</option>
+                        <?php
+                        $productModel = new ProductModel();
+                        $categories = $productModel->getCategories();
+                        foreach ($categories as $category) {
+                            echo "<option value='{$category['id']}'>{$category['category_name']}</option>";
+                        }
+                        ?>
+                    </select>
                 </div>
             </div>
         </div>

@@ -24,11 +24,11 @@ class ProductModel {
     }
 
     // Functions add a new product
-    public function addProduct($image, $name, $end_date, $barcode, $price, $quantity, $purchase_price) {
+    public function addProduct($image, $name, $end_date, $barcode, $price, $quantity, $purchase_price, $category_id) {
         try {
             $this->db->query(
-                "INSERT INTO products (image, name, end_date, barcode, price, quantity, purchase_price) 
-                 VALUES (:image, :name, :end_date, :barcode, :price, :quantity, :purchase_price)",
+                "INSERT INTO products (image, name, end_date, barcode, price, quantity, purchase_price, category_id) 
+                 VALUES (:image, :name, :end_date, :barcode, :price, :quantity, :purchase_price, :category_id)",
                 [
                     ':image' => $image,
                     ':name' => $name,
@@ -36,7 +36,8 @@ class ProductModel {
                     ':barcode' => $barcode,
                     ':price' => $price,
                     ':quantity' => $quantity,
-                    ':purchase_price' => $purchase_price
+                    ':purchase_price' => $purchase_price,
+                    ':category_id' => $category_id
                 ]
             );
         } catch (PDOException $e) {
@@ -83,5 +84,10 @@ class ProductModel {
             ':id' => $currentProductId
         ]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getCategories() {
+        $result = $this->db->query("SELECT * FROM categories WHERE is_deleted = 0");
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 }
