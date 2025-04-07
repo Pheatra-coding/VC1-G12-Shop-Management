@@ -64,11 +64,14 @@
 
         .product-name {
             font-weight: 500;
+            word-break: break-word;
         }
 
         .product-details {
             color: var(--dark-gray);
             font-size: 0.9rem;
+            display: flex;
+            gap: 15px;
         }
 
         .no-products {
@@ -122,11 +125,30 @@
 
         .search-container {
             max-width: 400px;
+            transition: all 0.3s ease;
+        }
+
+        .search-container.collapsed {
+            max-width: 40px;
+            overflow: hidden;
+        }
+
+        .search-container.collapsed .form-control,
+        .search-container.collapsed .input-group-text {
+            display: none;
+        }
+
+        .search-container.collapsed .btn {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            padding: 0;
         }
 
         .empty-state {
             text-align: center;
             color: var(--dark-gray);
+            padding: 40px 20px;
         }
 
         .empty-state .bi-folder-x {
@@ -135,6 +157,7 @@
             margin-bottom: 15px;
         }
 
+        /* Mobile styles */
         @media (max-width: 768px) {
             .category-header {
                 padding: 12px;
@@ -153,9 +176,73 @@
                 gap: 4px;
             }
 
+            .product-details {
+                flex-direction: column;
+                gap: 4px;
+            }
+
             .search-container {
-                width: 100%;
+                width: auto;
                 max-width: none;
+            }
+
+            .card-title {
+                font-size: 1.2rem;
+            }
+
+            .breadcrumb {
+                font-size: 0.9rem;
+            }
+
+            .btn-add-new {
+                width: 40px;
+                height: 40px;
+                padding: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .btn-add-new span {
+                display: none;
+            }
+
+            .btn-add-new i {
+                margin: 0;
+            }
+
+            .d-flex.justify-content-between.align-items-center.mb-4 {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .d-flex.gap-2 {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+
+        /* Desktop styles */
+        @media (min-width: 769px) {
+            .btn-add-new i {
+                margin-right: 8px;
+            }
+
+            .search-container.collapsed {
+                max-width: 400px;
+            }
+
+            .search-container.collapsed .form-control,
+            .search-container.collapsed .input-group-text {
+                display: block;
+            }
+
+            .search-container.collapsed .btn {
+                border-radius: 0 0.375rem 0.375rem 0;
+                width: auto;
+                height: auto;
+                padding: 0.375rem 0.75rem;
             }
         }
     </style>
@@ -163,12 +250,12 @@
     <main id="main" class="main">
         <div class="pagetitle">
             <h1>Product Categories</h1>
-            <nav>
+            <!-- <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/">Home</a></li>
                     <li class="breadcrumb-item active">Categories</li>
                 </ol>
-            </nav>
+            </nav> -->
         </div>
 
         <section class="section">
@@ -179,7 +266,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <h5 class="card-title mb-0">All Categories</h5>
                                 <div class="d-flex gap-2">
-                                    <div class="search-container">
+                                    <div class="search-container collapsed" id="searchContainer">
                                         <div class="input-group">
                                             <input
                                                 type="text"
@@ -187,13 +274,13 @@
                                                 class="form-control"
                                                 placeholder="Search categories or products..."
                                                 onkeyup="searchTable()">
-                                            <button class="btn btn-outline-secondary">
+                                            <button class="btn btn-outline-secondary" onclick="toggleSearch()">
                                                 <i class="bi bi-search"></i>
                                             </button>
                                         </div>
                                     </div>
-                                    <a href="/categories/create" class="btn btn-primary">
-                                        <i class="bi bi-plus-lg"></i> Add New
+                                    <a href="/categories/create" class="btn btn-primary btn-add-new">
+                                        <i class="bi bi-plus-lg"></i> <span>Add New</span>
                                     </a>
                                 </div>
                             </div>
@@ -212,7 +299,7 @@
                                                 </div>
                                                 <div class="d-flex align-items-center gap-2">
                                                     <div class="dropdown">
-                                                        <button class="action-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <button class="action-btn" data-bs-toggle="dropdown" aria-expanded="false" onclick="event.stopPropagation()">
                                                             <i class="bi bi-three-dots-vertical"></i>
                                                         </button>
                                                         <ul class="dropdown-menu " style="min-width: 100px;">
@@ -239,16 +326,15 @@
                                             <div id="products-<?php echo $category['id']; ?>" class="products-list">
                                                 <?php if (!empty($category['products']) && is_array($category['products'])) : ?>
                                                     <?php foreach ($category['products'] as $product) : ?>
-                                                        <div class="product-item" style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0;">
-                                                            <span class="product-name" style="font-weight: 500;">
+                                                        <div class="product-item">
+                                                            <span class="product-name">
                                                                 <?php echo htmlspecialchars($product['name']); ?>
                                                             </span>
-                                                            <span class="product-details" style="font-weight: bold; display: flex; gap: 30px;">
+                                                            <span class="product-details">
                                                                 $<?php echo number_format($product['price'], 2); ?>
                                                                 <span>Qty: <?php echo htmlspecialchars($product['quantity']); ?></span>
                                                             </span>
                                                         </div>
-
                                                     <?php endforeach; ?>
                                                 <?php else : ?>
                                                     <div class="no-products">No products in this category</div>
@@ -261,7 +347,7 @@
                                         <i class="bi bi-folder-x"></i>
                                         <h4>No Categories Found</h4>
                                         <p>Get started by adding your first category</p>
-                                        <a href="/categories/create" class="btn btn-primary ">
+                                        <a href="/categories/create" class="btn btn-primary">
                                             <i class="bi bi-plus-lg"></i> Add Category
                                         </a>
                                     </div>
@@ -341,6 +427,34 @@
                 emptyState.remove();
             }
         }
+
+        function toggleSearch() {
+            const searchContainer = document.getElementById('searchContainer');
+            const searchInput = document.getElementById('searchInput');
+            
+            // Only prevent default on mobile where we want the icon-only behavior
+            if (window.innerWidth <= 768) {
+                event.preventDefault();
+                searchContainer.classList.toggle('collapsed');
+                
+                // Focus input when expanded
+                if (!searchContainer.classList.contains('collapsed')) {
+                    searchInput.focus();
+                }
+            }
+        }
+
+        // Close search when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const searchContainer = document.getElementById('searchContainer');
+            const searchInput = document.getElementById('searchInput');
+            
+            if (window.innerWidth <= 768 && 
+                !searchContainer.contains(event.target) && 
+                !searchContainer.classList.contains('collapsed')) {
+                searchContainer.classList.add('collapsed');
+            }
+        });
     </script>
 
 <?php else:
