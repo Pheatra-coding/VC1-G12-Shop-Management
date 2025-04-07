@@ -21,54 +21,54 @@ class ProductController extends BaseController {
     }
 
     public function store() {
-    // Sanitize inputs
-    $name = htmlspecialchars($_POST['name']);
-    $end_date = htmlspecialchars($_POST['end_date']);
-    $barcode = htmlspecialchars($_POST['barcode']);
-    $price = htmlspecialchars($_POST['price']);
-    $quantity = htmlspecialchars($_POST['quantity']);
-    $purchase_price = htmlspecialchars($_POST['purchase_price']);
-
-    // Ensure required fields are not empty
-    if (empty($name) || empty($end_date) || empty($barcode) || empty($price) || empty($quantity)) {
-        $_SESSION['errors']['general'] = "All fields are required.";
-        $this->view("products/create", ['errors' => $_SESSION['errors']]);
-        return;
-    }
-
-    // Check if the barcode already exists
-    if ($this->products->barcodelExists($barcode)) {
-        $_SESSION['errors']['barcode'] = "The barcode already exists.";
-        $this->view("products/create", ['errors' => $_SESSION['errors']]);
-        return;
-    }
-
-    // Handle Image Upload
-    $image = "No Image"; // Default value if no image is uploaded
-    $targetDir = "views/uploads/";
-
-    if (!file_exists($targetDir)) {
-        mkdir($targetDir, 0777, true);
-    }
-
-    if (!empty($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-        $image = basename($_FILES["image"]["name"]);
-        $targetFile = $targetDir . $image;
-        
-        if (!move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
-            $_SESSION['errors']['image'] = "Error uploading image.";
+        // Sanitize inputs
+        $name = htmlspecialchars($_POST['name']);
+        $end_date = htmlspecialchars($_POST['end_date']);
+        $barcode = htmlspecialchars($_POST['barcode']);
+        $price = htmlspecialchars($_POST['price']);
+        $quantity = htmlspecialchars($_POST['quantity']);
+        $purchase_price = htmlspecialchars($_POST['purchase_price']);
+        $category_id = htmlspecialchars($_POST['category_id']); // Add category_id
+    
+        // Ensure required fields are not empty
+        if (empty($name) || empty($end_date) || empty($barcode) || empty($price) || empty($quantity) || empty($category_id)) {
+            $_SESSION['errors']['general'] = "All fields are required.";
             $this->view("products/create", ['errors' => $_SESSION['errors']]);
             return;
         }
+    
+        // Check if the barcode already exists
+        if ($this->products->barcodelExists($barcode)) {
+            $_SESSION['errors']['barcode'] = "The barcode already exists.";
+            $this->view("products/create", ['errors' => $_SESSION['errors']]);
+            return;
+        }
+    
+        // Handle Image Upload
+        $image = "No Image";
+        $targetDir = "views/uploads/";
+    
+        if (!file_exists($targetDir)) {
+            mkdir($targetDir, 0777, true);
+        }
+    
+        if (!empty($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $image = basename($_FILES["image"]["name"]);
+            $targetFile = $targetDir . $image;
+            
+            if (!move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
+                $_SESSION['errors']['image'] = "Error uploading image.";
+                $this->view("products/create", ['errors' => $_SESSION['errors']]);
+                return;
+            }
+        }
+    
+        // Insert product into database with category_id
+        $this->products->addProduct($image, $name, $end_date, $barcode, $price, $quantity, $purchase_price, $category_id);
+    
+        header("Location: /products");
+        exit();
     }
-
-    // Insert product into database
-    $this->products->addProduct($image, $name, $end_date, $barcode, $price, $quantity, $purchase_price);
-
-    // Redirect to prevent form resubmission
-    header("Location: /products");
-    exit();
-}
 
     
     // function to delete a product 
@@ -91,6 +91,8 @@ class ProductController extends BaseController {
         $price = htmlspecialchars($_POST['price']);
         $quantity = htmlspecialchars($_POST['quantity']);
         $purchase_price = htmlspecialchars($_POST['purchase_price']);
+        $category_id = htmlspecialchars($_POST['category_id']); 
+
     
         // Check if the new barcode is already in use (excluding the current product)
         $existingProduct = $this->products->getProductByBarcode($barcode, $id);
@@ -133,7 +135,7 @@ class ProductController extends BaseController {
         }
     
         // Update product with image
-        $this->products->updateProduct($id, $image, $name, $end_date, $barcode, $price, $quantity, $purchase_price );
+        $this->products->updateProduct($id, $image, $name, $end_date, $barcode, $price, $quantity, $purchase_price,$category_id );
         header("Location: /products");
     }
 }
