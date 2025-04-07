@@ -76,23 +76,6 @@
             font-weight: 600;
             color: #2c3e50 !important;
         }
-        .qr-code {
-            text-align: center;
-            margin: 25px 0;
-            padding: 15px;
-            background-color: #f9f9f9;
-            border-radius: 8px;
-        }
-        .qr-code img {
-            max-width: 180px;
-            display: block;
-            margin: 0 auto 10px auto;
-        }
-        .qr-code p {
-            margin: 5px 0 0 0;
-            color: #7f8c8d;
-            font-size: 14px;
-        }
         .btn-confirm {
             background-color: #27ae60;
             color: white;
@@ -135,6 +118,54 @@
             color: #95a5a6;
             font-size: 13px;
         }
+        
+        /* Print-specific styles */
+        @media print {
+            body, html {
+                width: 100%;
+                height: auto;
+                margin: 0;
+                padding: 0;
+                background: white;
+            }
+            
+            body * {
+                visibility: hidden;
+            }
+            
+            #receipt, #receipt * {
+                visibility: visible;
+            }
+            
+            #receipt {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                padding: 20px;
+                box-shadow: none;
+                border-radius: 0;
+            }
+            
+            .receipt-container {
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 20px !important;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                page-break-after: always;
+            }
+            
+            .btn-confirm, .btn-download {
+                display: none !important;
+            }
+            
+            @page {
+                size: auto;
+                margin: 0mm;
+            }
+        }
     </style>
 
     <div class="receipt-container" id="receipt">
@@ -176,12 +207,7 @@
             </tbody>
         </table>
 
-        <div class="qr-code">
-            <img src="/views/assets/img/DinoQR.png" alt="Payment QR Code">
-            <p>Scan to complete payment</p>
-        </div>
-
-        <form method="POST" action="/scan_barcodes/confirm" id="confirm-form">
+        <form method="POST" action="/scan_barcodes/confirm" id="confirm-form" onsubmit="printReceiptAndSubmit(event)">
             <button type="submit" class="btn-confirm">Confirm Payment</button>
         </form>
 
@@ -208,6 +234,32 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <script>
+        // Function to handle automatic printing when confirming payment
+        function printReceiptAndSubmit(event) {
+            event.preventDefault(); // Prevent form submission temporarily
+            
+            // Get the elements to hide for printing
+            const confirmForm = document.getElementById('confirm-form');
+            const downloadBtn = document.getElementById('download-btn');
+            
+            // Temporarily hide buttons for printing
+            confirmForm.style.display = 'none';
+            downloadBtn.style.display = 'none';
+            
+            // Print the receipt
+            window.print();
+            
+            // Short delay to ensure print dialog opens before submitting form
+            setTimeout(function() {
+                // Show buttons again
+                confirmForm.style.display = 'block';
+                downloadBtn.style.display = 'flex';
+                
+                // Submit the form to complete the payment confirmation
+                document.getElementById('confirm-form').submit();
+            }, 500);
+        }
+
         async function downloadReceipt() {
             try {
                 // Get the elements to hide
@@ -218,13 +270,31 @@
                 confirmForm.style.display = 'none';
                 downloadBtn.style.display = 'none';
 
-                // Capture the receipt as an image
-                const element = document.getElementById('receipt');
-                const canvas = await html2canvas(element, {
+                // Create a clone of the receipt to ensure consistent styling
+                const receipt = document.getElementById('receipt');
+                const clone = receipt.cloneNode(true);
+                
+                // Apply print styles to the clone
+                clone.style.width = '100%';
+                clone.style.margin = '0';
+                clone.style.padding = '20px';
+                clone.style.boxShadow = 'none';
+                clone.style.borderRadius = '0';
+                
+                // Append the clone to body temporarily
+                document.body.appendChild(clone);
+                
+                // Capture the clone as an image
+                const canvas = await html2canvas(clone, {
                     scale: 2, // Increase resolution
                     useCORS: true, // Allow cross-origin images
-                    backgroundColor: '#ffffff' // Ensure white background
+                    backgroundColor: '#ffffff', // Ensure white background
+                    logging: false,
+                    removeContainer: true
                 });
+
+                // Remove the clone
+                document.body.removeChild(clone);
 
                 // Show the buttons again
                 confirmForm.style.display = 'block';
@@ -233,7 +303,7 @@
                 // Create download link
                 const image = canvas.toDataURL('image/png');
                 const link = document.createElement('a');
-                link.download = 'dino-shop-receipt.png';
+                link.download = 'dino-shop-receipt-' + new Date().toISOString().slice(0, 10) + '.png';
                 link.href = image;
                 link.click();
                 
