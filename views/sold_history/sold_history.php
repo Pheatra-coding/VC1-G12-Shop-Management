@@ -266,64 +266,77 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
                 // Restore original state
                 document.body.style.overflow = originalOverflow;
                 printContainer.innerHTML = ''; // Clear the print container
-            });
+            });    async function downloadReceipt() {
+    try {
+        const receiptElement = document.getElementById('receipt');
+        if (!receiptElement) {
+            console.error('Receipt element not found');
+            return;
+        }
+
+        // Hide buttons temporarily
+        const printBtn = receiptElement.querySelector('.btn-print');
+        const downloadBtn = receiptElement.querySelector('.btn-download');
+        if (printBtn) printBtn.style.display = 'none';
+        if (downloadBtn) downloadBtn.style.display = 'none';
+
+        // Clone the receipt for download
+        const clone = receiptElement.cloneNode(true);
+
+        // Set portrait dimensions (e.g., 600px width, 800px height for a 3:4 aspect ratio)
+        clone.style.width = '600px'; // Fixed width
+        clone.style.height = '800px'; // Taller height for portrait
+        clone.style.margin = '0';
+        clone.style.padding = '20px';
+        clone.style.boxShadow = 'none';
+        clone.style.borderRadius = '0';
+        clone.style.boxSizing = 'border-box'; // Ensure padding is included in dimensions
+        clone.style.overflow = 'hidden'; // Prevent content from overflowing
+
+        // Ensure the content scales to fit the portrait dimensions
+        clone.style.display = 'flex';
+        clone.style.flexDirection = 'column';
+        clone.style.justifyContent = 'space-between';
+
+        // Append the clone to the body temporarily
+        document.body.appendChild(clone);
+
+        // Capture the clone as an image with html2canvas
+        const canvas = await html2canvas(clone, {
+            scale: 2, // Higher resolution for better quality
+            useCORS: true,
+            backgroundColor: '#ffffff',
+            logging: false,
+            removeContainer: true,
+            width: 600, // Match the clone's width
+            height: 800 // Match the clone's height
+        });
+
+        // Remove the clone from the DOM
+        document.body.removeChild(clone);
+
+        // Restore buttons
+        if (printBtn) printBtn.style.display = 'block';
+        if (downloadBtn) downloadBtn.style.display = 'flex';
+
+        // Create download link
+        const image = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.download = 'dino-shop-receipt-' + new Date().toISOString().slice(0, 10) + '.png';
+        link.href = image;
+        link.click();
+    } catch (error) {
+        console.error('Error generating receipt image:', error);
+        alert('Failed to generate receipt image. Please try again.');
+        const printBtn = document.getElementById('receipt')?.querySelector('.btn-print');
+        const downloadBtn = document.getElementById('receipt')?.querySelector('.btn-download');
+        if (printBtn) printBtn.style.display = 'block';
+        if (downloadBtn) downloadBtn.style.display = 'flex';
+    }
+}
         });
     }
 
-    async function downloadReceipt() {
-        try {
-            const receiptElement = document.getElementById('receipt');
-            if (!receiptElement) {
-                console.error('Receipt element not found');
-                return;
-            }
-
-            // Hide buttons temporarily
-            const printBtn = receiptElement.querySelector('.btn-print');
-            const downloadBtn = receiptElement.querySelector('.btn-download');
-            if (printBtn) printBtn.style.display = 'none';
-            if (downloadBtn) downloadBtn.style.display = 'none';
-
-            // Clone the receipt for download
-            const clone = receiptElement.cloneNode(true);
-            clone.style.width = '100%';
-            clone.style.margin = '0';
-            clone.style.padding = '20px';
-            clone.style.boxShadow = 'none';
-            clone.style.borderRadius = '0';
-            document.body.appendChild(clone);
-
-            // Capture the clone as an image
-            const canvas = await html2canvas(clone, {
-                scale: 2,
-                useCORS: true,
-                backgroundColor: '#ffffff',
-                logging: false,
-                removeContainer: true
-            });
-
-            // Remove the clone
-            document.body.removeChild(clone);
-
-            // Restore buttons
-            if (printBtn) printBtn.style.display = 'block';
-            if (downloadBtn) downloadBtn.style.display = 'flex';
-
-            // Create download link
-            const image = canvas.toDataURL('image/png');
-            const link = document.createElement('a');
-            link.download = 'dino-shop-receipt-' + new Date().toISOString().slice(0, 10) + '.png';
-            link.href = image;
-            link.click();
-        } catch (error) {
-            console.error('Error generating receipt image:', error);
-            alert('Failed to generate receipt image. Please try again.');
-            const printBtn = document.getElementById('receipt')?.querySelector('.btn-print');
-            const downloadBtn = document.getElementById('receipt')?.querySelector('.btn-download');
-            if (printBtn) printBtn.style.display = 'block';
-            if (downloadBtn) downloadBtn.style.display = 'flex';
-        }
-    }
 </script>
 
 <style>
@@ -452,50 +465,59 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
 
     /* Print-specific styles */
     @media print {
-        body, html {
-            margin: 0;
-            padding: 0;
-            background: white;
-            overflow: visible !important;
-        }
-
-        body * {
-            visibility: hidden;
-        }
-
-        #printContainer, #printContainer * {
-            visibility: visible;
-        }
-
-        #printContainer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            margin: 0;
-            padding: 20px;
-            box-shadow: none;
-            border-radius: 0;
-            display: block !important;
-        }
-
-        #printContainer .receipt-container {
-            width: 100%;
-            margin: 0;
-            padding: 20px;
-            box-shadow: none;
-            border-radius: 0;
-        }
-
-        .btn-print, .btn-download {
-            display: none !important;
-        }
-
-        @page {
-            size: auto;
-            margin: 10mm;
-        }
+    body, html {
+        margin: 0;
+        padding: 0;
+        background: white;
+        overflow: visible !important;
     }
+
+    body * {
+        visibility: hidden;
+    }
+
+    #printContainer, #printContainer * {
+        visibility: visible;
+    }
+
+    #printContainer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        margin: 0;
+        padding: 20px;
+        box-shadow: none;
+        border-radius: 0;
+        display: block !important;
+    }
+
+    #printContainer .receipt-container {
+        width: 100%;
+        margin: 0;
+        padding: 20px;
+        box-shadow: none;
+        border-radius: 0;
+    }
+
+    .btn-print, .btn-download {
+        display: none !important;
+    }
+
+    @page {
+        size: auto;
+        margin: 0;
+    }
+
+    @page {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    header, footer, #header, #footer {
+        display: none !important;
+    }
+}
 </style>
 
 <?php else:
