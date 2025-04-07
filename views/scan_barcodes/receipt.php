@@ -170,13 +170,13 @@
 
     <div class="receipt-container" id="receipt">
         <div class="receipt-header">
-            <h1>DINO SHOP</h1>
+            <h1>MENG HOUT SHOP</h1>
             <p>Order Receipt</p>
         </div>
 
         <div class="ticket-info">
             <div class="ticket-details">
-                <p><strong>Shop:</strong> Dino Shop</p>
+                <p><strong>Shop:</strong> MENG HOUT Shop</p>
                 <p><strong>Date:</strong> <?= date('D, d M Y') ?></p>
             </div>
         </div>

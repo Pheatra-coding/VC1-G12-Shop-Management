@@ -168,13 +168,13 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
         const receiptHTML = `
             <div class="receipt-container" id="receipt" style="width: 100%; box-shadow: none; padding: 0;">
                 <div class="receipt-header">
-                    <h1>DINO SHOP</h1>
+                    <h1>MENG HOUT SHOP</h1>
                     <p>Order Receipt</p>
                 </div>
 
                 <div class="ticket-info">
                     <div class="ticket-details">
-                        <p><strong>Shop:</strong> Dino Shop</p>
+                        <p><strong>Shop:</strong> MENG HOUT Shop</p>
                         <p><strong>Date:</strong> ${saleDate}</p>
                     </div>
                 </div>
