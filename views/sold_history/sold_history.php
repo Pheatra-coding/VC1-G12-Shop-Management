@@ -266,7 +266,10 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
                 // Restore original state
                 document.body.style.overflow = originalOverflow;
                 printContainer.innerHTML = ''; // Clear the print container
-            });    async function downloadReceipt() {
+            });
+        });
+    }
+    async function downloadReceipt() {
     try {
         const receiptElement = document.getElementById('receipt');
         if (!receiptElement) {
@@ -334,9 +337,6 @@ if (isset($_SESSION['user_name']) && isset($_SESSION['user_role']) && $_SESSION[
         if (downloadBtn) downloadBtn.style.display = 'flex';
     }
 }
-        });
-    }
-
 </script>
 
 <style>
