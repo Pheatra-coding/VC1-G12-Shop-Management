@@ -42,5 +42,11 @@ class CategoryModel {
         $query = "DELETE FROM categories WHERE id = :id";
         return $this->db->query($query, [':id' => $id]);
     }
+    public function categoryExists($name) {
+        $query = "SELECT COUNT(*) FROM categories WHERE LOWER(category_name) = LOWER(:category_name)";
+        $stmt = $this->db->query($query, [':category_name' => $name]);
+        return $stmt->fetchColumn() > 0;
+    }
+    
 
 }

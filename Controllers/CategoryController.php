@@ -26,19 +26,26 @@ class CategoryController extends BaseController
     // store category
     public function store()
     {
-        $name = htmlspecialchars($_POST['category_name']);  // Adjusted to match form field name
-
+        $name = htmlspecialchars($_POST['category_name']);
+        $errors = [];
+    
         if (empty($name)) {
             $errors['general'] = "Category name is required.";
-            $categories = $this->categories->getCategories(); // Fetch categories for the view
+        } elseif ($this->categories->categoryExists($name)) {
+            $errors['general'] = "This category already exists.";
+        }
+    
+        if (!empty($errors)) {
+            $categories = $this->categories->getCategories();
             $this->view("categories/create", ['categories' => $categories, 'errors' => $errors]);
             return;
         }
-
+    
         $this->categories->addCategory($name);
-        header("Location: /categories");  // Redirect to list page to show new category
+        header("Location: /categories");
         exit();
     }
+    
 
     
     // Show edit category form

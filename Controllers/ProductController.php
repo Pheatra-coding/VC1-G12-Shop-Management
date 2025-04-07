@@ -91,6 +91,8 @@ class ProductController extends BaseController {
         $price = htmlspecialchars($_POST['price']);
         $quantity = htmlspecialchars($_POST['quantity']);
         $purchase_price = htmlspecialchars($_POST['purchase_price']);
+        $category_id = htmlspecialchars($_POST['category_id']); 
+
     
         // Check if the new barcode is already in use (excluding the current product)
         $existingProduct = $this->products->getProductByBarcode($barcode, $id);
@@ -133,7 +135,7 @@ class ProductController extends BaseController {
         }
     
         // Update product with image
-        $this->products->updateProduct($id, $image, $name, $end_date, $barcode, $price, $quantity, $purchase_price );
+        $this->products->updateProduct($id, $image, $name, $end_date, $barcode, $price, $quantity, $purchase_price,$category_id );
         header("Location: /products");
     }
 }

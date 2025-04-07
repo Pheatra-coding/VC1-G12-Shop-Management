@@ -52,7 +52,7 @@ class ProductModel {
     }
 
     // Function to update a product
-    public function updateProduct($id, $image, $name, $end_date, $barcode, $price, $quantity, $purchase_price){
+    public function updateProduct($id, $image, $name, $end_date, $barcode, $price, $quantity, $purchase_price,$category_id){
         $result = $this->db->query(
             "UPDATE products SET 
                 image = :image, 
@@ -61,7 +61,8 @@ class ProductModel {
                 barcode = :barcode, 
                 price = :price, 
                 quantity = :quantity,
-                purchase_price = :purchase_price 
+                purchase_price = :purchase_price, 
+                category_id = :category_id
              WHERE id = :id",
             [
                 ':id' => $id,
@@ -71,7 +72,9 @@ class ProductModel {
                 ':barcode' => $barcode,
                 ':price' => $price,
                 ':quantity' => $quantity,
-                ':purchase_price' => $purchase_price
+                ':purchase_price' => $purchase_price,
+                ':category_id' => $category_id
+
             ]
         );
         return $result;
