@@ -36,7 +36,7 @@ class ScanBarcodeController extends BaseController {
     }
 
     public function submit() {
-        if (isset($_POST['cart_data'])) {  // Check if 'cart_data' exists in the POST data
+        if (isset($_POST['cart_data'])) {
             $model = new ScanBarcodeModel();
             $cart = json_decode($_POST['cart_data'], true);
     
@@ -51,7 +51,10 @@ class ScanBarcodeController extends BaseController {
             }
     
             // Store cart data in session for all tabs
-            $_SESSION['cart'] = $cart;  // Store the cart in session
+            $_SESSION['cart'] = $cart;
+            
+            // Send Telegram alert about the sale
+            $this->sendSaleAlert($cart);
     
             // Clear cart flag and render receipt view
             $this->view('scan_barcodes/receipt', [
@@ -68,7 +71,30 @@ class ScanBarcodeController extends BaseController {
         }
     }
     
-    
+    /**
+     * Send Telegram alert about completed sale
+     */
+    protected function sendSaleAlert($cart) {
+        if (empty($cart)) {
+            return;
+        }
+        
+        $totalItems = array_sum(array_column($cart, 'quantity'));
+        $totalAmount = array_sum(array_map(function($item) {
+            return $item['price'] * $item['quantity'];
+        }, $cart));
+        
+        $message = "<b>💰 New Sale Completed</b>\n";
+        $message .= "🛒 Items Sold: $totalItems\n";
+        $message .= "💵 Total Amount: $" . number_format($totalAmount, 2) . "\n\n";
+        $message .= "<b>Items:</b>\n";
+        
+        foreach ($cart as $barcode => $item) {
+            $message .= "➡️ {$item['name']} ({$item['quantity']} × \${$item['price']})\n";
+        }
+        
+        $this->sendTelegramMessage($message);
+    }
 
     public function confirm() {
         $model = new ScanBarcodeModel();

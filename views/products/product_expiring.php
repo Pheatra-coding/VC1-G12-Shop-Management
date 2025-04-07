@@ -1,6 +1,7 @@
-<main id="main" class="main">
-    <link rel="stylesheet" href="styles.css">
+<?php session_start(); ?> 
+<?php if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
 
+<main id="main" class="main">
     <div class="pagetitle">
         <h1>Expiring Inventory</h1>
     </div>
@@ -60,6 +61,7 @@
 </script>
 
 <style>
+    /* General Styles */
     .main {
         padding: 20px;
         max-width: 1400px;
@@ -75,6 +77,7 @@
         max-width: 500px;
     }
 
+    /* Grid Styles */
     .product-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -86,6 +89,7 @@
         width: 100%;
     }
 
+    /* Card Styles */
     .expired-card {
         position: relative;
         overflow: hidden;
@@ -122,6 +126,7 @@
         background: #f5f5f5;
     }
 
+    /* Product Name Styles */
     .product-name-row {
         padding: 10px 0;
         height: 30%;
@@ -172,3 +177,8 @@
         }
     }
 </style>
+
+<?php else:
+    $this->redirect('/users/login');
+endif;
+?>
