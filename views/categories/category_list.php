@@ -126,11 +126,10 @@
 
         .empty-state {
             text-align: center;
-            padding: 40px 20px;
             color: var(--dark-gray);
         }
 
-        .empty-state i {
+        .empty-state .bi-folder-x {
             font-size: 3rem;
             color: var(--medium-gray);
             margin-bottom: 15px;
@@ -262,7 +261,7 @@
                                         <i class="bi bi-folder-x"></i>
                                         <h4>No Categories Found</h4>
                                         <p>Get started by adding your first category</p>
-                                        <a href="/categories/create" class="btn btn-primary mt-2">
+                                        <a href="/categories/create" class="btn btn-primary ">
                                             <i class="bi bi-plus-lg"></i> Add Category
                                         </a>
                                     </div>
