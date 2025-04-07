@@ -59,6 +59,9 @@ class InputProductController extends BaseController {
             }
 
             $_SESSION['cart'] = $cart;
+            
+            // Send Telegram alert about the sale
+            $this->sendSaleAlert($cart);
 
             $this->view('input_products/receipt', [
                 'cart' => $cart,
@@ -72,6 +75,31 @@ class InputProductController extends BaseController {
             exit();
         }
     }
+    
+    /**
+     * Send Telegram alert about completed sale
+     */
+    protected function sendSaleAlert($cart) {
+        if (empty($cart)) {
+            return;
+        }
+        
+        $totalItems = array_sum(array_column($cart, 'quantity'));
+        $totalAmount = array_sum(array_map(function($item) {
+            return $item['price'] * $item['quantity'];
+        }, $cart));
+        
+        $message = "<b>💰 New Manual Sale Completed</b>\n";
+        $message .= "🛒 Items Sold: $totalItems\n";
+        $message .= "💵 Total Amount: $" . number_format($totalAmount, 2) . "\n\n";
+        $message .= "<b>Items:</b>\n";
+        
+        foreach ($cart as $productId => $item) {
+            $message .= "➡️ {$item['name']} ({$item['quantity']} × \${$item['price']})\n";
+        }
+        
+        $this->sendTelegramMessage($message);
+    }
 
     public function confirm() {
         $model = new InputProductModel();
@@ -81,4 +109,3 @@ class InputProductController extends BaseController {
         exit();
     }
 }
-

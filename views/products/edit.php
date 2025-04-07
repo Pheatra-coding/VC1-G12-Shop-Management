@@ -98,9 +98,23 @@
                     <label for="endDate" class="form-label">Expiration Date:</label>
                     <input type="date" class="form-control" id="endDate" name="end_date" value="<?php echo isset($_POST['end_date']) ? htmlspecialchars($_POST['end_date']) : htmlspecialchars($product['end_date']); ?>" required>
                 </div>
+                <div class="mb-3">
+                    <label for="category_id" class="form-label">Category:</label>
+                    <select class="form-control" id="category_id" name="category_id" required>
+                        <option value="">Select a category</option>
+                        <?php
+                        $productModel = new ProductModel();
+                        $categories = $productModel->getCategories();
+                        foreach ($categories as $category) {
+                            echo "<option value='{$category['id']}'>{$category['category_name']}</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
             </div>
+            
         </div>
-
+         
         <!-- Submit and Cancel Buttons -->
         <div class="mb-3">
             <a href="/products" class="btn btn-secondary" style="margin-right: 8px;"><i class="fas fa-arrow-left me-2"></i> Back</a>
