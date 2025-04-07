@@ -17,6 +17,67 @@
     </div>
     <div class="d-flex justify-content-between mb-3">
         <a href="/products/create" class="btn btn-primary"> <i class="fas fa-plus"></i> Add Product</a>
+        <div class="container">
+    <!-- Your existing product table here -->
+    
+    <!-- Import Button -->
+    <button id="importBtn" class="btn btn-primary mt-3">
+        <i class="fas fa-file-import"></i> Import Products
+    </button>
+    
+    <!-- Hidden file input -->
+    <input type="file" id="fileInput" accept=".xls,.xlsx" style="display:none;">
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const importBtn = document.getElementById('importBtn');
+    const fileInput = document.getElementById('fileInput');
+    
+    importBtn.addEventListener('click', function() {
+        fileInput.click();
+    });
+    
+    fileInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        // Update button state
+        importBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Importing...';
+        importBtn.disabled = true;
+        
+        const formData = new FormData();
+        formData.append('excel_file', file);
+        
+        fetch('/products/import', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => { throw new Error(err.message); });
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                window.location.reload();
+            } else {
+                throw new Error(data.message);
+            }
+        })
+        .catch(error => {
+            alert('Error: ' + error.message);
+        })
+        .finally(() => {
+            importBtn.innerHTML = '<i class="fas fa-file-import"></i> Import Products';
+            importBtn.disabled = false;
+            fileInput.value = '';
+        });
+    });
+});
+</script>
         <div class="input-group w-50">
             <input
                 type="text"
