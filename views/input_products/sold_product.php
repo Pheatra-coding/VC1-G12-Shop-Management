@@ -9,7 +9,7 @@
             margin-left: auto;
             margin-right: auto;
         }
-        
+
         .scanner-header {
             color: #2c3e50;
             margin-bottom: 1.5rem;
@@ -17,7 +17,7 @@
             border-bottom: 1px solid #eaeaea;
             text-align: center;
         }
-        
+
         .input-group {
             margin-bottom: 1.5rem;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
@@ -26,7 +26,7 @@
             display: flex;
             align-items: center;
         }
-        
+
         .form-control {
             height: 50px;
             font-size: 1.1rem;
@@ -35,7 +35,7 @@
             padding-left: 15px;
             flex: 1;
         }
-        
+
         .btn-custom {
             border-radius: 0;
             height: 50px;
@@ -43,19 +43,19 @@
             letter-spacing: 0.5px;
             transition: all 0.3s ease;
         }
-        
+
         .btn-search {
             background-color: #3498db;
             color: white;
             border: none;
             padding: 0 25px;
         }
-        
+
         .btn-search:hover {
             background-color: #2980b9;
             transform: translateY(-1px);
         }
-        
+
         .btn-submit {
             background-color: #007bff;
             color: white;
@@ -66,15 +66,16 @@
             margin-top: 2rem;
             width: 100%;
             transition: all 0.3s ease;
-            display: none; /* Hidden by default */
+            display: none;
+            /* Hidden by default */
         }
-        
+
         .btn-submit:hover {
             background-color: #0069d9;
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(39, 73, 174, 0.3);
         }
-        
+
         .cart-table {
             width: 100%;
             border-collapse: collapse;
@@ -82,7 +83,7 @@
             font-size: 1rem;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
-        
+
         .cart-table th {
             background-color: #f8f9fa;
             padding: 12px 15px;
@@ -91,23 +92,23 @@
             color: #2c3e50;
             border-bottom: 2px solid #e0e0e0;
         }
-        
+
         .cart-table td {
             padding: 12px 15px;
             border-bottom: 1px solid #e0e0e0;
             vertical-align: middle;
         }
-        
+
         .cart-table tbody tr:hover {
             background-color: #f8f9fa;
         }
-        
+
         .cart-table tfoot td {
             font-weight: 600;
             background-color: #f8f9fa;
             border-top: 2px solid #e0e0e0;
         }
-        
+
         .alert-info {
             background-color: #e3f2fd;
             color: #1976d2;
@@ -116,13 +117,13 @@
             border-radius: 4px;
             margin: 1.5rem 0;
         }
-        
+
         .quantity-controls {
             display: flex;
             align-items: center;
             gap: 5px;
         }
-        
+
         .quantity-btn {
             background-color: #e0e0e0;
             border: none;
@@ -132,11 +133,11 @@
             font-size: 1rem;
             transition: background-color 0.3s ease;
         }
-        
+
         .quantity-btn:hover {
             background-color: #d0d0d0;
         }
-        
+
         .remove-btn {
             background-color: #ff4d4d;
             color: white;
@@ -148,11 +149,11 @@
             transition: background-color 0.3sjustice;
             transition: background-color 0.3s ease;
         }
-        
+
         .remove-btn:hover {
             background-color: #e04343;
         }
-        
+
         .nav-btn {
             background-color: #28a745;
             color: white;
@@ -165,27 +166,29 @@
             margin-bottom: 1rem;
             transition: all 0.3s ease;
         }
-        
+
         .nav-btn:hover {
             background-color: #218838;
             transform: translateY(-1px);
         }
-        
+
         @media (max-width: 768px) {
             .scanner-container {
                 padding: 1.5rem;
             }
-            
-            .form-control, .btn-custom {
+
+            .form-control,
+            .btn-custom {
                 height: 45px;
                 font-size: 1rem;
             }
-            
+
             .cart-table {
                 font-size: 0.9rem;
             }
-            
-            .cart-table th, .cart-table td {
+
+            .cart-table th,
+            .cart-table td {
                 padding: 8px 10px;
             }
         }
@@ -202,19 +205,19 @@
         <div class="scanner-header">
             <h4><i class="fas fa-barcode me-2"></i>Product Selector</h4>
         </div>
-        
+
         <form method="POST" action="/input_products/scan">
             <div class="input-group">
-                <input type="text" class="form-control" name="product_name" list="product-list" 
-                       placeholder="Search for a product" required>
+                <input type="text" class="form-control" name="product_name" list="product-list"
+                    placeholder="Search for a product" required>
                 <datalist id="product-list">
                     <?php foreach ($data['products'] as $product): ?>
                         <option value="<?= htmlspecialchars($product['name']) ?>" data-id="<?= $product['id'] ?>">
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
                 </datalist>
                 <input type="hidden" name="product_id" id="product-id">
-                <input type="number" class="form-control" name="quantity" min="1" 
-                       placeholder="Quantity" required>
+                <input type="number" class="form-control" name="quantity" min="1"
+                    placeholder="Quantity" required>
                 <button class="btn btn-custom btn-search" type="submit">
                     <i class="fas fa-plus me-2"></i>Add
                 </button>
@@ -243,6 +246,13 @@
                 <tfoot></tfoot>
             </table>
         </div>
+        
+        <div class="input-group mt-4">
+            <input type="number" class="form-control" name="payment_amount" id="payment-amount"
+                placeholder="Enter payment amount" min="0" step="0.01" required>
+            <button class="btn btn-custom btn-search" type="button" onclick="validatePayment()">Check Payment</button>
+        </div>
+        <div id="payment-alert" class="alert alert-info" style="display: none;"></div>
 
         <form method="POST" action="/input_products/submit" id="submit-form">
             <input type="hidden" name="cart_data" id="cart-data">
@@ -360,4 +370,32 @@
             }, 1000);
         };
     </script>
+    <script>
+        function validatePayment() {
+            const paymentInput = document.getElementById('payment-amount');
+            const alertBox = document.getElementById('payment-alert');
+            const amountPaid = parseFloat(paymentInput.value);
+            const total = Object.values(cart).reduce((acc, item) => acc + (item.price * item.quantity), 0);
+
+            if (isNaN(amountPaid)) {
+                alertBox.textContent = 'Please enter a valid payment amount.';
+                alertBox.style.display = 'block';
+                return;
+            }
+
+            if (amountPaid >= total) {
+                const change = (amountPaid - total).toFixed(2);
+                alertBox.textContent = `Payment accepted. Change: $${change}`;
+                alertBox.style.backgroundColor = '#d4edda'; // green background
+                alertBox.style.color = '#155724';
+            } else {
+                const due = (total - amountPaid).toFixed(2);
+                alertBox.textContent = `Insufficient payment. $${due} still due.`;
+                alertBox.style.backgroundColor = '#fff3cd'; // yellow background
+                alertBox.style.color = '#856404';
+            }
+            alertBox.style.display = 'block';
+        }
+    </script>
+
 </main>
