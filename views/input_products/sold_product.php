@@ -246,7 +246,7 @@
                 <tfoot></tfoot>
             </table>
         </div>
-        
+
         <div class="input-group mt-4">
             <input type="number" class="form-control" name="payment_amount" id="payment-amount"
                 placeholder="Enter payment amount" min="0" step="0.01" required>
@@ -263,6 +263,8 @@
     </div>
 
     <script>
+        let isPaymentSufficient = false;
+
         let cart = <?php echo isset($data['reset']) && $data['reset'] ? '{}' : 'JSON.parse(localStorage.getItem("cart")) || {}'; ?>;
 
         function updateCartTable() {
@@ -363,7 +365,13 @@
             updateCartTable();
         <?php endif; ?>
 
-        document.getElementById('submit-form').onsubmit = function() {
+        document.getElementById('submit-form').onsubmit = function(event) {
+            if (!isPaymentSufficient) {
+                event.preventDefault();
+                alert('Payment is not sufficient. Please pay the full amount.');
+                return false;
+            }
+
             localStorage.setItem('cart', JSON.stringify(cart));
             setTimeout(() => {
                 localStorage.removeItem('cart');
@@ -380,6 +388,7 @@
             if (isNaN(amountPaid)) {
                 alertBox.textContent = 'Please enter a valid payment amount.';
                 alertBox.style.display = 'block';
+                isPaymentSufficient = false;
                 return;
             }
 
@@ -388,14 +397,16 @@
                 alertBox.textContent = `Payment accepted. Change: $${change}`;
                 alertBox.style.backgroundColor = '#d4edda'; // green background
                 alertBox.style.color = '#155724';
+                isPaymentSufficient = true;
             } else {
                 const due = (total - amountPaid).toFixed(2);
                 alertBox.textContent = `Insufficient payment. $${due} still due.`;
                 alertBox.style.backgroundColor = '#fff3cd'; // yellow background
                 alertBox.style.color = '#856404';
+                isPaymentSufficient = false;
             }
+
             alertBox.style.display = 'block';
         }
     </script>
-
 </main>
