@@ -1,13 +1,15 @@
 <?php session_start(); ?> 
 <?php if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
 <style>
-
     .small-icon {
-    font-size: 14px; /* Small icon size */
-    color: #aaa; /* Light gray color for inactive icons */
-    transition: color 0.2s ease;
-}
-
+        font-size: 14px; /* Small icon size */
+        color: #aaa; /* Light gray color for inactive icons */
+        transition: color 0.2s ease;
+    }
+    .action-btn {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
 </style>
 
 <main id="main" class="main">
@@ -16,18 +18,29 @@
         <h1>Products Management</h1>
     </div>
     <div class="d-flex justify-content-between mb-3">
-        <a href="/products/create" class="btn btn-primary"> <i class="fas fa-plus"></i> Add Product</a>
-        <div class="container">
-    <!-- Your existing product table here -->
-    
-    <!-- Import Button -->
-    <button id="importBtn" class="btn btn-primary mt-3">
-        <i class="fas fa-file-import"></i> Import Products
-    </button>
-    
+        <div class="d-flex gap-2">
+            <a href="/products/create" class="btn btn-primary action-btn">
+                <i class="fas fa-plus"></i> Add Product
+            </a>
+            <button id="importBtn" class="btn btn-primary action-btn">
+                <i class="fas fa-file-import"></i> Import Products
+            </button>
+        </div>
+        <div class="input-group w-50">
+            <input
+                type="text"
+                id="searchInput"
+                class="form-control"
+                placeholder="Search product..."
+                onkeyup="searchTable()">
+            <button class="btn btn-secondary">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+
     <!-- Hidden file input -->
     <input type="file" id="fileInput" accept=".xls,.xlsx" style="display:none;">
-</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -78,18 +91,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-        <div class="input-group w-50">
-            <input
-                type="text"
-                id="searchInput"
-                class="form-control"
-                placeholder="Search product..."
-                onkeyup="searchTable()">
-            <button class="btn btn-secondary">
-                <i class="fas fa-search"></i>
-            </button>
-        </div>
-    </div>
 
     <div class="table-responsive">
         <table id="productTable" class="table" style="vertical-align: middle;">
