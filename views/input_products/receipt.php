@@ -170,13 +170,13 @@
 
     <div class="receipt-container" id="receipt">
         <div class="receipt-header">
-            <h1>DINO SHOP</h1>
+            <h1>MENG HOUT SHOP</h1>
             <p>Order Receipt</p>
         </div>
 
         <div class="ticket-info">
             <div class="ticket-details">
-                <p><strong>Shop:</strong> Dino Shop</p>
+                <p><strong>Shop:</strong> MENG HOUT Shop</p>
                 <p><strong>Date:</strong> <?= date('D, d M Y') ?></p>
             </div>
         </div>
@@ -234,89 +234,100 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <script>
-        // Function to handle automatic printing when confirming payment
-        function printReceiptAndSubmit(event) {
-            event.preventDefault(); // Prevent form submission temporarily
+         // Function to handle automatic printing when confirming payment
+         function printReceiptAndSubmit(event) {
+        event.preventDefault(); // Prevent form submission temporarily
+        
+        // Get the elements to hide for printing
+        const confirmForm = document.getElementById('confirm-form');
+        const downloadBtn = document.getElementById('download-btn');
+        
+        // Temporarily hide buttons for printing
+        confirmForm.style.display = 'none';
+        downloadBtn.style.display = 'none';
+        
+        // Print the receipt
+        window.print();
+        
+        // Short delay to ensure print dialog opens before submitting form
+        setTimeout(function() {
+            // Show buttons again
+            confirmForm.style.display = 'block';
+            downloadBtn.style.display = 'flex';
             
-            // Get the elements to hide for printing
+            // Submit the form to complete the payment confirmation
+            document.getElementById('confirm-form').submit();
+        }, 500);
+    }
+
+    async function downloadReceipt() {
+        try {
+            const receiptElement = document.getElementById('receipt');
+            if (!receiptElement) {
+                console.error('Receipt element not found');
+                return;
+            }
+
+            // Hide buttons temporarily
             const confirmForm = document.getElementById('confirm-form');
             const downloadBtn = document.getElementById('download-btn');
-            
-            // Temporarily hide buttons for printing
-            confirmForm.style.display = 'none';
-            downloadBtn.style.display = 'none';
-            
-            // Print the receipt
-            window.print();
-            
-            // Short delay to ensure print dialog opens before submitting form
-            setTimeout(function() {
-                // Show buttons again
-                confirmForm.style.display = 'block';
-                downloadBtn.style.display = 'flex';
-                
-                // Submit the form to complete the payment confirmation
-                document.getElementById('confirm-form').submit();
-            }, 500);
+            if (confirmForm) confirmForm.style.display = 'none';
+            if (downloadBtn) downloadBtn.style.display = 'none';
+
+            // Clone the receipt for download
+            const clone = receiptElement.cloneNode(true);
+
+            // Set portrait dimensions (600px width, 800px height)
+            clone.style.width = '600px'; // Fixed width
+            clone.style.height = '800px'; // Fixed height for portrait
+            clone.style.margin = '0';
+            clone.style.padding = '20px';
+            clone.style.boxShadow = 'none';
+            clone.style.borderRadius = '0';
+            clone.style.boxSizing = 'border-box'; // Ensure padding is included in dimensions
+            clone.style.overflow = 'hidden'; // Prevent content from overflowing
+            clone.style.backgroundColor = '#ffffff'; // Ensure white background
+
+            // Ensure the content scales to fit the portrait dimensions
+            clone.style.display = 'flex';
+            clone.style.flexDirection = 'column';
+            clone.style.justifyContent = 'space-between';
+
+            // Append the clone to the body temporarily
+            document.body.appendChild(clone);
+
+            // Capture the clone as an image with html2canvas
+            const canvas = await html2canvas(clone, {
+                scale: 2, // Higher resolution for better quality
+                useCORS: true,
+                backgroundColor: '#ffffff',
+                logging: false,
+                removeContainer: true,
+                width: 600, // Match the clone's width
+                height: 800 // Match the clone's height
+            });
+
+            // Remove the clone from the DOM
+            document.body.removeChild(clone);
+
+            // Restore buttons
+            if (confirmForm) confirmForm.style.display = 'block';
+            if (downloadBtn) downloadBtn.style.display = 'flex';
+
+            // Create download link
+            const image = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.download = 'dino-shop-receipt-' + new Date().toISOString().slice(0, 10) + '.png';
+            link.href = image;
+            link.click();
+        } catch (error) {
+            console.error('Error generating receipt image:', error);
+            alert('Failed to generate receipt image. Please try again.');
+            const confirmForm = document.getElementById('confirm-form');
+            const downloadBtn = document.getElementById('download-btn');
+            if (confirmForm) confirmForm.style.display = 'block';
+            if (downloadBtn) downloadBtn.style.display = 'flex';
         }
-
-        async function downloadReceipt() {
-            try {
-                // Get the elements to hide
-                const confirmForm = document.getElementById('confirm-form');
-                const downloadBtn = document.getElementById('download-btn');
-
-                // Temporarily hide the buttons
-                confirmForm.style.display = 'none';
-                downloadBtn.style.display = 'none';
-
-                // Create a clone of the receipt to ensure consistent styling
-                const receipt = document.getElementById('receipt');
-                const clone = receipt.cloneNode(true);
-                
-                // Apply print styles to the clone
-                clone.style.width = '100%';
-                clone.style.margin = '0';
-                clone.style.padding = '20px';
-                clone.style.boxShadow = 'none';
-                clone.style.borderRadius = '0';
-                
-                // Append the clone to body temporarily
-                document.body.appendChild(clone);
-                
-                // Capture the clone as an image
-                const canvas = await html2canvas(clone, {
-                    scale: 2, // Increase resolution
-                    useCORS: true, // Allow cross-origin images
-                    backgroundColor: '#ffffff', // Ensure white background
-                    logging: false,
-                    removeContainer: true
-                });
-
-                // Remove the clone
-                document.body.removeChild(clone);
-
-                // Show the buttons again
-                confirmForm.style.display = 'block';
-                downloadBtn.style.display = 'flex';
-
-                // Create download link
-                const image = canvas.toDataURL('image/png');
-                const link = document.createElement('a');
-                link.download = 'dino-shop-receipt-' + new Date().toISOString().slice(0, 10) + '.png';
-                link.href = image;
-                link.click();
-                
-            } catch (error) {
-                // Ensure buttons are shown even if there's an error
-                const confirmForm = document.getElementById('confirm-form');
-                const downloadBtn = document.getElementById('download-btn');
-                confirmForm.style.display = 'block';
-                downloadBtn.style.display = 'flex';
-
-                console.error('Error generating receipt image:', error);
-                alert('Failed to generate receipt image. Please try again.');
-            }
-        }
+    }
     </script>
 </main>

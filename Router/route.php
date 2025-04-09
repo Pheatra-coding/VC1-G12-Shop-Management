@@ -90,4 +90,10 @@ $route->get("/sold_history/sold_history", [SoldHistoryController::class, 'index'
 $route->get("/sold_history/delete/{id}", [SoldHistoryController::class, 'delete']);
 // category
 $route->get("/categories", [CategoryController::class, 'index']);
+$route->get("/categories/create", [CategoryController::class, 'create']);
+$route->post("/categories/store", [CategoryController::class, 'store']);
+$route->get("/categories/edit/{id}", [CategoryController::class, 'edit']);
+$route->put("/categories/update/{id}", [CategoryController::class, 'update']);
+$route->delete("/categories/delete/{id}", [CategoryController::class, 'delete']);
+
 $route->route();
