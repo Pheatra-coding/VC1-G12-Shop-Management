@@ -250,12 +250,6 @@
     <main id="main" class="main">
         <div class="pagetitle">
             <h1>Product Categories</h1>
-            <!-- <nav>
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/">Home</a></li>
-                    <li class="breadcrumb-item active">Categories</li>
-                </ol>
-            </nav> -->
         </div>
 
         <section class="section">
@@ -272,15 +266,15 @@
                                                 type="text"
                                                 id="searchInput"
                                                 class="form-control"
-                                                placeholder="Search categories or products..."
+                                                placeholder="Search categories..."
                                                 onkeyup="searchTable()">
-                                            <button class="btn btn-outline-secondary" onclick="toggleSearch()">
+                                            <button class="btn btn-secondary" onclick="toggleSearch()">
                                                 <i class="bi bi-search"></i>
                                             </button>
                                         </div>
                                     </div>
                                     <a href="/categories/create" class="btn btn-primary btn-add-new">
-                                        <i class="bi bi-plus-lg"></i> <span>Add New</span>
+                                        <i class="bi bi-plus-lg"></i><span>Add New</span>
                                     </a>
                                 </div>
                             </div>
