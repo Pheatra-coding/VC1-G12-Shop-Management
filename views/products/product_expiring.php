@@ -215,7 +215,7 @@
                     /* Adjust padding for smaller banner */
                 }
             }
-        }
+        
     </style>
 
 <?php else:

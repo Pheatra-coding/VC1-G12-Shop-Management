@@ -14,7 +14,7 @@ $imageUrl = !empty($user['image']) ? htmlspecialchars($user['image']) : 'path/to
         <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
 
         <!-- Profile Image Upload at the Top -->
-        <div class="mb-4 text-center">
+        <div class="mb-4 text-center"
             <label for="profile_image" class="form-label fw-bold">Profile Image</label>
             <div class="custom-file-upload">
                 <!-- Image Preview -->
