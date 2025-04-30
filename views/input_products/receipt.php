@@ -317,7 +317,7 @@
             // Create download link
             const image = canvas.toDataURL('image/png');
             const link = document.createElement('a');
-            link.download = 'dino-shop-receipt-' + new Date().toISOString().slice(0, 10) + '.png';
+            link.download = 'meng-hout-shop-receipt-' + new Date().toISOString().slice(0, 10) + '.png';
             link.href = image;
             link.click();
         } catch (error) {
